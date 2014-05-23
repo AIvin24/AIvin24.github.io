@@ -4,12 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | 风清阳明</title>
+    <title>k近邻算法 | 风清阳明</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Jinwen">
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+    <meta name="description" content="这是一篇纯水文，只是想练习一下在博客中插入图片、公式、代码的效果。不过，如果有不知道kNN算法的童鞋，希望这篇博文能够帮助到你。
+介绍
+k近邻算法(kNN)算是机器学习里面最基本的分类算法了，基本思想就是近似的一些物体很有可能属于同一类。有句俗语说得好：“物以类聚，人以群分”，我们为了初步判断一个人">
     
     
     
@@ -54,13 +56,13 @@
       <div id="main" class="post" itemscope itemprop="blogPost">
 	<article itemprop="articleBody"> 
 		<header class="article-info clearfix">
-    <time datetime="2014-05-21T00:31:54.000Z" itemprop="datePublished">
-      <a href="/2014/05/21/hello-world/" title="Hello World" itemprop="url" class="article-time">5月 21 2014</a>
+    <time datetime="2014-05-23T02:01:13.000Z" itemprop="datePublished">
+      <a href="/2014/05/23/machinelearning_knn/" title="k近邻算法" itemprop="url" class="article-time">5月 23 2014</a>
     </time>
 
   <h1 itemprop="name" class="article-name">
     
-      <a href="/2014/05/21/hello-world/" title="Hello World" itemprop="url"><span>Hello World</span></a>
+      <a href="/2014/05/23/machinelearning_knn/" title="k近邻算法" itemprop="url"><span>k近邻算法</span></a>
   </h1>
 </header>
 
@@ -70,47 +72,77 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a></li><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#模型"><span class="toc-number">2.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实例"><span class="toc-number">3.</span> <span class="toc-text">实例</span></a></li></ol>
 		
 		</div>
 		
-		<p>Welcome to <a href="http://hexo.io/" target="_blank">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank">trobuleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>$ hexo new <span class="string">"My New Post"</span>
-</pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>$ hexo server
-</pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>$ hexo generate
-</pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre>1
-</pre></td><td class="code"><pre>$ hexo deploy
-</pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank">Deployment</a></p>
-  
+		<p>这是一篇纯水文，只是想练习一下在博客中插入图片、公式、代码的效果。不过，如果有不知道kNN算法的童鞋，希望这篇博文能够帮助到你。</p>
+<h1 id="介绍">介绍</h1>
+<p>k近邻算法(kNN)算是机器学习里面最基本的分类算法了，基本思想就是近似的一些物体很有可能属于同一类。有句俗语说得好：“物以类聚，人以群分”，我们为了初步判断一个人是怎样的一个人，我们可以先看看他（她）交的朋友。 假设这个世界就只有三种类型的青年：普通青年、文艺青年和2B青年，对于我们认识的人，我们都知道他属于哪一类型的青年。现在，出现了一位新的青年Z，我们不认识他，那么如何判定他属于哪一种类型的青年呢？</p>
+<p>这是机器学习的一个主要研究领域：分类。</p>
+<p>对于kNN来说，其大致是这样解决这个问题的：首先我们根据我们认识的人得到每一种类型的人的一些特征。然后看Z和哪些人相像（通过比较他和已知青年的特征做比较，相同特征越多，二者最相像），最后我们根据和Z相像的人的类型大致判定Z的类型。 那么选多少人做比较呢？在kNN中，k就表示选k个人，根据实际应用而加以改变。</p>
+<p>那么kNN就是这样的一个流程：   </p>
+<ol>
+<li>首先有个数据集，都是带属性特征和已知标签的（即知道他们的表现特征、属于哪一类型人）；  </li>
+<li>然后根据新数据的特征，计算其和已知数据集的特征距离（多种衡量标准），找出最像的前k个数据（距离越小越相像）；</li>
+<li>挑出前k个数据中数量最多的那一种类型，比方说选出的5个人中，有3位文艺青年、1位普通青年、1位2B青年，那么我们采用一种投票的性质，判定新数据表现为文艺青年。</li>
+</ol>
+<h1 id="模型">模型</h1>
+<p>我们称已知类型的数据集为训练集X，标签为Y，新出现的数据是a。注意：X是一个向量集，a是一个向量，y看作是一个向量。那么，我们要得到a的类型pred(a)，根据kNN的思想，模型公式如下：</p>
+<p><img src="http://www.forkosh.com/mathtex.cgi?
+pred(a) = argmax_i[number(i),i=1,\ldots,K]  
+"><br>其中k表示所有种类的数目，<img src="http://www.forkosh.com/mathtex.cgi?
+number(i)
+">  表示第<img src="http://www.forkosh.com/mathtex.cgi?
+i  
+">  种类型在前k个数据中所占的数目。挑选前k个数据是根据他们的特征距离来获得的。</p>
+<h1 id="实例">实例</h1>
+<p>现在通过python实现kNN算法，详细介绍参见<a href="http://www.manning.com/pharrington/" target="_blank">机器学习实战</a>第二章。</p>
+<p>引入模块:   </p>
+<pre><code>&gt;&gt;&gt;<span class="keyword">import</span> kNN
+</code></pre><p>创建带有属性特征和标签的数据，定义一个相关函数：</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">createDataSet</span><span class="params">()</span>:</span>
+    group = array([[<span class="number">1.0</span>,<span class="number">1.1</span>],[<span class="number">1.0</span>,<span class="number">1.0</span>],[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0.1</span>]])
+    labels = [<span class="string">'A'</span>,<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>]
+    <span class="keyword">return</span> group, labels
+</code></pre><p>数据可视化如下：</p>
+<p>定义分类函数：</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">classify0</span><span class="params">(inX, dataSet, labels, k)</span>:</span>
+    dataSetSize = dataSet.shape[<span class="number">0</span>]  <span class="comment">#得出训练数据的个数</span>
+    diffMat = tile(inX, (dataSetSize,<span class="number">1</span>)) - dataSet <span class="comment"># 计算每个训练数据和待测试数据的差</span>
+    sqDiffMat = diffMat**<span class="number">2</span> <span class="comment"># 距离平方</span>
+    sqDistances = sqDiffMat.sum(axis=<span class="number">1</span>) <span class="comment">#平方和</span>
+    distances = sqDistances**<span class="number">0.5</span> <span class="comment"># 欧几里得距离</span>
+    sortedDistIndicies = distances.argsort()   <span class="comment">#距离矩阵排序   </span>
+    classCount={}   
+    <span class="comment"># 选出距离前k小的数据       </span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(k):
+        voteIlabel = labels[sortedDistIndicies[i]]   <span class="comment">#记录第i小的数据标签，参与后面的投票。</span>
+        classCount[voteIlabel] = classCount.get(voteIlabel,<span class="number">0</span>) + <span class="number">1</span>
+    sortedClassCount = sorted(classCount.iteritems(), key=operator.itemgetter(<span class="number">1</span>), reverse=<span class="keyword">True</span>)
+    <span class="comment">#根据投票结果，得出票数最大的标签作为分类结果</span>
+    <span class="keyword">return</span> sortedClassCount[<span class="number">0</span>][<span class="number">0</span>]
+</code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
 
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/人工智能/">人工智能</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习实战/">机器学习实战</a>
+  </div>
 
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://xiaojinwen.com/2014/05/21/hello-world/" data-title="Hello World | 风清阳明" data-tsina="undefined" class="share clearfix">
+  <div data-url="http://xiaojinwen.com/2014/05/23/machinelearning_knn/" data-title="k近邻算法 | 风清阳明" data-tsina="undefined" class="share clearfix">
   </div>
 
 </div>
@@ -119,14 +151,14 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/05/22/my-new-post-1/" title="my new post">
-  <strong>上一篇：</strong><br/>
-  <span>
-  my new post</span>
+
+<div class="next">
+<a href="/2014/05/22/my-new-post-1/"  title="博客前言">
+ <strong>下一篇：</strong><br/> 
+ <span>博客前言
+</span>
 </a>
 </div>
-
 
 </nav>
 
@@ -147,7 +179,9 @@
 	<p class="asidetitle">分类</p>
 		<ul>
 		
-			<li><a href="/categories/blog/" title="blog">blog<sup>1</sup></a></li>
+			<li><a href="/categories/人工智能/" title="人工智能">人工智能<sup>1</sup></a></li>
+		
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
 		
 		</ul>
 </div>
@@ -158,9 +192,9 @@
 	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
-			<li><a href="/tags/asdf/" title="asdf">asdf<sup>1</sup></a></li>
+			<li><a href="/tags/机器学习实战/" title="机器学习实战">机器学习实战<sup>1</sup></a></li>
 		
-			<li><a href="/tags/互联网/" title="互联网">互联网<sup>1</sup></a></li>
+			<li><a href="/tags/说明/" title="说明">说明<sup>1</sup></a></li>
 		
 		</ul>
 </div>
