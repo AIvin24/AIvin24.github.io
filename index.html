@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   
     <title>风清阳明</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Jinwen">
     
@@ -18,15 +18,23 @@
     <link rel="icon" href="/img/favicon.ico">
     
     
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
     <link rel="stylesheet" href="/css/style.css" type="text/css">
 </head>
 
   <body>
     <header>
       <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="风清阳明" title="风清阳明"/></a>
+			</div>
+			
 			<div id="textlogo">
 				<h1 class="site-name"><a href="/" title="风清阳明">风清阳明</a></h1>
-				<h2 class="blog-motto"><a href="/">互联网，人工智能，金融，生活</h2>
+				<h2 class="blog-motto">互联网，人工智能，金融，生活</h2>
 			</div>
 			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
@@ -40,73 +48,54 @@
 					
 						<li><a href="/about">About</a></li>
 					
-					<li><form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:xiaojinwen.com">
-					</form></li>
+					</form>
+					
+					</li>
 				</ul>
-			</nav>
+			</nav>			
 </div>
-    </header>
-    <div id="wrap">
 
+    </header>
     <div id="container">
       <div id="main">
 
   <section class="post" itemscope itemprop="blogPost">
-    <div id="main-col" class="alignleft">
-    <time datetime="2014-05-23T02:01:13.000Z" itemprop="datePublished">
-      <a href="/2014/05/23/machinelearning_knn/" title="k近邻算法" itemprop="url"  class="article-time">5月 23 2014</a>
-    </time>
-  <h1 itemprop="name" class="post-title">
   
-    <a href="/2014/05/23/machinelearning_knn/" title="k近邻算法" itemprop="url"><span>k近邻算法</span></a>
+    <a href="/2014/05/23/machinelearning_knn/" title="k近邻算法" itemprop="url">
   
-</h1>
-
+    <h1 itemprop="name">k近邻算法</h1>
     
      
            <p itemprop="description" >这是一篇纯水文，只是想练习一下在博客中插入图片、公式、代码的效果。不过，如果有不知道kNN算法的童鞋，希望这篇博文能够帮助到你。
 介绍
-k近邻算法(kNN)算是机器学习里面最基本的分类算法了，基本思想就是近似的一些物体很有可能属于同一类。有句俗语说得好：“物以类聚，人以群分”，我...</p>
+k近邻算法(kNN)算是机器学习里面最基本的分类算法了，基本思想就是近似的一些物体很有可能属于同一类。有句俗语说得好：“物以类聚，人以群分”，我</p>
         
     
-
-    <div class="more-link">
-            <!-- <a href="/2014/05/23/machinelearning_knn/" class="more-link"><span>Read More</span></a> -->
-      <div class="clearfix"></div>
-    </div>
-
-</div>
+    <time datetime="2014-05-23T02:01:13.000Z" itemprop="datePublished">5月 23 2014</time>
+  </a>
 </section>
 
   <section class="post" itemscope itemprop="blogPost">
-    <div id="main-col" class="alignleft">
-    <time datetime="2014-05-22T10:11:54.000Z" itemprop="datePublished">
-      <a href="/2014/05/22/my-new-post-1/" title="博客前言" itemprop="url"  class="article-time">5月 22 2014</a>
-    </time>
-  <h1 itemprop="name" class="post-title">
   
-    <a href="/2014/05/22/my-new-post-1/" title="博客前言" itemprop="url"><span>博客前言</span></a>
+    <a href="/2014/05/22/my-new-post-1/" title="博客前言" itemprop="url">
   
-</h1>
-
+    <h1 itemprop="name">博客前言</h1>
     
      
            <p itemprop="description" >开启本博客一个最主要的原因是自己想尝试精确简明地表述自己的观点，没有废话。以前也在一些门户网站上面开过一些博客，但是一直没有坚持下来，主要是两个方面的原因：
 
 自己水平不够，总感觉写的东西连自己都看不下去，总是写了又删，删了又写，特没意思；
-没有养成写博客做记录的习惯，没有一直坚...</p>
+没有养成写博客做记录的习惯，没有一直坚</p>
         
     
-
-    <div class="more-link">
-            <!-- <a href="/2014/05/22/my-new-post-1/" class="more-link"><span>Read More</span></a> -->
-      <div class="clearfix"></div>
-    </div>
-
-</div>
+    <time datetime="2014-05-22T10:11:54.000Z" itemprop="datePublished">5月 22 2014</time>
+  </a>
 </section>
 
 
@@ -143,15 +132,6 @@ k近邻算法(kNN)算是机器学习里面最基本的分类算法了，基本�
 </div>
 
 
-  <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
-    <ul>
-      <li><a href="http://yangjian.me" target="_blank" title="YangJian">Alimon's Blog</a></li>
-      <li><a href="http://ragingcat.info" target="_blank" title="ragingcat">RagingCat's Blog</a></li>
-	  <li><a href="http://zhiqiang.org/" target="_blank" title="YangJian">阅微堂</a></li>
-    </ul>
-</div>
-
   <div class="rsspart">
 	<a href="null" target="_blank" title="rss">RSS 订阅</a>
 </div>
@@ -159,44 +139,30 @@ k近邻算法(kNN)算是机器学习里面最基本的分类算法了，基本�
 </aside>
 </div>
     </div>
-</div>
     <footer><div id="footer" >
 	
-    <div class="social-font" class="clearfix">
-        
-        <a href="http://weibo.com/AIvin24" target="_blank" class="icon-weibo" title="weibo"></a>
-        
-        
-        <a href="https://github.com/AIvin24" target="_blank" class="icon-github" title="github"></a>
-        
-        
-        
-        
-        
-        
-        <a href="mailto:jinwen.fd@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
-        
-    </div>
-	<section class="info">
-		<p class="l1">
-            Just do it.
-        </p>
-            <!-- <br/> -->
-        <p class="l2">
-			This is jinwen&#39;s personal blog.
-        </p>
-	</section>
-	 
-		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/RagingCat/hexo-theme-ragingcat" target="_blank" title="hexo-theme-ragingcat">Raging Cat</a> © 2014
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font" class="clearfix">
 		
-		<a href="http://xiaojinwen.com/about" target="_blank" title="Jinwen">Jinwen</a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2014 
+		
+		<a href="http://xiaojinwen.com" target="_blank" title="Jinwen">Jinwen</a>
 		
 		</p>
 </div>
 </footer>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+    <script src="/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).ready(function(){ 
   $('.navbar').click(function(){
     $('header nav').toggleClass('shownav');
   });
@@ -213,7 +179,7 @@ $(document).ready(function(){
       c = $('.closeaside'),
       o = $('.openaside');
   $(window).resize(function(){
-    getSize();
+    getSize(); 
     if (myWidth >= 1024) {
       $('header nav').removeClass('shownav');
     }else
@@ -221,7 +187,7 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
-      
+        
     }
   });
   c.click(function(){
@@ -231,7 +197,7 @@ $(document).ready(function(){
   });
   o.click(function(){
     o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
     m.removeClass('moveMain');
   });
   $(window).scroll(function(){
@@ -245,23 +211,6 @@ $(document).ready(function(){
 
 
 
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', 'null', 'xiaojinwen.com');  
-ga('send', 'pageview');
-</script>
 
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-});
-</script>
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
   </body>
  </html>
