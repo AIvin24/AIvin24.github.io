@@ -96,6 +96,8 @@ number(i)
 ">  表示第<img src="http://www.forkosh.com/mathtex.cgi?
 i  
 ">  种类型在前k个数据中所占的数目。挑选前k个数据是根据他们的特征距离来获得的。</p>
+<p>训练数据都是已知标签的，如下图的A、B,特征向量的维度为2。</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/droplr.storage/files/acc_263367/JOzd?AWSAccessKeyId=AKIAJSVQN3Z4K7MT5U2A&amp;Expires=1400828892&amp;Signature=QJ%2F7AzfQrOrbt3LqEFj34kiFc%2FE%3D" alt=""></p>
 <h1 id="实例">实例</h1>
 <p>现在通过python实现kNN算法，详细介绍参见<a href="http://www.manning.com/pharrington/" target="_blank">机器学习实战</a>第二章。</p>
 <p>引入模块:   </p>
@@ -105,8 +107,7 @@ i
     group = array([[<span class="number">1.0</span>,<span class="number">1.1</span>],[<span class="number">1.0</span>,<span class="number">1.0</span>],[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0.1</span>]])
     labels = [<span class="string">'A'</span>,<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'B'</span>]
     <span class="keyword">return</span> group, labels
-</code></pre><p>数据可视化如下：</p>
-<p>定义分类函数：</p>
+</code></pre><p>定义分类函数：</p>
 <pre><code><span class="function"><span class="keyword">def</span> <span class="title">classify0</span><span class="params">(inX, dataSet, labels, k)</span>:</span>
     dataSetSize = dataSet.shape[<span class="number">0</span>]  <span class="comment">#得出训练数据的个数</span>
     diffMat = tile(inX, (dataSetSize,<span class="number">1</span>)) - dataSet <span class="comment"># 计算每个训练数据和待测试数据的差</span>
