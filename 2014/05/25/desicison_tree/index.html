@@ -1,0 +1,411 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>决策树 | 风清阳明</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Jinwen">
+    
+    <meta name="description" content="每个数据都存有若干的特征值，这些特征值组成一个特征向量。但是，特征之间的等级关系是不一样的，就是说每个特征对于最终的类别影响是不一样的。比如说现在根据两种特征来判定某动物是不是属于鸟类，这两种特征分别是：是否能飞，是否有两只脚。因为鸟类都有翅膀，但不是只有鸟类才有翅膀，所以，根据我们的直觉，应该先看">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="风清阳明" title="风清阳明"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="风清阳明">风清阳明</a></h1>
+				<h2 class="blog-motto">互联网，人工智能，金融，生活</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:xiaojinwen.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/05/25/desicison_tree/" title="决策树" itemprop="url">决策树</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://xiaojinwen.com" title="Jinwen">Jinwen</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-05-25T02:38:03.000Z" itemprop="datePublished">5月 25 2014</time>
+    更新日期:<time datetime="2014-05-26T03:43:07.000Z" itemprop="dateModified">5月 26 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#划分数据集"><span class="toc-number">2.</span> <span class="toc-text">划分数据集</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#计算熵"><span class="toc-number">2.1.</span> <span class="toc-text">计算熵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按给定特征划分数据集"><span class="toc-number">2.2.</span> <span class="toc-text">按给定特征划分数据集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#选择最优特征"><span class="toc-number">2.3.</span> <span class="toc-text">选择最优特征</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#构造决策树"><span class="toc-number">3.</span> <span class="toc-text">构造决策树</span></a></li></ol>
+		</div>
+		
+		<p>每个数据都存有若干的特征值，这些特征值组成一个特征向量。但是，特征之间的等级关系是不一样的，就是说每个特征对于最终的类别影响是不一样的。比如说现在根据两种特征来判定某动物是不是属于鸟类，这两种特征分别是：是否能飞，是否有两只脚。因为鸟类都有翅膀，但不是只有鸟类才有翅膀，所以，根据我们的直觉，应该先看该动物是否有翅膀来进行判断。在这里，“飞”比“两只脚”的特征等级要高。</p>
+<h1 id="介绍">介绍</h1>
+<p>决策树就是一个根据特征的优先关系来进行分类的，假设目前的决策树已经形成，那么分类的时候就是依次从根节点遍历到叶子节点，每个节点代表一种特征，深度越小的节点优先级越高。</p>
+<p>那么如何构造出相应的决策树呢？  </p>
+<ol>
+<li>我们要把训练数据进行合适的划分，这一步需要选出最好的特征（等级最高，后面介绍如何评价特征的好坏或等级）；  </li>
+<li>以选出的特征作为节点，形成子树（有多少个特征值，就有多少颗子树）。如果所有的数据都是同一类，那么终止划分，否则，执行第3步骤；</li>
+<li>在每个子树数据集中执行第1步骤。</li>
+</ol>
+<p>这是一个递归过程，反复执行构造步骤，直到数据都属于同一类。</p>
+<h1 id="划分数据集">划分数据集</h1>
+<p>选择一个最好的特征，根据这个特征值，将数据分成若干子集，这是划分数据集的过程。如何衡量一个特征是不是最好？需要利用信息论里面“熵”，这是量化信息的一个基本概念，衡量信息的期望值。</p>
+<h2 id="计算熵">计算熵</h2>
+<p>假设一共有n类，那么熵就是：<br><img src="http://www.forkosh.com/mathtex.cgi?
+H = -\sum_{i=1}^np(x_i)log_2p(x_i)  
+"> </p>
+<p>代码如下：  </p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">calcShannonEnt</span><span class="params">(dataSet)</span>:</span>
+    numEntries = len(dataSet)  <span class="comment"># 计算数据集的数量</span>
+    labelCounts = {}           <span class="comment">#每个类别的数量</span>
+    <span class="keyword">for</span> featVec <span class="keyword">in</span> dataSet: 
+        currentLabel = featVec[-<span class="number">1</span>]    <span class="comment"># 最后一列存的是类别</span>
+        <span class="keyword">if</span> currentLabel <span class="keyword">not</span> <span class="keyword">in</span> labelCounts.keys(): <span class="comment"># 第一次找到该类别</span>
+            labelCounts[currentLabel] = <span class="number">0</span>
+        labelCounts[currentLabel] += <span class="number">1</span>
+    shannonEnt = <span class="number">0.0</span>
+    <span class="keyword">for</span> key <span class="keyword">in</span> labelCounts:
+        prob = float(labelCounts[key])/numEntries   <span class="comment"># 用发生的频率近似概率</span>
+        shannonEnt -= prob * log(prob,<span class="number">2</span>) <span class="comment">#log base 2  #熵的每一项</span>
+    <span class="keyword">return</span> shannonEnt
+</code></pre><h2 id="按给定特征划分数据集">按给定特征划分数据集</h2>
+<p>当得出最优特征时，根据每个数据在当前特征的取值划分，取值相同的分为同一组，比如根据性别来分时，性别有两种取值，那么将当前数据集分成两组即可，所有男的分成一组，所有女的分成一组。</p>
+<p>代码如下：</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">splitDataSet</span><span class="params">(dataSet, axis, value)</span>:</span>
+    <span class="comment"># axis 是最优特征，value是特征值</span>
+    retDataSet = []   <span class="comment"># 新建一个数据列表</span>
+    <span class="keyword">for</span> featVec <span class="keyword">in</span> dataSet:
+        <span class="keyword">if</span> featVec[axis] == value:
+            reducedFeatVec = featVec[:axis]     
+            reducedFeatVec.extend(featVec[axis+<span class="number">1</span>:])
+            retDataSet.append(reducedFeatVec)
+    <span class="keyword">return</span> retDataSet
+</code></pre><p>以上代码注意append和extend的差别，同一个列表功能一样，但是多个列表时，extend的元素会形成列表，append形成的元素和原先的列表元素相同。</p>
+<h2 id="选择最优特征">选择最优特征</h2>
+<p>最优特征的选取需要用到前面介绍的熵（信息期望）。熵是用来衡量信息多少的，即量化信息。熵越大，说明数据越乱，熵越小，说明数据越有序。最优特征需要保证划分后的数据比其他特征划分的数据更有序。因为有序程度可以通过熵来表示，所以实际中通过当前熵与划分熵的差来表示前后数据的变化，即信息增益。</p>
+<p>代码如下：</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">chooseBestFeatureToSplit</span><span class="params">(dataSet)</span>:</span>
+    numFeatures = len(dataSet[<span class="number">0</span>]) - <span class="number">1</span>   <span class="comment"># 特征数要去掉最后的类别项</span>
+    baseEntropy = calcShannonEnt(dataSet)  <span class="comment"># 数据集划分之前的熵</span>
+    bestInfoGain = <span class="number">0.0</span>; bestFeature = -<span class="number">1</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(numFeatures):       <span class="comment"># 遍历所有特征以便选取最优特征</span>
+        featList = [example[i] <span class="keyword">for</span> example <span class="keyword">in</span> dataSet]    <span class="comment">#抽取所有数据中的第i个特征 </span>
+        uniqueVals = set(featList)     <span class="comment"># 集合中每一个元素都是唯一的，所以每个特征值也是唯一的</span>
+        newEntropy = <span class="number">0.0</span>    
+        <span class="keyword">for</span> value <span class="keyword">in</span> uniqueVals:
+            subDataSet = splitDataSet(dataSet, i, value)  <span class="comment">#根据第i个特征的值value划分数据</span>
+            prob = len(subDataSet)/float(len(dataSet)) <span class="comment"># 当前子集占所有集合的频率</span>
+            newEntropy += prob * calcShannonEnt(subDataSet)  <span class="comment">#划分后数据集的熵</span>
+        infoGain = baseEntropy - newEntropy     <span class="comment">#信息增益即是熵的减少</span>
+        <span class="comment">#根据最大的信息增益选出最优特征</span>
+        <span class="keyword">if</span> (infoGain &gt; bestInfoGain):       
+            bestInfoGain = infoGain          
+            bestFeature = i
+    <span class="keyword">return</span> bestFeature      
+</code></pre><h1 id="构造决策树">构造决策树</h1>
+<p>构造决策树是一个递归过程，只要当前数据集中的实例不是同一类就需要继续划分。当然，有的时候特征已经选取完了，但是数据集中还是有实例不是同一类。这个时候就需要投票表决，所占实例的数量最多的一项作为该叶子节点的类别。</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">majorityCnt</span><span class="params">(classList)</span>:</span>
+    classCount={}
+    <span class="keyword">for</span> vote <span class="keyword">in</span> classList:
+        <span class="keyword">if</span> vote <span class="keyword">not</span> <span class="keyword">in</span> classCount.keys(): classCount[vote] = <span class="number">0</span>
+        classCount[vote] += <span class="number">1</span>
+    <span class="comment">#根据数量进行排序</span>
+    sortedClassCount = sorted(classCount.iteritems(), key=operator.itemgetter(<span class="number">1</span>), reverse=<span class="keyword">True</span>)  
+    <span class="keyword">return</span> sortedClassCount[<span class="number">0</span>][<span class="number">0</span>]
+</code></pre><p>创建决策树有两种情况终止：  </p>
+<ol>
+<li>所有特征已经选取完；  </li>
+<li>所有实例属于同一类；</li>
+</ol>
+<p>代码如下：</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">createTree</span><span class="params">(dataSet,labels)</span>:</span>
+    classList = [example[-<span class="number">1</span>] <span class="keyword">for</span> example <span class="keyword">in</span> dataSet]
+    <span class="comment">#第一种终止情况</span>
+    <span class="keyword">if</span> classList.count(classList[<span class="number">0</span>]) == len(classList): 
+        <span class="keyword">return</span> classList[<span class="number">0</span>]
+    <span class="comment">#第二种终止情况</span>
+    <span class="keyword">if</span> len(dataSet[<span class="number">0</span>]) == <span class="number">1</span>: 
+        <span class="keyword">return</span> majorityCnt(classList)
+    bestFeat = chooseBestFeatureToSplit(dataSet)
+    bestFeatLabel = labels[bestFeat]
+    myTree = {bestFeatLabel:{}}
+    <span class="keyword">del</span>(labels[bestFeat])  
+    featValues = [example[bestFeat] <span class="keyword">for</span> example <span class="keyword">in</span> dataSet]
+    uniqueVals = set(featValues)
+    <span class="keyword">for</span> value <span class="keyword">in</span> uniqueVals:
+        subLabels = labels[:]        
+        myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value),subLabels)
+    <span class="keyword">return</span> myTree 
+</code></pre><p>参考自<a href="http://www.manning.com/pharrington/" target="_blank">机器学习实战</a>第三章。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习实战/">机器学习实战</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/人工智能/">人工智能</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://xiaojinwen.com/2014/05/25/desicison_tree/" data-title="决策树 | 风清阳明" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2014/05/23/machinelearning_knn/"  title="k近邻算法">
+ <strong>NEXT:</strong><br/> 
+ <span>k近邻算法
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#划分数据集"><span class="toc-number">2.</span> <span class="toc-text">划分数据集</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#计算熵"><span class="toc-number">2.1.</span> <span class="toc-text">计算熵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按给定特征划分数据集"><span class="toc-number">2.2.</span> <span class="toc-text">按给定特征划分数据集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#选择最优特征"><span class="toc-number">2.3.</span> <span class="toc-text">选择最优特征</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#构造决策树"><span class="toc-number">3.</span> <span class="toc-text">构造决策树</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/人工智能/" title="人工智能">人工智能<sup>2</sup></a></li>
+		
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/机器学习实战/" title="机器学习实战">机器学习实战<sup>2</sup></a></li>
+		
+			<li><a href="/tags/说明/" title="说明">说明<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2014 
+		
+		<a href="http://xiaojinwen.com" target="_blank" title="Jinwen">Jinwen</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>
