@@ -1,0 +1,397 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>朴素贝叶斯分类方法 | 风清阳明</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Jinwen">
+    
+    <meta name="description" content="贝叶斯分类的基础是概率论。和kNN、决策树这些分类方法有点不同，基于概率的分类方法是通过最大化概率来实现分类的。这就是说，当前待分类数据可能属于所有类，计算出各自的概率，然后选概率最大的类作为分类结果。贝叶斯分类就是一种基本的概率方法，需要利用到贝叶斯公式。朴素贝叶斯分类的假设前提是条件独立，即在各">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="风清阳明" title="风清阳明"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="风清阳明">风清阳明</a></h1>
+				<h2 class="blog-motto">互联网，人工智能，金融，生活</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:xiaojinwen.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/05/27/bayes/" title="朴素贝叶斯分类方法" itemprop="url">朴素贝叶斯分类方法</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://xiaojinwen.com" title="Jinwen">Jinwen</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-05-27T05:44:17.000Z" itemprop="datePublished">5月 27 2014</time>
+    更新日期:<time datetime="2014-05-27T07:27:44.000Z" itemprop="dateModified">5月 27 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实现"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构建词向量"><span class="toc-number">2.1.</span> <span class="toc-text">构建词向量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练模型：计算概率"><span class="toc-number">2.2.</span> <span class="toc-text">训练模型：计算概率</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#测试算法"><span class="toc-number">3.</span> <span class="toc-text">测试算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#词袋模型"><span class="toc-number">4.</span> <span class="toc-text">词袋模型</span></a></li></ol>
+		</div>
+		
+		<p>贝叶斯分类的基础是概率论。和kNN、决策树这些分类方法有点不同，基于概率的分类方法是通过最大化概率来实现分类的。这就是说，当前待分类数据可能属于所有类，计算出各自的概率，然后选概率最大的类作为分类结果。贝叶斯分类就是一种基本的概率方法，需要利用到贝叶斯公式。朴素贝叶斯分类的假设前提是条件独立，即在各个种类中，每个特征的出现和其他特征没有关系。独立性很简单，假设现在有两个字:”我”、“们”，在日常用语之中，这两个字并不是完全没有关系的，他们之中的某一个出现了，那一个字的出现几率会增大，所以他们不是完全独立的。条件独立稍微有点变化，只是将范围缩小至一个特定的类别而已，我们只在这个小范围考虑独立性。</p>
+<h1 id="介绍">介绍</h1>
+<p>假设现在需要判断一封邮件是否是垃圾邮件，根据朴素贝叶斯分类方法的原理，我们需要计算当前邮件属于垃圾邮件和不属于垃圾邮件各自的概率，判断的公式如下：  </p>
+<ul>
+<li>如果p1（邮件）&gt; p2(邮件)， 则邮件是垃圾邮件；</li>
+<li>如果p1（邮件）&lt; p2(邮件)， 则邮件是正常邮件；</li>
+</ul>
+<p>其中p1和p2分别是垃圾邮件和正常邮件的概率。</p>
+<p>为了计算每个类别的概率，即<img src="http://www.forkosh.com/mathtex.cgi?
+p(c_i|x)
+"> ，需要利用贝叶斯公式：<br><img src="http://www.forkosh.com/mathtex.cgi?
+p(c_i|x) = \frac{p(x|c_i)p(c_i)}{p(x)}
+"><br>通过计算等式右边的三项得到分类概率。</p>
+<p>为什么要这样去计算右边三项？右边三项是很容易求出来的，比方说计算p(ci)，只要统计每个类别出现的频率就可以了，其他两项也是一样，不好计算左边项。</p>
+<h1 id="实现">实现</h1>
+<p>为了便于程序实现朴素贝叶斯分类器，需要经过以下几步：   </p>
+<ol>
+<li>通过训练数据集构造一个词集，即搜集一些单词作为整个数据集的单词来源；</li>
+<li>数据向量化，通过扫描当前数据，如果单词出现在词典中，则相应位置置为1，否则是0。这样向量的长度为词典的大小；</li>
+<li>所有训练数据的向量组成一个训练矩阵，相应的类别组成一个类别向量。根据训练矩阵和类别向量计算出贝叶斯公式的右边项的分子项。</li>
+<li>将待测数据的向量代入公式的右边，计算出属于每一类的概率。</li>
+</ol>
+<h2 id="构建词向量">构建词向量</h2>
+<p>初始化词典单词的来源</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">loadDataSet</span><span class="params">()</span>:</span>
+    <span class="comment">#初始化6个单词列表</span>
+    postingList=[[<span class="string">'my'</span>, <span class="string">'dog'</span>, <span class="string">'has'</span>, <span class="string">'flea'</span>, <span class="string">'problems'</span>, <span class="string">'help'</span>, <span class="string">'please'</span>],
+                 [<span class="string">'maybe'</span>, <span class="string">'not'</span>, <span class="string">'take'</span>, <span class="string">'him'</span>, <span class="string">'to'</span>, <span class="string">'dog'</span>, <span class="string">'park'</span>, <span class="string">'stupid'</span>],
+                 [<span class="string">'my'</span>, <span class="string">'dalmation'</span>, <span class="string">'is'</span>, <span class="string">'so'</span>, <span class="string">'cute'</span>, <span class="string">'I'</span>, <span class="string">'love'</span>, <span class="string">'him'</span>],
+                 [<span class="string">'stop'</span>, <span class="string">'posting'</span>, <span class="string">'stupid'</span>, <span class="string">'worthless'</span>, <span class="string">'garbage'</span>],
+                 [<span class="string">'mr'</span>, <span class="string">'licks'</span>, <span class="string">'ate'</span>, <span class="string">'my'</span>, <span class="string">'steak'</span>, <span class="string">'how'</span>, <span class="string">'to'</span>, <span class="string">'stop'</span>, <span class="string">'him'</span>],
+                 [<span class="string">'quit'</span>, <span class="string">'buying'</span>, <span class="string">'worthless'</span>, <span class="string">'dog'</span>, <span class="string">'food'</span>, <span class="string">'stupid'</span>]]
+    classVec = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>]    <span class="comment"># 1表示是垃圾邮件，0则相反</span>
+    <span class="keyword">return</span> postingList,classVec 
+</code></pre><p>创建词典          </p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">createVocabList</span><span class="params">(dataSet)</span>:</span>
+    vocabSet = set([])  <span class="comment">#集合中元素不能重复</span>
+    <span class="keyword">for</span> document <span class="keyword">in</span> dataSet:
+        vocabSet = vocabSet | set(document) <span class="comment">#求集合的并</span>
+    <span class="keyword">return</span> list(vocabSet)
+</code></pre><p>单词向量化</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">setOfWords2Vec</span><span class="params">(vocabList, inputSet)</span>:</span>
+    returnVec = [<span class="number">0</span>]*len(vocabList)  <span class="comment">#向量的长度就是词典的大小</span>
+    <span class="keyword">for</span> word <span class="keyword">in</span> inputSet:
+        <span class="keyword">if</span> word <span class="keyword">in</span> vocabList:
+            returnVec[vocabList.index(word)] = <span class="number">1</span>  <span class="comment"># 如果单词在该词典中出现，则置相应位置为1</span>
+        <span class="keyword">else</span>: <span class="keyword">print</span> <span class="string">"the word: %s is not in my Vocabulary!"</span> % word
+    <span class="keyword">return</span> returnVec    <span class="comment">#注意这里返回一个0-1向量矩阵，和词袋模型（后面会提到）有区别</span>
+</code></pre><h2 id="训练模型：计算概率">训练模型：计算概率</h2>
+<p>根据训练矩阵和类别向量可以计算p(x|c)和p(c)，但是由于条件独立性的假设，即:<br><img src="http://www.forkosh.com/mathtex.cgi?
+p(x|c_i) = p(x_1|c_i)p(x_2|c_i)\ldots p(x_n|c_i)}
+"><br>如果某一项特征为0，那么最后的值都为0，所以需要将每一项初始化为1，分母设置为2。此外，因为每一项的概率值非常小，如果多项相乘则会产生下溢出，所以需要将其对数化，转成求和。</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">trainNB0</span><span class="params">(trainMatrix,trainCategory)</span>:</span>
+    numTrainDocs = len(trainMatrix)   
+    numWords = len(trainMatrix[<span class="number">0</span>])
+    pAbusive = sum(trainCategory)/float(numTrainDocs)   <span class="comment">#即模型中的p(ci)</span>
+    p0Num = ones(numWords); p1Num = ones(numWords)   <span class="comment">#分子分母分别初始化为1、2   </span>
+    p0Denom = <span class="number">2.0</span>; p1Denom = <span class="number">2.0</span>                        
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(numTrainDocs):
+        <span class="keyword">if</span> trainCategory[i] == <span class="number">1</span>:
+            p1Num += trainMatrix[i]  <span class="comment">#将每一项的特征累加</span>
+            p1Denom += sum(trainMatrix[i]) <span class="comment">#所有特征累加</span>
+        <span class="keyword">else</span>:
+            p0Num += trainMatrix[i]
+            p0Denom += sum(trainMatrix[i])
+    p1Vect = log(p1Num/p1Denom)          <span class="comment"># 每一项特征出现的概率，对应于p(x_1|c),...,p(x_n|c)</span>
+    p0Vect = log(p0Num/p0Denom)          
+    <span class="keyword">return</span> p0Vect,p1Vect,pAbusive
+</code></pre><h1 id="测试算法">测试算法</h1>
+<p>结合训练过程得到的几个参数p(c)和p(x|c)，将测试数据的特征向量（0-1向量）转化成p(x|c)，最后得到每一类的条件概率p（c|x）。</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">classifyNB</span><span class="params">(vec2Classify, p0Vec, p1Vec, pClass1)</span>:</span>
+    p1 = sum(vec2Classify * p1Vec) + log(pClass1)     <span class="comment">#转化为对数求和</span>
+    p0 = sum(vec2Classify * p0Vec) + log(<span class="number">1.0</span> - pClass1)
+    <span class="keyword">if</span> p1 &gt; p0:
+        <span class="keyword">return</span> <span class="number">1</span>
+    <span class="keyword">else</span>: 
+        <span class="keyword">return</span> <span class="number">0</span>
+</code></pre><h1 id="词袋模型">词袋模型</h1>
+<p>前面的“词集”只考虑了每个特征单词是否出现，没有记录次数，词袋模型则是考虑了每一个训练特征出现的次数，所以，向量的生成过程变成如下形式：</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">bagOfWords2VecMN</span><span class="params">(vocabList, inputSet)</span>:</span>
+    returnVec = [<span class="number">0</span>]*len(vocabList)
+    <span class="keyword">for</span> word <span class="keyword">in</span> inputSet:
+        <span class="keyword">if</span> word <span class="keyword">in</span> vocabList:
+            returnVec[vocabList.index(word)] += <span class="number">1</span>  <span class="comment">#累计单词的次数</span>
+    <span class="keyword">return</span> returnVec
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习实战/">机器学习实战</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/人工智能/">人工智能</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://xiaojinwen.com/2014/05/27/bayes/" data-title="朴素贝叶斯分类方法 | 风清阳明" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2014/05/25/desicison_tree/"  title="决策树">
+ <strong>NEXT:</strong><br/> 
+ <span>决策树
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实现"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构建词向量"><span class="toc-number">2.1.</span> <span class="toc-text">构建词向量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练模型：计算概率"><span class="toc-number">2.2.</span> <span class="toc-text">训练模型：计算概率</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#测试算法"><span class="toc-number">3.</span> <span class="toc-text">测试算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#词袋模型"><span class="toc-number">4.</span> <span class="toc-text">词袋模型</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/人工智能/" title="人工智能">人工智能<sup>3</sup></a></li>
+		
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/机器学习实战/" title="机器学习实战">机器学习实战<sup>3</sup></a></li>
+		
+			<li><a href="/tags/说明/" title="说明">说明<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2014 
+		
+		<a href="http://xiaojinwen.com" target="_blank" title="Jinwen">Jinwen</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+  </body>
+</html>
