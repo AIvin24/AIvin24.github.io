@@ -4,17 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>博客前言 | 风清阳明</title>
+    <title>Logistic 回归 | 风清阳明</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Jinwen">
     
-    <meta name="description" content="开启本博客一个最主要的原因是自己想尝试精确简明地表述自己的观点，没有废话。以前也在一些门户网站上面开过一些博客，但是一直没有坚持下来，主要是两个方面的原因：
-
-自己水平不够，总感觉写的东西连自己都看不下去，总是写了又删，删了又写，特没意思；
-没有养成写博客做记录的习惯，没有一直坚持下来。
-
-不过，总">
+    <meta name="description" content="考虑超平面分类方法，假设目前确定好一个超平面大家都喜欢用 $E=mc^2$ 举例子，但是我不是很理解。  
+这个公式 $\cos 2\theta = \cos^2 \theta - \sin^2 \theta =  2 \cos^2 \theta - 1$ 少年可还记得？
+插入方程组（注意多行公式结">
     
     
     
@@ -73,15 +70,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/05/22/my-new-post-1/" title="博客前言" itemprop="url">博客前言</a>
+      <a href="/2014/05/28/logistic-regression/" title="Logistic 回归" itemprop="url">Logistic 回归</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://xiaojinwen.com" title="Jinwen">Jinwen</a>
     </p>
   <p class="article-time">
-    <time datetime="2014-05-22T10:11:54.000Z" itemprop="datePublished">5月 22 2014</time>
-    更新日期:<time datetime="2014-05-23T01:55:17.000Z" itemprop="dateModified">5月 23 2014</time>
+    <time datetime="2014-05-28T07:43:31.000Z" itemprop="datePublished">5月 28 2014</time>
+    更新日期:<time datetime="2014-05-28T08:02:58.000Z" itemprop="dateModified">5月 28 2014</time>
     
   </p>
 </header>
@@ -93,34 +90,39 @@
 		
 		</div>
 		
-		<p>开启本博客一个最主要的原因是自己想尝试精确简明地表述自己的观点，没有废话。以前也在一些门户网站上面开过一些博客，但是一直没有坚持下来，主要是两个方面的原因：</p>
-<ol>
-<li>自己水平不够，总感觉写的东西连自己都看不下去，总是写了又删，删了又写，特没意思；</li>
-<li>没有养成写博客做记录的习惯，没有一直坚持下来。</li>
-</ol>
-<p>不过，总觉得自己应该时不时总结下自己的观点，准确清晰的表达能力算是一门很重要的技能，以前，自己一直这么认为：自己知道的没必要和别人讨论！自己不知道的，还和别人讨论什么？还不如自己好好去学习。</p>
-<p>这一次，果断申请了一个域名，建立了一个独立博客，再一次拾起这份热情。因为本人实在是水平太一般，所以只希望能够记录下自己平时的学习总结，对生活体会的观点，看到自己前进。</p>
-<p>本博客的主题定位：<br>热爱互联网，属于人工智能，关注金融，享受生活！</p>
+		<p>考虑超平面分类方法，假设目前确定好一个超平面<br>大家都喜欢用 $E=mc^2$ 举例子，但是我不是很理解。  </p>
+<p>这个公式 $\cos 2\theta = \cos^2 \theta - \sin^2 \theta =  2 \cos^2 \theta - 1$ 少年可还记得？</p>
+<p>插入方程组（注意多行公式结尾\\需要打成\\，可能是因为markdown会自动转义第一个\）：</p>
+<p>\begin{aligned}<br>\dot{x} &amp; = \sigma(y-x) \\<br>\dot{y} &amp; = \rho x - y - xz \\<br>\dot{z} &amp; = -\beta z + xy<br>\end{aligned}</p>
+<p>插入矩阵（同上）：</p>
+<p>\begin{bmatrix}<br>1 &amp; 2\\<br>3 &amp; 4<br>\end{bmatrix}</p>
+<p>来个复杂点的（注意有的公式开头不会自动识别，用$$包围）：</p>
+<p>$$\frac{\partial u}{\partial t}<br>= h^2 \left( \frac{\partial^2 u}{\partial x^2}</p>
+<ul>
+<li>\frac{\partial^2 u}{\partial y^2}</li>
+<li>\frac{\partial^2 u}{\partial z^2}\right)$$</li>
+</ul>
+<p>最后来个牛逼的吧，薛定谔方程，大学物理就记得这个了：</p>
+<p>$$ i\hbar\frac{\partial \psi}{\partial t}<br>= \frac{-\hbar^2}{2m} \left(<br>\frac{\partial^2}{\partial x^2}</p>
+<ul>
+<li>\frac{\partial^2}{\partial y^2}</li>
+<li>\frac{\partial^2}{\partial z^2}<br>\right) \psi + V \psi.$$</li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/说明/">说明</a>
+  <span></span> <a href="/tags/机器学习实战/">机器学习实战</a>
   </div>
 
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/生活/">生活</a>
-</div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://xiaojinwen.com/2014/05/22/my-new-post-1/" data-title="博客前言 | 风清阳明" data-tsina="null" class="share clearfix">
+  <div data-url="http://xiaojinwen.com/2014/05/28/logistic-regression/" data-title="Logistic 回归 | 风清阳明" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -129,14 +131,14 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/05/23/machinelearning_knn/" title="k近邻算法">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  k近邻算法</span>
+
+<div class="next">
+<a href="/2014/05/27/bayes/"  title="朴素贝叶斯分类方法">
+ <strong>NEXT:</strong><br/> 
+ <span>朴素贝叶斯分类方法
+</span>
 </a>
 </div>
-
 
 </nav>
 
