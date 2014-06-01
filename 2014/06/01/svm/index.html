@@ -77,7 +77,7 @@ SVM的别名是最大间隔分类器，这里的最大间隔指的是训练样�
     </p>
   <p class="article-time">
     <time datetime="2014-06-01T05:32:25.000Z" itemprop="datePublished">6月 1 2014</time>
-    更新日期:<time datetime="2014-06-01T11:51:01.000Z" itemprop="dateModified">6月 1 2014</time>
+    更新日期:<time datetime="2014-06-01T12:38:46.000Z" itemprop="dateModified">6月 1 2014</time>
     
   </p>
 </header>
@@ -103,7 +103,7 @@ SVM的别名是最大间隔分类器，这里的最大间隔指的是训练样�
 <p>此时，原始问题的极小化问题变为:</p>
 <p>$$<br>\min_x \theta(x)<br>$$</p>
 <h2 id="拉格朗日乘子法图解">拉格朗日乘子法图解</h2>
-<p>想象一下目标函数关于变量的等高线，以二维变量为例，如下图所示（来源于维基百科）:<br><img src="http://d.pr/i/CsFD" alt="">。  </p>
+<p>想象一下目标函数关于变量的等高线，以二维变量为例，如下图所示（来源于维基百科）:<br><img src="https://s3-us-west-2.amazonaws.com/droplr.storage/files/acc_263367/CsFD?AWSAccessKeyId=AKIAJSVQN3Z4K7MT5U2A&amp;Expires=1401629870&amp;Signature=OjYyMqzDKIj%2FylGgFXAUuUegUzs%3D" alt=""></p>
 <p>每条等高线对应着同一个目标函数值。约束条件的函数可以看成一条曲线，与相应等高线相交的点就是满足约束条件的目标值和相应的变量值。为了找到最优的目标值，需要使等高线与约束曲线相切。在相切点目标函数的梯度和约束条件函数的梯度是共线的，即$f(x)$的梯度等于 $\alpha h(x)$的梯度(假设只有等式约束)。</p>
 <h2 id="对偶问题">对偶问题</h2>
 <p>设函数$$D(\alpha,\beta) = min_{x} L(x,\alpha,\beta)$$</p>
