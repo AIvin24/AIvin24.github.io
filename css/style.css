@@ -972,10 +972,10 @@ article .article-content img,
 article .article-content video,
 article .article-content figure img {
   max-width: 100%;
-/*display block*/
+  display: block;
   margin: auto;
   height: auto;
-/*vertical-align middle*/
+  vertical-align: middle;
   padding-top: 0.5em;
 }
 @media only screen and (min-width: 1024px) {
