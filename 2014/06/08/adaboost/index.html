@@ -1,0 +1,400 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>AdaBoost | 风清阳明</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Jinwen">
+    
+    <meta name="description" content="组合分类器模型是一种将弱分类器组合成强分类器的方法。弱分类器仅仅比随机猜测略好，如果存在多个这种弱分类器，就可以将其提升为强分类器，这就是弱分类器和强分类器的等价问题。Adaboost是组合分类器的代表，本文介绍Adaboost的原理。
+介绍
+先图示怎样将弱分类器组合成强分类器，初始数据线性不可分：">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="风清阳明" title="风清阳明"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="风清阳明">风清阳明</a></h1>
+				<h2 class="blog-motto">互联网，人工智能，金融，生活</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:xiaojinwen.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/06/08/adaboost/" title="AdaBoost" itemprop="url">AdaBoost</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://xiaojinwen.com" title="Jinwen">Jinwen</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-06-08T01:59:05.000Z" itemprop="datePublished">6月 8 2014</time>
+    更新日期:<time datetime="2014-06-09T02:07:09.000Z" itemprop="dateModified">6月 9 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AdaBoost算法"><span class="toc-number">2.</span> <span class="toc-text">AdaBoost算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实例代码"><span class="toc-number">3.</span> <span class="toc-text">实例代码</span></a></li></ol>
+		</div>
+		
+		<p>组合分类器模型是一种将弱分类器组合成强分类器的方法。弱分类器仅仅比随机猜测略好，如果存在多个这种弱分类器，就可以将其提升为强分类器，这就是弱分类器和强分类器的等价问题。Adaboost是组合分类器的代表，本文介绍Adaboost的原理。</p>
+<h1 id="介绍">介绍</h1>
+<p>先图示怎样将弱分类器组合成强分类器，初始数据线性不可分：<br><img src="http://d1zjcuqflbd5k.cloudfront.net/files/acc_263367/mQCF?response-content-disposition=inline;%20filename=1.jpg;&amp;Expires=1402194998&amp;Signature=BEME~LEgJ6X5R6W-TBi8T08pSuyXOre~6~bjlcjzzODjFKPMMLlyd~aOE0wfkSlU9lEPhjgki8h1QjVPbCSG1FkxP-dUrdqFe98rpYnvUodShBmDpNdyvgSmfvZi2wykW9GyJ8DG~W4bEczgNw15RFC94GggBS~pYDEFlSRN2hE_&amp;Key-Pair-Id=APKAJTEIOJM3LSMN33SA" alt=""></p>
+<p>上面3个都是弱分类器（比随机猜测略好），通过加权组合它们，生成下面的强分类器。</p>
+<p>Adaboost算法需要多次迭代，每个弱分类器会有一个权重来衡量最终分类所起的作用。 $\alpha_ih_i(x)$就是强分类器$H(x)$中弱分类器$h_i(x)$ 所占部分。同样，在训练弱分类器的过程之中，对于那些被分错的样本，需要着重考虑，下一次的迭代需要偏向将它们正确分类，所以，每一次迭代需要更改每一个样本的分布 $W_i$，即样本权重。</p>
+<h1 id="AdaBoost算法">AdaBoost算法</h1>
+<ol>
+<li>初始化样本权重系数$w^{(1)}_i = 1/N, i = 1,\ldots,N$。（一共有N个样本，所以均匀权重）；</li>
+<li>迭代M次，在第m次迭代中,通过最小化误差函数得到弱分类器$y_m(x)$，误差函数为$J_m = \sum_i^Nw^{(m)}_nI(y_m(X_n) \neq t_n)$,其中$I(x)$为指示函数。</li>
+<li>估计当前弱分类器的质量：<br>$\epsilon_m = \frac{\sum_i^Nw^{(m)}_nI(y_m(X_n) \neq t_n)}{\sum_i^Nw^{(m)}_n}$<br>进一步得到当前分类器的权重：<br>$\alpha_m = \ln\frac{1-\epsilon_m}{\epsilon}$</li>
+<li>更新样本的权重系数（保证分错的样本在下一次迭代权重要大)<br>$w^{(m+1)}_i =w^{(m)}_i e^{\alpha_mI(y_m(x_n) \neq t_n)}, i = 1,\ldots,N$<br>回到第2步，直到生成M个弱分类器；</li>
+<li>加权组合所有的弱分类器得到最终的强分类器：<br>$H(x) = sign(\sum_m^M\alpha_my_m(x))$</li>
+</ol>
+<h1 id="实例代码">实例代码</h1>
+<p>单一特征分类 </p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">stumpClassify</span><span class="params">(dataMatrix,dimen,threshVal,threshIneq)</span>:</span>
+    <span class="comment">#一个弱分类器的结果，所有大于（或小于）阈值的数据标记为同一类</span>
+    retArray = ones((shape(dataMatrix)[<span class="number">0</span>],<span class="number">1</span>))
+    <span class="keyword">if</span> threshIneq == <span class="string">'lt'</span>:
+        retArray[dataMatrix[:,dimen] &lt;= threshVal] = -<span class="number">1.0</span>
+    <span class="keyword">else</span>:
+        retArray[dataMatrix[:,dimen] &gt; threshVal] = -<span class="number">1.0</span>
+    <span class="keyword">return</span> retArray
+</code></pre><p>建立一个弱分类器</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">buildStump</span><span class="params">(dataArr,classLabels,D)</span>:</span>
+    <span class="comment"># 数据矩阵和类标记向量</span>
+    dataMatrix = mat(dataArr); labelMat = mat(classLabels).T
+    m,n = shape(dataMatrix)  <span class="comment"># m,n分别代表训练实例的数量和特征维度</span>
+    numSteps = <span class="number">10.0</span>; bestStump = {}; bestClasEst = mat(zeros((m,<span class="number">1</span>)))
+    minError = inf <span class="comment">#初始化最小的错误率为无穷大</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):<span class="comment">#循环遍历所有特征维度，找出错误率最小的特征进行划分</span>
+        rangeMin = dataMatrix[:,i].min(); rangeMax = dataMatrix[:,i].max();  <span class="comment"># 当前特征维度最大值最小值确定划分的范围</span>
+        stepSize = (rangeMax-rangeMin)/numSteps  <span class="comment">#当前特征维度划分步长</span>
+        <span class="keyword">for</span> j <span class="keyword">in</span> range(-<span class="number">1</span>,int(numSteps)+<span class="number">1</span>): <span class="comment">#遍历每个小块，确定划分的最优位置</span>
+            <span class="keyword">for</span> inequal <span class="keyword">in</span> [<span class="string">'lt'</span>, <span class="string">'gt'</span>]: <span class="comment">#确定分界线两边的类别</span>
+                threshVal = (rangeMin + float(j) * stepSize)
+                predictedVals = stumpClassify(dataMatrix,i,threshVal,inequal) <span class="comment"># 当前分类结果</span>
+                errArr = mat(ones((m,<span class="number">1</span>)))
+                errArr[predictedVals == labelMat] = <span class="number">0</span>  <span class="comment"># 当前错误率</span>
+                weightedError = D.T*errArr  <span class="comment"># 加权样本分布权重的错误率</span>
+                <span class="keyword">if</span> weightedError &lt; minError: <span class="comment">#找到错误率最小的划分块</span>
+                    minError = weightedError
+                    bestClasEst = predictedVals.copy()
+                    bestStump[<span class="string">'dim'</span>] = i
+                    bestStump[<span class="string">'thresh'</span>] = threshVal
+                    bestStump[<span class="string">'ineq'</span>] = inequal
+    <span class="keyword">return</span> bestStump,minError,bestClasEst
+</code></pre><p>合成强分类器</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">adaBoostTrainDS</span><span class="params">(dataArr,classLabels,numIt=<span class="number">40</span>)</span>:</span>
+    weakClassArr = []
+    m = shape(dataArr)[<span class="number">0</span>]
+    D = mat(ones((m,<span class="number">1</span>))/m)   <span class="comment">#均匀初始化样本的分布</span>
+    aggClassEst = mat(zeros((m,<span class="number">1</span>)))
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(numIt):
+        bestStump,error,classEst = buildStump(dataArr,classLabels,D)  <span class="comment"># 建立一个弱分类器</span>
+        alpha = float(<span class="number">0.5</span>*log((<span class="number">1.0</span>-error)/max(error,<span class="number">1e-16</span>))) <span class="comment">#计算当前分类器的权重</span>
+        bestStump[<span class="string">'alpha'</span>] = alpha  
+        weakClassArr.append(bestStump)                  
+        expon = multiply(-<span class="number">1</span>*alpha*mat(classLabels).T,classEst) 
+        D = multiply(D,exp(expon))                              
+        D = D/D.sum() <span class="comment">#更新样本分布（注意归一化）</span>
+        aggClassEst += alpha*classEst 
+        aggErrors = multiply(sign(aggClassEst) != mat(classLabels).T,ones((m,<span class="number">1</span>))) 
+        errorRate = aggErrors.sum()/m  <span class="comment"># 计算错误率，直到错误率为0终止</span>
+        <span class="keyword">if</span> errorRate == <span class="number">0.0</span>: <span class="keyword">break</span>
+    <span class="keyword">return</span> weakClassArr,aggClassEst
+</code></pre><p>测试</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">adaClassify</span><span class="params">(datToClass,classifierArr)</span>:</span>
+    dataMatrix = mat(datToClass)
+    m = shape(dataMatrix)[<span class="number">0</span>]
+    aggClassEst = mat(zeros((m,<span class="number">1</span>)))
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(classifierArr)):
+        classEst = stumpClassify(dataMatrix,classifierArr[i][<span class="string">'dim'</span>],\
+                                 classifierArr[i][<span class="string">'thresh'</span>],\
+                                 classifierArr[i][<span class="string">'ineq'</span>])
+        aggClassEst += classifierArr[i][<span class="string">'alpha'</span>]*classEst  <span class="comment">#累积所有弱分类器的结果</span>
+    <span class="keyword">return</span> sign(aggClassEst)
+</code></pre><p>实例代码来自<a href="http://www.manning.com/pharrington/" target="_blank">《机器学习实战》</a>。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习实战/">机器学习实战</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/人工智能/">人工智能</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://xiaojinwen.com/2014/06/08/adaboost/" data-title="AdaBoost | 风清阳明" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2014/06/01/svm/"  title="支持向量机SVM">
+ <strong>NEXT:</strong><br/> 
+ <span>支持向量机SVM
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AdaBoost算法"><span class="toc-number">2.</span> <span class="toc-text">AdaBoost算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实例代码"><span class="toc-number">3.</span> <span class="toc-text">实例代码</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/人工智能/" title="人工智能">人工智能<sup>6</sup></a></li>
+		
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/机器学习实战/" title="机器学习实战">机器学习实战<sup>6</sup></a></li>
+		
+			<li><a href="/tags/说明/" title="说明">说明<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2014 
+		
+		<a href="http://xiaojinwen.com" target="_blank" title="Jinwen">Jinwen</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+<script type="text/x-mathjax-config"> 
+MathJax.Hub.Config({ 
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
+}); 
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+  </body>
+</html>
