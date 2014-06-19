@@ -78,7 +78,7 @@ k-means算法中的k表示聚成k类，整个聚类过程可以这么设想，�
     </p>
   <p class="article-time">
     <time datetime="2014-06-19T05:27:35.000Z" itemprop="datePublished">6月 19 2014</time>
-    更新日期:<time datetime="2014-06-19T06:21:03.000Z" itemprop="dateModified">6月 19 2014</time>
+    更新日期:<time datetime="2014-06-19T06:33:05.000Z" itemprop="dateModified">6月 19 2014</time>
     
   </p>
 </header>
@@ -100,7 +100,7 @@ k-means算法中的k表示聚成k类，整个聚类过程可以这么设想，�
 <li>如果质心点发生变化，回到第2步；  </li>
 <li>算法终止，得到k个类，每个类的质心点与同一类的点距离最小。</li>
 </ol>
-<p>整个思想都比较简单，但是由于k-means会陷入局部最小值，所以需要采取一些改进措施，后面会加以介绍。此外，对于距离的衡量，可以有多重方式，比如欧几里得距离、编辑距离等等。</p>
+<p>整个思想都比较简单，但是由于k-means会陷入局部最小值，所以需要采取一些改进措施，后面会加以介绍。此外，对于距离的衡量，可以有多重方式，比如欧几里得距离、编辑距离等等。 </p>
 <h1 id="代码">代码</h1>
 <p>随机选取质心点的代码：</p>
 <pre><code><span class="function"><span class="keyword">def</span> <span class="title">randCent</span><span class="params">(dataSet, k)</span>:</span>
