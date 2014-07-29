@@ -4,14 +4,13 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Logistic 回归 | 风清阳明</title>
+    <title>协同过滤 | 风清阳明</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Jinwen">
     
-    <meta name="description" content="（把公式转化成图片然后再插入页面的做法实在是麻烦，主要是每次都要加一个这种标签，完全丢掉了直接写latex的方便。现在终于可以直接在.md文件中直接插入公式了，^_^）
-介绍
-考虑超平面分类方法，假设目前确定好一个超平面$W^TX = 0$，对于待测数据x，如果$W^Tx &amp;gt; 0$，则$x$属">
+    <meta name="description" content="网上买东西时，经常看到一些推荐商品列表，那么这些列表是如何得到的？推荐算法的结果。在Web 2.0时代，每个人都能参与页面内容的编写，贡献自己的数据，这就出现了一个新词：集体智慧。集体智慧编程就是利用每一个个体的数据和行为来建模。而这些商品推荐模型中的协同过滤算法是集体智慧编程中的一个重要方面。
+协">
     
     
     
@@ -70,15 +69,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/05/28/logistic-regression/" title="Logistic 回归" itemprop="url">Logistic 回归</a>
+      <a href="/2014/07/29/cf/" title="协同过滤" itemprop="url">协同过滤</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://xiaojinwen.com" title="Jinwen">Jinwen</a>
     </p>
   <p class="article-time">
-    <time datetime="2014-05-28T07:43:31.000Z" itemprop="datePublished">5月 28 2014</time>
-    更新日期:<time datetime="2014-06-19T06:21:01.000Z" itemprop="dateModified">6月 19 2014</time>
+    <time datetime="2014-07-29T05:29:52.000Z" itemprop="datePublished">7月 29 2014</time>
+    更新日期:<time datetime="2014-07-29T06:39:22.000Z" itemprop="dateModified">7月 29 2014</time>
     
   </p>
 </header>
@@ -87,63 +86,70 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#损失函数"><span class="toc-number">2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#训练：梯度下降"><span class="toc-number">3.</span> <span class="toc-text">训练：梯度下降</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实例"><span class="toc-number">4.</span> <span class="toc-text">实例</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#协同过滤"><span class="toc-number">1.</span> <span class="toc-text">协同过滤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#算法过程"><span class="toc-number">2.</span> <span class="toc-text">算法过程</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#设计特征向量"><span class="toc-number">2.1.</span> <span class="toc-text">设计特征向量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算相似度"><span class="toc-number">2.2.</span> <span class="toc-text">计算相似度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推荐排名"><span class="toc-number">2.3.</span> <span class="toc-text">推荐排名</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache_Mahout"><span class="toc-number">3.</span> <span class="toc-text">Apache Mahout</span></a></li></ol>
 		</div>
 		
-		<p>（把公式转化成图片然后再插入页面的做法实在是麻烦，主要是每次都要加一个<img>这种标签，完全丢掉了直接写latex的方便。现在终于可以直接在.md文件中直接插入公式了，^_^）</p>
-<h1 id="介绍">介绍</h1>
-<p>考虑超平面分类方法，假设目前确定好一个超平面$W^TX = 0$，对于待测数据x，如果$W^Tx &gt; 0$，则$x$属于正例，否则属于负例。这种分类函数就是一个阶跃函数，其边界不好确定。现在采用sigmod函数代替这一分类函数：<br>$$g(z) = \frac{1}{1+e^{-z}}$$<br>其中$z = W^Tx$。</p>
-<p>现在的分类方法就是：如果g(z) &gt; 0.5,则x属于正例，否则属于负例。这里完全是用概率来进行分类，如下：<br>$$P(y=1|x,\theta) = g(W^Tx)$$<br>$$P(y=0|x,\theta) = 1 - g(W^Tx)$$</p>
-<p>sigmod函数是连续函数，而且其导数具有一个非常重要的特性，如下：<br>$$g’(z) = g(z)(1-g(z))$$</p>
-<p>后面会利用到这个特征。</p>
-<h1 id="损失函数">损失函数</h1>
-<p>logistic 回归的损失函数是通过最大似然估计出来的。现在假设分类函数为$h(x) = g(W^Tx)$，那么对x进行分类的公式就是:<br>$$P(y|x;\theta) = h(x)^y(1 - h(x))^{1-y}$$<br>得到似然函数(为了和似然函数常规写法一致，将用$\theta$代替$W$表示需要学习的参数)<br>$$L(\theta) = \prod_{i=1}^n P(y^i|x^i;\theta)$$  </p>
-<p>对数似然函数就是:<br>$$l(\theta) = \log L(\theta) = \sum_{i=1}^n (y^i\log h(x^i) + (1-y^i)\log(1 - h(x^i)))$$</p>
-<p>这里是需要最大化似然函数，为了后面最小化损失函数（其实原理一样，只是表述不同罢了），令损失函数为:<br>$$J(\theta) = -\frac{1}{m}l(\theta)$$</p>
-<p>到目前为止，损失函数已经得出，实际训练的目的就是通过训练数据$X$找到最优的参数$\theta^{\star}$，使损失函数$J(\theta)$最小。</p>
-<h1 id="训练：梯度下降">训练：梯度下降</h1>
-<p>如果把损失函数的图像看作是一个碗型的峡谷，不同的参数对应着这块凹地上不同的点。现在，我们的目的是要走到谷底去找小龙女，注意这里只考虑一个谷底。如何又快又准确的去找呢？只要采取两种措施就一定能够走到谷底：1. 永远要往下走；2. 一定要往最陡的方向走。第一种方法保证我们不会南辕北辙，第二种方法保证我们走到目的地的速度最快。</p>
-<p>在这里损失函数$J(\theta)$的值通过$\theta$来确定。因为在任何一点，只要朝着梯度方向的相反方向走，那一定满足前面提到的两个条件，即最快得往下走，如下：</p>
-<p>$$\theta_j = \theta_j - \alpha \frac{\partial}{\partial\theta_j}J(\theta)$$</p>
-<p>其中$\partial即是学习速率$，在这里体现为每一步跨越多大。实际中，需要逐渐减少这一值，因为如果在接近谷底的时候，要“小心谨慎”得走下去，如果跨越太大，有可能会避开谷底，跑到另一个斜面上去了。如果是梯度上升，则将减号换成加号。</p>
-<p>梯度的结果是（根据sigmod函数来进行求导计算)：</p>
-<p>$$\frac{\partial}{\partial\theta_j}J(\theta)=$$  </p>
-<p>$$\frac{1}{m} \sum_{i=1}^m (h(x^i) - y^i)x^i_j$$</p>
-<h1 id="实例">实例</h1>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">gradAscent</span><span class="params">(dataMatIn, classLabels)</span>:</span>
-    dataMatrix = mat(dataMatIn)             
-    labelMat = mat(classLabels).transpose() 
-    m,n = shape(dataMatrix)  <span class="comment"># m,n分别是训练数据的数目和特征数目</span>
-    alpha = <span class="number">0.001</span>            <span class="comment"># 学习速率</span>
-    maxCycles = <span class="number">500</span>          <span class="comment"># 梯度下降次数</span>
-    weights = ones((n,<span class="number">1</span>))     <span class="comment"># 初始化权重，即在坡面任取一点</span>
-    <span class="keyword">for</span> k <span class="keyword">in</span> range(maxCycles):              
-        h = sigmoid(dataMatrix*weights)     <span class="comment">#模型的预测</span>
-        error = (h - labelMat)              <span class="comment">#梯度中的差项，见上面公式</span>
-        weights = weights - alpha * dataMatrix.transpose()* error <span class="comment"># 参数变化，见上面公式  </span>
-    <span class="keyword">return</span> weights
-</code></pre><p>在这里学习速率没有发生变化，且一次参数更改中，所有数据都参与了。实际中，训练数据有可能不能一次性装入内存，这时需要依次读入数据，依次更改参数$\theta$，这种方法称之为“在线梯度学习”，且每次选的数据随机选取，这样称为随机梯度下降。而且学习速率需要在每次迭代后减少，体现为最终接近谷底的速度越来越慢，更能准确得到达谷底。</p>
-<p>参考<a href="http://www.manning.com/pharrington/" target="_blank">《机器学习实战》</a>。</p>
+		<p>网上买东西时，经常看到一些推荐商品列表，那么这些列表是如何得到的？推荐算法的结果。在Web 2.0时代，每个人都能参与页面内容的编写，贡献自己的数据，这就出现了一个新词：集体智慧。集体智慧编程就是利用每一个个体的数据和行为来建模。而这些商品推荐模型中的协同过滤算法是集体智慧编程中的一个重要方面。</p>
+<h1 id="协同过滤">协同过滤</h1>
+<p>俗话说看一个人的品味，就看TA的圈子。看书、看电影、玩游戏等等，如果自己不知道该看什么书，哪些电影精彩，什么游戏比较有意思，这个时候就需要咨询一些“志同道合”的人做个介绍，听听他们的评论，然后再加以选择。 这么简简单单的几句话，其实里面涉及到非常重要的三个方面：  </p>
+<ol>
+<li>需要弄清楚咨询对象的喜好；</li>
+<li>TA的喜好是否和自己相似；</li>
+<li>根据他们喜欢的书、电影、游戏，选择一些自己没有接触过的。</li>
+</ol>
+<p>只有完成这三个步骤，推荐才算基本完成，而实际设计中，这三步中的每一步都得小心谨慎，当然，第3步很简单。</p>
+<p>协同过滤(CF)就利用了这样一种思想，也有类似的三步：</p>
+<ol>
+<li>设计特征向量，根据用户平时的一些行为（比如：评分、购买、查看时间等等）加权得到一个对各种物品的喜爱程度值，将各种物品的值组成一个特征向量；</li>
+<li>计算特征向量的相似程度，所有用户对物体的特征向量组合成一个特征矩阵，在这里默认为行标记为用户，列标记为物品，所以，行向量之间的相似度反映得是用户之间的相似程度，列向量则反映物品之间的相似程度，因此衍生出两种模型，后面会介绍；</li>
+<li>推荐排名，根据向量之间的相似度，得到一个排名，根据排名选择自己没有选的物品。</li>
+</ol>
+<h1 id="算法过程">算法过程</h1>
+<h2 id="设计特征向量">设计特征向量</h2>
+<p>如果用户对某件物品很喜欢，有很多方面会反应出来，TA会给一个评价很高的分数（当然实际中很少人会去打分）、或许会买下这个物品、也或许浏览了很久，根据这些收集到的数据，我们就可以采取一个加权得到一个总分数，来衡量该用户对物品的喜爱程度。当然实际中，需要降噪和归一化处理，之后才加权。</p>
+<ol>
+<li>降噪：就像前面说的，一个人在某个页面停留了很久，并不表示TA一直在看，可能离开电脑去做其他事情了，这时候，这个停留时间不一定反应喜爱程度，所以，实际中需要对收集的数据做一个降噪处理；</li>
+<li>归一化：停留时间（可能几百秒）、评分（可能就是1到5的范围）等数据的幅度是不一样的，直接加权肯定是不行的，这个很好理解。</li>
+</ol>
+<p>经过前面这两步的处理，就可以加权得到一个喜爱程度值了，比如：买了某个物体，说明很喜欢，权值可以设得稍微大点。所有物体的喜爱程度值，就成为了我们的特征向量。</p>
+<h2 id="计算相似度">计算相似度</h2>
+<p>首先说明一下，计算向量的相似度有很多标准，这个根据实际情况加以选取，比方常见的欧几里得距离、Cosine距离、闵式距离、汉密尔顿距离等等，距离越大，相似度越低。</p>
+<p>其次，前面说过，很多用户的特征向量组合到一起，形成了一个特征矩阵（行表示用户、列表示物品），如果计算行向量的相似度，则是用户之间的相似度，这种模型是基于用户的推荐算法（User CF)，如果是列向量，则这种模型是基于物品的推荐算法（Item CF）。</p>
+<h2 id="推荐排名">推荐排名</h2>
+<p>根据前面计算的相似度，得到一个排名，如何从这个排名里面选择呢？有两种方式：</p>
+<ol>
+<li>基于固定数量的选取，即自己必须从这个排名里面选择排在前K的相似向量；</li>
+<li>基于固定距离的选取，即自己只从那些距离小于固定值a的向量。</li>
+</ol>
+<p>这两种方式也是根据实际情况来选取。</p>
+<p>User CF的模型得到是一些行向量，对这些行向量做一个逻辑“或”操作，得到的向量就是推荐物体（当然需要去掉自己已经选择了物体）。</p>
+<p>Item CF的模型得到的就是一些列向量，这些列向量各自代表的物体就是推荐的物体（同样需要去掉已经选择了的物体）。</p>
+<p>到这里为止，这个协同过滤的基本过程就介绍完了。</p>
+<h1 id="Apache_Mahout">Apache Mahout</h1>
+<p>Mahout是一个不错的实现了协同过滤模型的开源软件，最好在Linux系统下操作，以后如果熟悉了这个软件，再详细介绍其相关使用。</p>
+<p>reference:</p>
+<p><a href="http://www.ibm.com/developerworks/cn/web/1103_zhaoct_recommstudy2/" target="_blank">探索推荐引擎内部的秘密:协同过滤</a></p>
+<p><a href="http://en.wikipedia.org/wiki/Collaborative_filtering" target="_blank">协同过滤</a> </p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/机器学习实战/">机器学习实战</a>
+  <span></span> <a href="/tags/人工智能/">人工智能</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/人工智能/">人工智能</a>
+  <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://xiaojinwen.com/2014/05/28/logistic-regression/" data-title="Logistic 回归 | 风清阳明" data-tsina="null" class="share clearfix">
+  <div data-url="http://xiaojinwen.com/2014/07/29/cf/" data-title="协同过滤 | 风清阳明" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -152,19 +158,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/06/01/svm/" title="支持向量机SVM">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  支持向量机SVM</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/05/27/bayes/"  title="朴素贝叶斯分类方法">
+<a href="/2014/06/19/k-means/"  title="k-means">
  <strong>NEXT:</strong><br/> 
- <span>朴素贝叶斯分类方法
+ <span>k-means
 </span>
 </a>
 </div>
@@ -181,7 +179,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#损失函数"><span class="toc-number">2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#训练：梯度下降"><span class="toc-number">3.</span> <span class="toc-text">训练：梯度下降</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实例"><span class="toc-number">4.</span> <span class="toc-text">实例</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#协同过滤"><span class="toc-number">1.</span> <span class="toc-text">协同过滤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#算法过程"><span class="toc-number">2.</span> <span class="toc-text">算法过程</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#设计特征向量"><span class="toc-number">2.1.</span> <span class="toc-text">设计特征向量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算相似度"><span class="toc-number">2.2.</span> <span class="toc-text">计算相似度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推荐排名"><span class="toc-number">2.3.</span> <span class="toc-text">推荐排名</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache_Mahout"><span class="toc-number">3.</span> <span class="toc-text">Apache Mahout</span></a></li></ol>
   </div>
 
 <div id="asidepart">
