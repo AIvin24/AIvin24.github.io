@@ -20,27 +20,16 @@ k近邻算法(kNN)算是机器学习里面最基本的分类算法了，基本�
     <link rel="icon" href="/img/favicon.ico">
     
     
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon" href="/img/Tinny.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/Tinny.jpg">
     
     <link rel="stylesheet" href="/css/style.css" type="text/css">
-	
-<script type="text/javascript">
-var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F4192bf2f6b64f1a0021106237c41d6d4' type='text/javascript'%3E%3C/script%3E"));
-</script>
-
 </head>
-
 
   <body>
     <header>
       <div>
 		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="风清阳明" title="风清阳明"/></a>
-			</div>
-			
 			<div id="textlogo">
 				<h1 class="site-name"><a href="/" title="风清阳明">风清阳明</a></h1>
 				<h2 class="blog-motto">不专业的折腾</h2>
@@ -49,29 +38,27 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 			</a></div>
 			<nav class="animated">
 				<ul>
-					<ul>
+                    <ul>
 					 
 						<li><a href="/">Home</a></li>
 					
 						<li><a href="/archives">Archives</a></li>
 					
+						<li><a href="http://blog.csdn.net/aivin24">CSDN</a></li>
+					
 						<li><a href="/about">About</a></li>
 					
 					<li>
 					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:xiaojinwen.com">
-					</form>
-					
 					</li>
+                <li><div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div></li>
+
 				</ul>
-			</nav>			
+			</nav>	
 </div>
 
     </header>
-    <div id="container">
+    <div id="container" class="clearfix">
       <div id="main" class="post" itemscope itemprop="blogPost">
 	<article itemprop="articleBody"> 
 		<header class="article-info clearfix">
@@ -85,7 +72,7 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
     </p>
   <p class="article-time">
     <time datetime="2014-05-23T02:01:13.000Z" itemprop="datePublished">5月 23 2014</time>
-    更新日期:<time datetime="2014-05-26T02:30:15.000Z" itemprop="dateModified">5月 26 2014</time>
+    更新日期:<time datetime="2014-09-02T00:47:32.000Z" itemprop="dateModified">9月 2 2014</time>
     
   </p>
 </header>
@@ -110,9 +97,7 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 </ol>
 <h1 id="模型">模型</h1>
 <p>我们称已知类型的数据集为训练集X，标签为Y，新出现的数据是a。注意：X是一个向量集，a是一个向量，y看作是一个向量。那么，我们要得到a的类型pred(a)，根据kNN的思想，模型公式如下：</p>
-<p><img src="http://www.forkosh.com/mathtex.cgi?
-pred(a) = argmax_i[number(i),i=1,\ldots,K]  
-"><br>其中k表示所有种类的数目，number(i)表示第i种类型在前k个数据中所占的数目。挑选前k个数据是根据他们的特征距离来获得的。</p>
+<p>$$<br>pred(a) = argmax_i[number(i),i=1,\ldots,K]<br>$$<br>其中k表示所有种类的数目，number(i)表示第i种类型在前k个数据中所占的数目。挑选前k个数据是根据他们的特征距离来获得的。</p>
 <p>训练数据都是已知标签的，如下图的A、B,特征向量的维度为2。</p>
 <p><img src="https://s3-us-west-2.amazonaws.com/droplr.storage/files/acc_263367/JOzd?AWSAccessKeyId=AKIAJSVQN3Z4K7MT5U2A&amp;Expires=1400828892&amp;Signature=QJ%2F7AzfQrOrbt3LqEFj34kiFc%2FE%3D" alt=""></p>
 <h1 id="实例">实例</h1>
@@ -188,21 +173,49 @@ pred(a) = argmax_i[number(i),i=1,\ldots,K]
 </nav>
 
 	
-<section class="comment">
-	<div class="ds-thread"></div>
-</section>
+
+<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key=”2014/05/23/machinelearning_knn/” data-title=”k近邻算法” data-url=”http://xiaojinwen.com/2014/05/23/machinelearning_knn/”></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"jinwen"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+
+
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
-
+      
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
   <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#模型"><span class="toc-number">2.</span> <span class="toc-text">模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实例"><span class="toc-number">3.</span> <span class="toc-text">实例</span></a></li></ol>
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div id="authorInfo">
+	
+		<div class="author-logo"></div>		
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+	</div>
+</div>
 <aside class="clearfix">
+
 
   
 <div class="categorieslist">
@@ -213,12 +226,19 @@ pred(a) = argmax_i[number(i),i=1,\ldots,K]
 		
 			<li><a href="/categories/人工智能/" title="人工智能">人工智能<sup>7</sup></a></li>
 		
-			<li><a href="/categories/机器学习/" title="机器学习">机器学习<sup>1</sup></a></li>
+			<li><a href="/categories/机器学习/" title="机器学习">机器学习<sup>2</sup></a></li>
 		
 			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
 		
 		</ul>
 </div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09">九月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07">七月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06">六月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05">五月 2014</a><span class="archive-list-count">5</span></li></ul>
+  </div>
 
 
   
@@ -228,7 +248,7 @@ pred(a) = argmax_i[number(i),i=1,\ldots,K]
 		
 			<li><a href="/tags/Socket/" title="Socket">Socket<sup>1</sup></a></li>
 		
-			<li><a href="/tags/人工智能/" title="人工智能">人工智能<sup>1</sup></a></li>
+			<li><a href="/tags/人工智能/" title="人工智能">人工智能<sup>2</sup></a></li>
 		
 			<li><a href="/tags/机器学习实战/" title="机器学习实战">机器学习实战<sup>7</sup></a></li>
 		
@@ -238,37 +258,44 @@ pred(a) = argmax_i[number(i),i=1,\ldots,K]
 </div>
 
 
-  <div class="rsspart">
-	<a href="null" target="_blank" title="rss">RSS 订阅</a>
-</div>
-
 </aside>
 </div>
     </div>
     <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font" class="clearfix">
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2014 
-		
-		<a href="http://xiaojinwen.com" target="_blank" title="Jinwen">Jinwen</a>
-		
-		</p>
+
 </div>
 </footer>
     <script src="/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){ 
+  //back to top
+  function backToTop(){
+    var buttonHTML = $("<a href=\"#top\" id=\"back-top\">" + "<span>Back to Top</span></a>");
+    buttonHTML.appendTo($("body"));
+    var buttonToTop = $("#back-top");
+    // hide #back-top first
+    buttonToTop.hide();
+
+    // fade in #back-top
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                buttonToTop.fadeIn();
+            } else {
+                buttonToTop.fadeOut();
+            }
+        });
+        // scroll body to 0px on click
+        buttonToTop.click(function() {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
+        });
+    });
+  }
+  backToTop();
+
   $('.navbar').click(function(){
     $('header nav').toggleClass('shownav');
   });
@@ -283,7 +310,7 @@ $(document).ready(function(){
   var m = $('#main'),
       a = $('#asidepart'),
       c = $('.closeaside'),
-      o = $('.openaside');
+      ta = $('#toc.toc-aside');
   $(window).resize(function(){
     getSize(); 
     if (myWidth >= 1024) {
@@ -292,24 +319,25 @@ $(document).ready(function(){
     {
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
       
       $('#toc.toc-aside').css('display', 'none');
         
     }
   });
+
+  var show = true;
   c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
+    if(show == true){
+        a.addClass('fadeOut').css('display', 'none');
+        ta.css('display', 'block').addClass('fadeIn');
+        m.addClass('moveMain');  
+    }else{
+        a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');     
+        ta.css('display', 'none'); 
+        m.removeClass('moveMain');
+        $('#toc.toc-aside').css('display', 'none');
+    }
+    show = !show;
   });
 });
 </script>
@@ -333,14 +361,9 @@ $(document).ready(function(){
   if(ah.length==0){
     t.css('display','none');
   }else{
-    c.click(function(){
-      ta.css('display', 'block').addClass('fadeIn');
-    });
-    o.click(function(){
-      ta.css('display', 'none');
-    });
+
     $(window).scroll(function(){
-      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+      ta.css("top",Math.max(140,240-$(this).scrollTop()));
     });
   };
 });
@@ -391,13 +414,33 @@ $(document).ready(function(){
 
 
 
-<script type="text/x-mathjax-config"> 
-MathJax.Hub.Config({ 
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
-}); 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
 </script>
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
   </body>

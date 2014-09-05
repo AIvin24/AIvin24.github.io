@@ -19,27 +19,16 @@ SVM的别名是最大间隔分类器，这里的最大间隔指的是训练样�
     <link rel="icon" href="/img/favicon.ico">
     
     
-    <link rel="apple-touch-icon" href="/img/pacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon" href="/img/Tinny.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/Tinny.jpg">
     
     <link rel="stylesheet" href="/css/style.css" type="text/css">
-	
-<script type="text/javascript">
-var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F4192bf2f6b64f1a0021106237c41d6d4' type='text/javascript'%3E%3C/script%3E"));
-</script>
-
 </head>
-
 
   <body>
     <header>
       <div>
 		
-			<div id="imglogo">
-				<a href="/"><img src="/img/logo.svg" alt="风清阳明" title="风清阳明"/></a>
-			</div>
-			
 			<div id="textlogo">
 				<h1 class="site-name"><a href="/" title="风清阳明">风清阳明</a></h1>
 				<h2 class="blog-motto">不专业的折腾</h2>
@@ -48,29 +37,27 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 			</a></div>
 			<nav class="animated">
 				<ul>
-					<ul>
+                    <ul>
 					 
 						<li><a href="/">Home</a></li>
 					
 						<li><a href="/archives">Archives</a></li>
 					
+						<li><a href="http://blog.csdn.net/aivin24">CSDN</a></li>
+					
 						<li><a href="/about">About</a></li>
 					
 					<li>
 					
-					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
-						<label>Search</label>
-						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
-						<input type="hidden" name="q" value="site:xiaojinwen.com">
-					</form>
-					
 					</li>
+                <li><div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div></li>
+
 				</ul>
-			</nav>			
+			</nav>	
 </div>
 
     </header>
-    <div id="container">
+    <div id="container" class="clearfix">
       <div id="main" class="post" itemscope itemprop="blogPost">
 	<article itemprop="articleBody"> 
 		<header class="article-info clearfix">
@@ -225,21 +212,49 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 </nav>
 
 	
-<section class="comment">
-	<div class="ds-thread"></div>
-</section>
+
+<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key=”2014/06/01/svm/” data-title=”支持向量机SVM” data-url=”http://xiaojinwen.com/2014/06/01/svm/”></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"jinwen"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+
+
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
-
+      
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
   <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#拉格朗日乘子法"><span class="toc-number">1.</span> <span class="toc-text">拉格朗日乘子法</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#原始问题"><span class="toc-number">1.1.</span> <span class="toc-text">原始问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拉格朗日乘子法图解"><span class="toc-number">1.2.</span> <span class="toc-text">拉格朗日乘子法图解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对偶问题"><span class="toc-number">1.3.</span> <span class="toc-text">对偶问题</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#SVM"><span class="toc-number">2.</span> <span class="toc-text">SVM</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#函数间隔和几何间隔"><span class="toc-number">2.1.</span> <span class="toc-text">函数间隔和几何间隔</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#间隔最大化"><span class="toc-number">2.2.</span> <span class="toc-text">间隔最大化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对偶求解"><span class="toc-number">2.3.</span> <span class="toc-text">对偶求解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线性不可分问题"><span class="toc-number">2.4.</span> <span class="toc-text">线性不可分问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#非线性支持向量机"><span class="toc-number">2.5.</span> <span class="toc-text">非线性支持向量机</span></a></li><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#核函数"><span class="toc-number">2.5.1.</span> <span class="toc-text">核函数</span></a></li></ol>
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div id="authorInfo">
+	
+		<div class="author-logo"></div>		
+	
+	
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+	</div>
+</div>
 <aside class="clearfix">
+
 
   
 <div class="categorieslist">
@@ -250,12 +265,19 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 		
 			<li><a href="/categories/人工智能/" title="人工智能">人工智能<sup>7</sup></a></li>
 		
-			<li><a href="/categories/机器学习/" title="机器学习">机器学习<sup>1</sup></a></li>
+			<li><a href="/categories/机器学习/" title="机器学习">机器学习<sup>2</sup></a></li>
 		
 			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
 		
 		</ul>
 </div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09">九月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07">七月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06">六月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05">五月 2014</a><span class="archive-list-count">5</span></li></ul>
+  </div>
 
 
   
@@ -265,7 +287,7 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 		
 			<li><a href="/tags/Socket/" title="Socket">Socket<sup>1</sup></a></li>
 		
-			<li><a href="/tags/人工智能/" title="人工智能">人工智能<sup>1</sup></a></li>
+			<li><a href="/tags/人工智能/" title="人工智能">人工智能<sup>2</sup></a></li>
 		
 			<li><a href="/tags/机器学习实战/" title="机器学习实战">机器学习实战<sup>7</sup></a></li>
 		
@@ -275,37 +297,44 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 </div>
 
 
-  <div class="rsspart">
-	<a href="null" target="_blank" title="rss">RSS 订阅</a>
-</div>
-
 </aside>
 </div>
     </div>
     <footer><div id="footer" >
-	
-	<div class="line">
-		<span></span>
-		<div class="author"></div>
-	</div>
-	
-	
-	<div class="social-font" class="clearfix">
-		
-		
-		
-		
-	</div>
-		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2014 
-		
-		<a href="http://xiaojinwen.com" target="_blank" title="Jinwen">Jinwen</a>
-		
-		</p>
+
 </div>
 </footer>
     <script src="/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){ 
+  //back to top
+  function backToTop(){
+    var buttonHTML = $("<a href=\"#top\" id=\"back-top\">" + "<span>Back to Top</span></a>");
+    buttonHTML.appendTo($("body"));
+    var buttonToTop = $("#back-top");
+    // hide #back-top first
+    buttonToTop.hide();
+
+    // fade in #back-top
+    $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 200) {
+                buttonToTop.fadeIn();
+            } else {
+                buttonToTop.fadeOut();
+            }
+        });
+        // scroll body to 0px on click
+        buttonToTop.click(function() {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
+        });
+    });
+  }
+  backToTop();
+
   $('.navbar').click(function(){
     $('header nav').toggleClass('shownav');
   });
@@ -320,7 +349,7 @@ $(document).ready(function(){
   var m = $('#main'),
       a = $('#asidepart'),
       c = $('.closeaside'),
-      o = $('.openaside');
+      ta = $('#toc.toc-aside');
   $(window).resize(function(){
     getSize(); 
     if (myWidth >= 1024) {
@@ -329,24 +358,25 @@ $(document).ready(function(){
     {
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
-      o.css('display', 'none');
       
       $('#toc.toc-aside').css('display', 'none');
         
     }
   });
+
+  var show = true;
   c.click(function(){
-    a.addClass('fadeOut').css('display', 'none');
-    o.css('display', 'block').addClass('fadeIn');
-    m.addClass('moveMain');
-  });
-  o.click(function(){
-    o.css('display', 'none').removeClass('beforeFadeIn');
-    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
-    m.removeClass('moveMain');
-  });
-  $(window).scroll(function(){
-    o.css("top",Math.max(80,260-$(this).scrollTop()));
+    if(show == true){
+        a.addClass('fadeOut').css('display', 'none');
+        ta.css('display', 'block').addClass('fadeIn');
+        m.addClass('moveMain');  
+    }else{
+        a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');     
+        ta.css('display', 'none'); 
+        m.removeClass('moveMain');
+        $('#toc.toc-aside').css('display', 'none');
+    }
+    show = !show;
   });
 });
 </script>
@@ -370,14 +400,9 @@ $(document).ready(function(){
   if(ah.length==0){
     t.css('display','none');
   }else{
-    c.click(function(){
-      ta.css('display', 'block').addClass('fadeIn');
-    });
-    o.click(function(){
-      ta.css('display', 'none');
-    });
+
     $(window).scroll(function(){
-      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+      ta.css("top",Math.max(140,240-$(this).scrollTop()));
     });
   };
 });
@@ -428,13 +453,33 @@ $(document).ready(function(){
 
 
 
-<script type="text/x-mathjax-config"> 
-MathJax.Hub.Config({ 
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
-}); 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
 </script>
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
   </body>
