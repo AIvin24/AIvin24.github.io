@@ -4,17 +4,13 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>博客前言 | 风清阳明</title>
+    <title>隐马尔可夫模型（二）：前向算法 | 风清阳明</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Jinwen">
     
-    <meta name="description" content="开启本博客一个最主要的原因是自己想尝试精确简明地表述自己的观点，没有废话。以前也在一些门户网站上面开过一些博客，但是一直没有坚持下来，主要是两个方面的原因：
-
-自己水平不够，总感觉写的东西连自己都看不下去，总是写了又删，删了又写，特没意思；
-没有养成写博客做记录的习惯，没有一直坚持下来。
-
-不过，总">
+    <meta name="description" content="这次说明HMM模型的三大算法之一：前向算法，即已知模型参数$\lambda=(\pi_0,A,B)$，求某个观测值序列$O = O_1O_2,\ldots,O_T$的概率$P(O|\lambda)$。
+前向算法是一种动态规划算法，按照定义:$$P(O|\lambda)=\sum_XP(O,X|\la">
     
     
     
@@ -67,15 +63,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/05/22/my-new-post-1/" title="博客前言" itemprop="url">博客前言</a>
+      <a href="/2014/10/06/hmm_forward_algorithm/" title="隐马尔可夫模型（二）：前向算法" itemprop="url">隐马尔可夫模型（二）：前向算法</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://xiaojinwen.com" title="Jinwen">Jinwen</a>
     </p>
   <p class="article-time">
-    <time datetime="2014-05-22T10:11:54.000Z" itemprop="datePublished">5月 22 2014</time>
-    更新日期:<time datetime="2014-05-23T01:55:17.000Z" itemprop="dateModified">5月 23 2014</time>
+    <time datetime="2014-10-06T12:16:30.000Z" itemprop="datePublished">10月 6 2014</time>
+    更新日期:<time datetime="2014-10-06T13:11:35.000Z" itemprop="dateModified">10月 6 2014</time>
     
   </p>
 </header>
@@ -87,34 +83,30 @@
 		
 		</div>
 		
-		<p>开启本博客一个最主要的原因是自己想尝试精确简明地表述自己的观点，没有废话。以前也在一些门户网站上面开过一些博客，但是一直没有坚持下来，主要是两个方面的原因：</p>
-<ol>
-<li>自己水平不够，总感觉写的东西连自己都看不下去，总是写了又删，删了又写，特没意思；</li>
-<li>没有养成写博客做记录的习惯，没有一直坚持下来。</li>
-</ol>
-<p>不过，总觉得自己应该时不时总结下自己的观点，准确清晰的表达能力算是一门很重要的技能，以前，自己一直这么认为：自己知道的没必要和别人讨论！自己不知道的，还和别人讨论什么？还不如自己好好去学习。</p>
-<p>这一次，果断申请了一个域名，建立了一个独立博客，再一次拾起这份热情。因为本人实在是水平太一般，所以只希望能够记录下自己平时的学习总结，对生活体会的观点，看到自己前进。</p>
-<p>本博客的主题定位：<br>热爱互联网，属于人工智能，关注金融，享受生活！</p>
+		<p>这次说明HMM模型的三大算法之一：前向算法，即已知模型参数$\lambda=(\pi_0,A,B)$，求某个观测值序列$O = O_1O_2,\ldots,O_T$的概率$P(O|\lambda)$。</p>
+<p>前向算法是一种动态规划算法，按照定义:<br>$$P(O|\lambda)=\sum_XP(O,X|\lambda)P(O|X,\lambda)$$<br>$$P(X|\lambda) = \pi_{X_1}\prod^T_{i=2}a_{X_{i-1}X_i}$$<br>$$P(O|X,\lambda) = \prod^T_{i=1}b_{X_iO_i}$$<br>其中，$X$是隐状态变量。</p>
+<p>定义一个前向变量表示到时间点$t$时刻为止，输出序列为$O_1…O_t$，且状态变量的值为$S_i$的概率，即：<br>$$\alpha_t(i) = P(O_1…O_t,X_t=s_i|\lambda)$$<br>这样$t$到$t+1$时刻的状态概率，可以根据以下公式进行迭代计算：<br>$$\alpha_{t+1(j)} = [\sum_{i=1}^N\alpha_t(i)a_{ij}]b_{jX_{t+1}}$$<br>最终的结果为：<br>$$P(O|\lambda)=\sum^N_{i=1}\alpha_t(i)$$</p>
+<p>参考<a href="http://www.docin.com/p-21714752.html" target="_blank">隐马尔可夫模型简介-刘群</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/说明/">说明</a>
+  <span></span> <a href="/tags/人工智能/">人工智能</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/生活/">生活</a>
+  <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://xiaojinwen.com/2014/05/22/my-new-post-1/" data-title="博客前言 | 风清阳明" data-tsina="null" class="share clearfix">
+  <div data-url="http://xiaojinwen.com/2014/10/06/hmm_forward_algorithm/" data-title="隐马尔可夫模型（二）：前向算法 | 风清阳明" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -123,21 +115,21 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/05/23/machinelearning_knn/" title="k近邻算法">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  k近邻算法</span>
+
+<div class="next">
+<a href="/2014/09/05/hidden_morkov_model/"  title="隐马尔可夫模型（一）：介绍">
+ <strong>NEXT:</strong><br/> 
+ <span>隐马尔可夫模型（一）：介绍
+</span>
 </a>
 </div>
-
 
 </nav>
 
 	
 
 <!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key=”2014/05/22/my-new-post-1/” data-title=”博客前言” data-url=”http://xiaojinwen.com/2014/05/22/my-new-post-1/”></div>
+	<div class="ds-thread" data-thread-key=”2014/10/06/hmm_forward_algorithm/” data-title=”隐马尔可夫模型（二）：前向算法” data-url=”http://xiaojinwen.com/2014/10/06/hmm_forward_algorithm/”></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
