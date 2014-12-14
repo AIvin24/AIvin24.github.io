@@ -1,89 +1,116 @@
-
- <!DOCTYPE HTML>
-<html lang="zh-CN">
+<!DOCTYPE HTML><!-- _partial/head -->
+<html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   
-    <title>协同过滤 | 风清阳明</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
-    
-    <meta name="author" content="Jinwen">
-    
-    <meta name="description" content="网上买东西时，经常看到一些推荐商品列表，那么这些列表是如何得到的？推荐算法的结果。在Web 2.0时代，每个人都能参与页面内容的编写，贡献自己的数据，这就出现了一个新词：集体智慧。集体智慧编程就是利用每一个个体的数据和行为来建模。而这些商品推荐模型中的协同过滤算法是集体智慧编程中的一个重要方面。
-协">
-    
-    
-    
-    
-    
-    <link rel="icon" href="/img/favicon.ico">
-    
-    
-    <link rel="apple-touch-icon" href="/img/Tinny.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/Tinny.jpg">
-    
-    <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <title>协同过滤 | 风清阳明</title>
+  <meta name="author" content="Jinwen">
+  
+  <meta name="description" content="互联网，机器学习，金融，生活">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="协同过滤"/>
+  <meta property="og:site_name" content="风清阳明"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+    <link rel="alternative" href="/true" title="风清阳明" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+
+  
+  <link rel="stylesheet" href="/css/bootstrap.cerulean.min.css" media="screen" type="text/css">
+  
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  <!-- _partial/post/google_analytics -->
+
+
+
 </head>
 
-  <body>
-    <header>
-      <div>
-		
-			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="风清阳明">风清阳明</a></h1>
-				<h2 class="blog-motto">不专业的折腾</h2>
-			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
-			</a></div>
-			<nav class="animated">
-				<ul>
-                    <ul>
-					 
-						<li><a href="/">Home</a></li>
-					
-						<li><a href="/archives">Archives</a></li>
-					
-						<li><a href="http://blog.csdn.net/aivin24">CSDN</a></li>
-					
-						<li><a href="/about">About</a></li>
-					
-					<li>
-					
-					</li>
-                <li><div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div></li>
+ <body>
+  <!-- _partial/navigation -->
+<nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">风清阳明</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
 
-				</ul>
-			</nav>	
+  <div class="container">
+  	<div class="content">
+    	 <!-- post -->
+
+
+<!-- _partial/article -->
+
+<!-- _partial/post/title -->
+<div class="panel-heading">
+
+	
+  <!-- display as page -->
+		<div class="page-header">
+			<h1> 协同过滤</h1>
+		</div>
+	
+
 </div>
 
-    </header>
-    <div id="container" class="clearfix">
-      <div id="main" class="post" itemscope itemprop="blogPost">
-	<article itemprop="articleBody"> 
-		<header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2014/07/29/cf/" title="协同过滤" itemprop="url">协同过滤</a>
-  </h1>
-  <p class="article-author">By
-    
-      <a href="http://xiaojinwen.com" title="Jinwen">Jinwen</a>
-    </p>
-  <p class="article-time">
-    <time datetime="2014-07-29T05:29:52.000Z" itemprop="datePublished">7月 29 2014</time>
-    更新日期:<time datetime="2014-07-29T06:39:22.000Z" itemprop="dateModified">7月 29 2014</time>
-    
-  </p>
-</header>
-	<div class="article-content">
-		
-		
-		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#协同过滤"><span class="toc-number">1.</span> <span class="toc-text">协同过滤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#算法过程"><span class="toc-number">2.</span> <span class="toc-text">算法过程</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#设计特征向量"><span class="toc-number">2.1.</span> <span class="toc-text">设计特征向量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算相似度"><span class="toc-number">2.2.</span> <span class="toc-text">计算相似度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推荐排名"><span class="toc-number">2.3.</span> <span class="toc-text">推荐排名</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache_Mahout"><span class="toc-number">3.</span> <span class="toc-text">Apache Mahout</span></a></li></ol>
-		</div>
-		
-		<p>网上买东西时，经常看到一些推荐商品列表，那么这些列表是如何得到的？推荐算法的结果。在Web 2.0时代，每个人都能参与页面内容的编写，贡献自己的数据，这就出现了一个新词：集体智慧。集体智慧编程就是利用每一个个体的数据和行为来建模。而这些商品推荐模型中的协同过滤算法是集体智慧编程中的一个重要方面。</p>
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div class="col-md-9">
+	
+
+	
+
+	<!-- content -->
+	<div class="mypage">
+	    <p>网上买东西时，经常看到一些推荐商品列表，那么这些列表是如何得到的？推荐算法的结果。在Web 2.0时代，每个人都能参与页面内容的编写，贡献自己的数据，这就出现了一个新词：集体智慧。集体智慧编程就是利用每一个个体的数据和行为来建模。而这些商品推荐模型中的协同过滤算法是集体智慧编程中的一个重要方面。</p>
 <h1 id="协同过滤">协同过滤</h1>
 <p>俗话说看一个人的品味，就看TA的圈子。看书、看电影、玩游戏等等，如果自己不知道该看什么书，哪些电影精彩，什么游戏比较有意思，这个时候就需要咨询一些“志同道合”的人做个介绍，听听他们的评论，然后再加以选择。 这么简简单单的几句话，其实里面涉及到非常重要的三个方面：  </p>
 <ol>
@@ -124,329 +151,147 @@
 <p>reference:</p>
 <p><a href="http://www.ibm.com/developerworks/cn/web/1103_zhaoct_recommstudy2/" target="_blank">探索推荐引擎内部的秘密:协同过滤</a></p>
 <p><a href="http://en.wikipedia.org/wiki/Collaborative_filtering" target="_blank">协同过滤</a> </p>
-  
+
 	</div>
-		<footer class="article-footer clearfix">
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/人工智能/">人工智能</a>
-  </div>
-
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-</div>
-
-
-
-<div class="article-share" id="share">
-
-  <div data-url="http://xiaojinwen.com/2014/07/29/cf/" data-title="协同过滤 | 风清阳明" data-tsina="null" class="share clearfix">
-  </div>
-
-</div>
-</footer>   	       
-	</article>
-	
-<nav class="article-nav clearfix">
- 
- <div class="prev" >
- <a href="/2014/07/30/socket_python/" title="用Python编Socket入门程序">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  用Python编Socket入门程序</span>
-</a>
-</div>
-
-
-<div class="next">
-<a href="/2014/06/19/k-means/"  title="k-means">
- <strong>NEXT:</strong><br/> 
- <span>k-means
-</span>
-</a>
-</div>
-
-</nav>
-
-	
-
-<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key=”2014/07/29/cf/” data-title=”协同过滤” data-url=”http://xiaojinwen.com/2014/07/29/cf/”></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"jinwen"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- 多说公共JS代码 end -->
-
-
-
-
-</div>  
-      
-  <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#协同过滤"><span class="toc-number">1.</span> <span class="toc-text">协同过滤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#算法过程"><span class="toc-number">2.</span> <span class="toc-text">算法过程</span></a></li><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#设计特征向量"><span class="toc-number">2.1.</span> <span class="toc-text">设计特征向量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算相似度"><span class="toc-number">2.2.</span> <span class="toc-text">计算相似度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推荐排名"><span class="toc-number">2.3.</span> <span class="toc-text">推荐排名</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache_Mahout"><span class="toc-number">3.</span> <span class="toc-text">Apache Mahout</span></a></li></ol>
-  </div>
-
-<div id="asidepart">
-<div id="authorInfo">
-	
-		<div class="author-logo"></div>		
-	
-	
-	<div class="social-font" class="clearfix">
+	<div>
+  	<center>
+	<!-- _partial/post/pagination -->
+<div class="pagination">
+<ul class="pagination">
+	 
 		
-		
-		
-		
-	</div>
-</div>
-<aside class="clearfix">
+    	<li class="prev"><a href="/2014/07/30/socket_python/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+  		
 
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
-  
-<div class="categorieslist">
-	<p class="asidetitle">分类</p>
-		<ul>
 		
-			<li><a href="/categories/Python/" title="Python">Python<sup>1</sup></a></li>
-		
-			<li><a href="/categories/人工智能/" title="人工智能">人工智能<sup>10</sup></a></li>
-		
-			<li><a href="/categories/机器学习/" title="机器学习">机器学习<sup>1</sup></a></li>
-		
-			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
-		
-			<li><a href="/categories/读书/" title="读书">读书<sup>1</sup></a></li>
-		
-		</ul>
-</div>
-
-
-  
-  <div class="archiveslist">
-    <p class="asidetitle"><a href="/archives">归档</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11">十一月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10">十月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09">九月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07">七月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06">六月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05">五月 2014</a><span class="archive-list-count">5</span></li></ul>
-  </div>
-
-
-  
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			<li><a href="/tags/HMM/" title="HMM">HMM<sup>3</sup></a></li>
-		
-			<li><a href="/tags/Socket/" title="Socket">Socket<sup>1</sup></a></li>
-		
-			<li><a href="/tags/人工智能/" title="人工智能">人工智能<sup>1</sup></a></li>
-		
-			<li><a href="/tags/机器学习实战/" title="机器学习实战">机器学习实战<sup>7</sup></a></li>
-		
-			<li><a href="/tags/王小波/" title="王小波">王小波<sup>1</sup></a></li>
-		
-			<li><a href="/tags/说明/" title="说明">说明<sup>1</sup></a></li>
-		
-		</ul>
-</div>
-
-
-</aside>
-</div>
-    </div>
-    <footer><div id="footer" >
-
-</div>
-</footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  //back to top
-  function backToTop(){
-    var buttonHTML = $("<a href=\"#top\" id=\"back-top\">" + "<span>Back to Top</span></a>");
-    buttonHTML.appendTo($("body"));
-    var buttonToTop = $("#back-top");
-    // hide #back-top first
-    buttonToTop.hide();
-
-    // fade in #back-top
-    $(function() {
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > 200) {
-                buttonToTop.fadeIn();
-            } else {
-                buttonToTop.fadeOut();
-            }
-        });
-        // scroll body to 0px on click
-        buttonToTop.click(function() {
-            $('body,html').animate({
-                scrollTop: 0
-            }, 800);
-            return false;
-        });
-    });
-  }
-  backToTop();
-
-  $('.navbar').click(function(){
-    $('header nav').toggleClass('shownav');
-  });
-  var myWidth = 0;
-  function getSize(){
-    if( typeof( window.innerWidth ) == 'number' ) {
-      myWidth = window.innerWidth;
-    } else if( document.documentElement && document.documentElement.clientWidth) {
-      myWidth = document.documentElement.clientWidth;
-    };
-  };
-  var m = $('#main'),
-      a = $('#asidepart'),
-      c = $('.closeaside'),
-      ta = $('#toc.toc-aside');
-  $(window).resize(function(){
-    getSize(); 
-    if (myWidth >= 1024) {
-      $('header nav').removeClass('shownav');
-    }else
-    {
-      m.removeClass('moveMain');
-      a.css('display', 'block').removeClass('fadeOut');
-      
-      $('#toc.toc-aside').css('display', 'none');
+		   <li class="next"><a href="/2014/06/19/k-means/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>
         
-    }
-  });
+	
+</ul>
+</div>
 
-  var show = true;
-  c.click(function(){
-    if(show == true){
-        a.addClass('fadeOut').css('display', 'none');
-        ta.css('display', 'block').addClass('fadeIn');
-        m.addClass('moveMain');  
-    }else{
-        a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');     
-        ta.css('display', 'none'); 
-        m.removeClass('moveMain');
-        $('#toc.toc-aside').css('display', 'none');
-    }
-    show = !show;
-  });
-});
-</script>
+    </center>
+	</div>
 
+	<!-- comment -->
+	<!-- _partial/post/comment -->
+
+<section id="comment">
+  <h2 class="title">留言</h2>
+
+  
+</section>
+
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+
+	
+		<!-- _partial/post/meta -->
+<div class="col-md-3"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	7月 29 2014
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+        <!-- _partial/post/category -->
+  
+  <li>
+    <li><a href="/categories/机器学习/">机器学习<span>1</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <ul id="tags" class="tag_box list-unstyled collapse in">
+	    <!-- _partial/post/tag -->
+  
+  <li><a href="/tags/人工智能/">人工智能<span>1</span></a></li>
+
+    </ul>
+	</div>
+	
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+
+    <hr>
+
+</div><!-- col-md-3 -->
+
+	
+
+</div><!-- row -->
+
+
+	  </div>
+    <footer> <!-- _partial/footer -->
+<p>
+  &copy; 2014 by Jinwen
+  &nbsp;
+  <span class="text-muted">Powered by:
+    <a class="text-muted" href="http://zespia.tw/hexo/" target="_blank">Hexo</a>,
+    <a class="text-muted" href="http://github.com/yieme/hexo-theme-freewill/">Freewill</a>
+    &amp;
+    <a class="text-muted" href="http://bootswatch.com/" target="_blank">Bootswatch <small>v3.2</small></a>
+  </span>
+</p>
+ </footer>
+  </div> <!-- container-narrow -->
+  <!-- _partial/after_footer -->
+<a id="gotop" href="#">
+  <span>▲</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){ 
-  var ai = $('.article-content>iframe'),
-      ae = $('.article-content>embed'),
-      t  = $('#toc'),
-      h  = $('article h2')
-      ah = $('article h2'),
-      ta = $('#toc.toc-aside'),
-      o  = $('.openaside'),
-      c  = $('.closeaside');
-  if(ai.length>0){
-    ai.wrap('<div class="video-container" />');
-  };
-  if(ae.length>0){
-   ae.wrap('<div class="video-container" />');
-  };
-  if(ah.length==0){
-    t.css('display','none');
-  }else{
-
-    $(window).scroll(function(){
-      ta.css("top",Math.max(140,240-$(this).scrollTop()));
-    });
-  };
-});
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
 </script>
 
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var $this = $('.share'),
-      url = $this.attr('data-url'),
-      encodedUrl = encodeURIComponent(url),
-      title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina');
-  var html = [
-  '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
-  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
-  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
-  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
-  '<span title="Share to"></span>'
-  ].join('');
-  $this.append(html);
-  $('.article-share-qrcode').click(function(){
-    var imgSrc = $('#qrcode-pic').attr('data-src');
-    $('#qrcode-pic').attr('src', imgSrc);
-    $('#qrcode-pic').load(function(){
-        $('.qrcode strong').text(' ');
-    });
-  });
-});     
-</script>
-
-
-<script type="text/javascript">
-  var duoshuoQuery = {short_name:"jinwen"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] 
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-</script> 
-
-
-
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
 
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
         }
     });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
 </script>
-
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-  </body>
-</html>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body></html>
