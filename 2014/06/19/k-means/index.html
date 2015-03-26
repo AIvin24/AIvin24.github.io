@@ -1,4 +1,4 @@
-<!DOCTYPE HTML><!-- _partial/head -->
+<!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="utf-8">
@@ -19,32 +19,26 @@
   
 
   
-    <link rel="alternative" href="/true" title="风清阳明" type="application/atom+xml">
-  
   
     <link href="/favicon.png" rel="icon">
   
-
   
-  <link rel="stylesheet" href="/css/bootstrap.cerulean.min.css" media="screen" type="text/css">
-  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
   <script src="/js/jquery-2.0.3.min.js"></script>
 
   <!-- analytics -->
-  <!-- _partial/post/google_analytics -->
-
-
+  
 
 </head>
 
- <body>
-  <!-- _partial/navigation -->
-<nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		<span class="sr-only">Toggle navigation</span>
@@ -74,6 +68,12 @@
 			</a>
 		  </li>
 		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
 		</ul>
       </div>
     </div> <!-- container -->
@@ -82,22 +82,15 @@
 
   <div class="container">
   	<div class="content">
-    	 <!-- post -->
+    	 
 
-
-<!-- _partial/article -->
-
-<!-- _partial/post/title -->
-<div class="panel-heading">
 
 	
-  <!-- display as page -->
-		<div class="page-header">
+		<div class="page-header">		
 			<h1> k-means</h1>
-		</div>
+		</div>		
 	
 
-</div>
 
 
 <div class="row post">
@@ -106,10 +99,10 @@
 	<div class="col-md-9">
 	
 
-	
+			
 
 	<!-- content -->
-	<div class="mypage">
+	<div class="mypage">		
 	    <p>前面提到的都是监督学习，就是说训练样本的类别标签是已知的。然而实际中，大量的数据类别标签是未知的，所以，利用这些数据的学习算法（即非监督学习）显得举足轻重。聚类是一种非监督学习算法，而k-means算法是聚类算法中的代表。</p>
 <h1 id="介绍">介绍</h1>
 <p>k-means算法中的k表示聚成k类，整个聚类过程可以这么设想，在一大群人中间需要选出k个领头人（质心点），然后剩下所有人都开始追随离自己最近（距离）的领头人，同一个领头人带领的人归为一类，所以总共有k类。算法流程如下：    </p>
@@ -155,23 +148,22 @@
 </code></pre><p>前面已经说过，原始的k-means算法很容易陷入局部最小值（这个与k个质心点的初始化有关系）。一个衡量聚类好坏的是利用误差平方和（SUm of Squared Error, SSE），即当前类所有点与质心点的距离之和，在上段代码中clusterAssment的第二列记录了点与质心点之间的距离。</p>
 <p>为了克服局部最小值问题，可以采用二分k-means算法，这个算法是先将所有的点作为一个类，然后选择每一个类进行二分，即k=2，选择划分后SSE之和最小的那个类进行划分，直到划分的数目等于k。</p>
 <p>参考<a href="http://www.manning.com/pharrington/" target="_blank">《机器学习实战》</a>。</p>
-
+	  
 	</div>
 
 	<div>
   	<center>
-	<!-- _partial/post/pagination -->
-<div class="pagination">
+	<div class="pagination">
 <ul class="pagination">
 	 
-		
+				
     	<li class="prev"><a href="/2014/07/29/cf/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
   		
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2014/06/08/adaboost/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		   <li class="next"><a href="/2014/06/08/adaboost/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -179,39 +171,35 @@
 
     </center>
 	</div>
-
+	
 	<!-- comment -->
-	<!-- _partial/post/comment -->
-
+	
 <section id="comment">
   <h2 class="title">留言</h2>
 
   
 </section>
 
-
-
-	</div> <!-- col-md-9/col-md-12 -->
-
 	
-		<!-- _partial/post/meta -->
-<div class="col-md-3"> 
+	</div> <!-- col-md-9/col-md-12 -->
+	
+	
+		<div class="col-md-3"> 
 
 	<!-- date -->
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	6月 19 2014
+	6月 19 2014 
 	</div>
 	
 
 	<!-- categories -->
     
 	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
     <ul id="categorys" class="tag_box list-unstyled collapse in">
-        <!-- _partial/post/category -->
-  
+          
   <li>
     <li><a href="/categories/人工智能/">人工智能<span>10</span></a></li>
   </li>
@@ -223,54 +211,45 @@
 	<!-- tags -->
 	
 	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
-    <ul id="tags" class="tag_box list-unstyled collapse in">
-	    <!-- _partial/post/tag -->
-  
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
   <li><a href="/tags/机器学习实战/">机器学习实战<span>7</span></a></li>
-
     </ul>
 	</div>
-	
+		
 
 	<!-- toc -->
 	<div class="meta-widget">
 	
 	</div>
-
+	
     <hr>
-
+	
 </div><!-- col-md-3 -->
 
 	
 
 </div><!-- row -->
 
-
-	  </div>
-    <footer> <!-- _partial/footer -->
-<p>
-  &copy; 2014 by Jinwen
-  &nbsp;
-  <span class="text-muted">Powered by:
-    <a class="text-muted" href="http://zespia.tw/hexo/" target="_blank">Hexo</a>,
-    <a class="text-muted" href="http://github.com/yieme/hexo-theme-freewill/">Freewill</a>
-    &amp;
-    <a class="text-muted" href="http://bootswatch.com/" target="_blank">Bootswatch <small>v3.2</small></a>
-  </span>
-</p>
- </footer>
-  </div> <!-- container-narrow -->
-  <!-- _partial/after_footer -->
-<a id="gotop" href="#">
-  <span>▲</span>
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 Jinwen
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
 </a>
 
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
-
 
 
 
@@ -298,4 +277,5 @@
     });
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body></html>
+</body>
+   </html>

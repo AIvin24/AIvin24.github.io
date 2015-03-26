@@ -1,4 +1,4 @@
-<!DOCTYPE HTML><!-- _partial/head -->
+<!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="utf-8">
@@ -19,32 +19,26 @@
   
 
   
-    <link rel="alternative" href="/true" title="风清阳明" type="application/atom+xml">
-  
   
     <link href="/favicon.png" rel="icon">
   
-
   
-  <link rel="stylesheet" href="/css/bootstrap.cerulean.min.css" media="screen" type="text/css">
-  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
   <script src="/js/jquery-2.0.3.min.js"></script>
 
   <!-- analytics -->
-  <!-- _partial/post/google_analytics -->
-
-
+  
 
 </head>
 
- <body>
-  <!-- _partial/navigation -->
-<nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		<span class="sr-only">Toggle navigation</span>
@@ -74,6 +68,12 @@
 			</a>
 		  </li>
 		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
 		</ul>
       </div>
     </div> <!-- container -->
@@ -82,13 +82,11 @@
 
   <div class="container">
   	<div class="content">
-    	 <!-- tag -->
-<!-- _partial/archive -->
+    	 
 
-
-<!-- archive.title -->
+<!-- title -->
 <div class="page-header">
-  <h1 class="archive-title-tag archive-title-Socket">Socket</h1>
+  <h1 class="archive-title-tag">Socket</h1>
 </div>
 
 <div class="row page">
@@ -97,114 +95,41 @@
   <div class="col-md-9">
 	
 
-	  
-	  <!-- display as entry -->
-	  <div class="mypage">
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/07/30/socket_python/" >用Python编Socket入门程序</a>
-			<span class="text-muted pull-right"><small> 7月 30 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>本地进程通信有多种方法，那么网络中进程是如何通信的？一种流行的方法就是Socket编程，Socket可以看成是一个抽象“客栈”，所有网络中的进程带着自己的身份证号码（IP地址、端口号）来投宿，然后在客栈里面进行信息交流，至于你们这些人在里面聊些什么，放心，一般人是不清楚滴。</p>
-<p>由于Python用简洁代码能实现丰富功能，所以这里就用TA了，不用纠结于语法细节问题。整个Socket编程分为服务器和客户端两方面编程,下面分开说明：</p>
-<p>服务器端编程分为6步：</p>
-<ol>
-<li>建立一个Socket对象； </li>
-<li>绑定到具体IP地址和端口号；</li>
-<li>设置能连到本服务器的客户端数目；</li>
-<li>检测是否有客服端的请求信息；</li>
-<li>一旦和客户端建立好了连接，就可以处理这些信息了（发送和接收）；</li>
-<li>关闭连接。</li>
-</ol>
-<p>客户端编程分为4步：</p>
-<ol>
-<li>建立Socket对象；</li>
-<li>连接到服务器；</li>
-<li>信息处理（发送和接收）；</li>
-<li>关闭连接。</li>
-</ol>
-<p>好了，上代码（网上大致相同，具体参数可以去查阅）</p>
-<p>服务器端：</p>
-<pre><code>import <span class="keyword">socket</span>  
-sock = <span class="keyword">socket</span>.<span class="keyword">socket</span>(<span class="keyword">socket</span>.AF_INET,<span class="keyword">socket</span>.SOCK_STREAM) <span class="comment">#建立对象</span>
-sock.<span class="keyword">bind</span>((<span class="string">'localhost'</span>,<span class="number">8001</span>)) <span class="comment">#绑定具体IP地址和端口号</span>
-sock.<span class="keyword">listen</span>(<span class="number">100</span>)  <span class="comment">#设置能连接的客户端数目</span>
-<span class="keyword">while</span> True:
-    connection,address = sock.<span class="keyword">accept</span>() <span class="comment">#监听是否有客户端请求</span>
-    connection.settimeout(<span class="number">10</span>)
-    buf = connection.<span class="keyword">recv</span>(<span class="number">100</span>) <span class="comment">#信息接收成功，返回接收的信息buf</span>
-    <span class="keyword">if</span> buf == <span class="string">'hi'</span>: 
-        connection.<span class="keyword">send</span>(<span class="string">'welcome to Socket!'</span>) <span class="comment">#发送信息</span>
-    <span class="keyword">else</span>:
-        connection.<span class="keyword">send</span>(<span class="string">'...'</span>)
-    connection.<span class="keyword">close</span>() <span class="comment">#关闭连接</span>
-</code></pre><p>客户端：</p>
-<pre><code>import <span class="keyword">socket</span>
-sock = <span class="keyword">socket</span>.<span class="keyword">socket</span>(<span class="keyword">socket</span>.AF_INET,<span class="keyword">socket</span>.SOCK_STREAM) <span class="comment">#建立对象</span>
-sock.<span class="keyword">connect</span>((<span class="string">'localhost'</span>,<span class="number">8001</span>)) <span class="comment">#连接到服务器绑定的位置（地址：端口）</span>
-sock.<span class="keyword">send</span>(<span class="string">'hi'</span>)  <span class="comment">#打个招呼，发送一个信息</span>
-<span class="keyword">print</span> sock.<span class="keyword">recv</span>(<span class="number">1024</span>) <span class="comment">#打印接收到的信息</span>
-sock.<span class="keyword">close</span>() <span class="comment">#关闭连接</span>
-</code></pre><p>运行：<br>先在命令行模式下运行服务器程序，然后再运行客户端程序，就会打印出”welcome to Socket!”，简单的运行模式就成功了。</p>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/07/30/socket_python/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  </div>
-	  <div>
-	  <center>
-	  <!-- _partial/index_pagination -->
-<div class="pagination">
-<ul class="pagination">
-	 
-</ul>
-</div>
-
-	  </center>
-	  </div>
-
-	  
+	  <div class="archive">
+				
+		
+		
+			
+			
+			<h4 class="archive-ul" data-toggle="collapse" data-target="#2014">2014<b class="caret"></b></h4>
+			<ul id="2014" class="collapse in">
+			
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-07-30 </span> &raquo;
+		
+		<span class="title"><a href="/2014/07/30/socket_python/" >用Python编Socket入门程序</a></span>
+		
+		</li>			
+		
+		</ul>
+		</div>
 
 </div> <!-- col-md-9/col-md-12 -->
 
 
-<!-- _partial/sidebar -->
 <div class="col-md-3">
 	<div id="sidebar">
 	
-			<!-- _widget/search -->
-<div class="form-group has-success has-feedback">
+			<div class="form-group has-success has-feedback">
   <form action="//google.com/search" method="get" accept-charset="utf-8" >
     <input type="search" name="q" results="0" placeholder="搜索" class="form-control">
-    <input type="hidden" name="q" value="site:xiaojinwen.com">
+    <input type="hidden" name="q" value="site:xiaojinwen.com">	
   </form>
 </div>
 
 		
-			<!-- _widget/category -->
-
+			
 	<div class="widget">
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
@@ -224,36 +149,33 @@ sock.<span class="keyword">close</span>() <span class="comment">#关闭连接</s
 		</ul>
 	</div>
 
-
 		
-			<!-- _widget/tagcloud -->
-
+			
 	<div class="widget">
 		<h4>标签云</h4>
-		<ul class="tag_box inline list-unstyled">
-		
-			<li><a href="/tags/Socket/">Socket<span>1</span></a></li>
-		
-			<li><a href="/tags/人工智能/">人工智能<span>1</span></a></li>
-		
-			<li><a href="/tags/王小波/">王小波<span>1</span></a></li>
+		<ul class="tag_box inline list-unstyled">		
 		
 			<li><a href="/tags/说明/">说明<span>1</span></a></li>
 		
-			<li><a href="/tags/HMM/">HMM<span>3</span></a></li>
+			<li><a href="/tags/王小波/">王小波<span>1</span></a></li>
+		
+			<li><a href="/tags/Socket/">Socket<span>1</span></a></li>
 		
 			<li><a href="/tags/机器学习实战/">机器学习实战<span>7</span></a></li>
 		
+			<li><a href="/tags/人工智能/">人工智能<span>1</span></a></li>
+		
+			<li><a href="/tags/HMM/">HMM<span>3</span></a></li>
+		
 			<li><a href="/tags/求职/">求职<span>1</span></a></li>
 		
-		
+		 
 		</ul>
 	</div>
 
 
 		
-			<!-- _widget/recent_posts -->
-
+			
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
@@ -281,15 +203,17 @@ sock.<span class="keyword">close</span>() <span class="comment">#关闭连接</s
   </ul>
 </div>
 
-
 		
-			<!-- _widget/links -->
-
+			
 <div class="widget">
-	<h4>Links</h4>
+	<h4>链接</h4>
 	<ul class="blogroll list-unstyled">
 	
-		<li><i class="fa fa-github"></i><a href="http://blog.csdn.net/aivin24" title="Freewill's Github repository." target="_blank"]);">My CSDN Blog</a></li>
+		<li><i class="fa fa-github"></i><a href="https://github.com/wzpan/freemind/" title="Freemind's Github repository." target="_blank"]);">Freemind</a></li>
+	
+		<li><i class="fa fa-github"></i><a href="http://www.github.com/wzpan" title="My Github account." target="_blank"]);">My Github</a></li>
+	
+		<li><i class="fa fa-linkedin"></i><a href="http://www.linkedin.com/pub/weizhou-pan/5b/8a0/161" title="My Linkin account." target="_blank"]);">My LinkedIn</a></li>
 	
 	</ul>
 </div>
@@ -302,30 +226,25 @@ sock.<span class="keyword">close</span>() <span class="comment">#关闭连接</s
 
 
 
-	  </div>
-    <footer> <!-- _partial/footer -->
-<p>
-  &copy; 2014 by Jinwen
-  &nbsp;
-  <span class="text-muted">Powered by:
-    <a class="text-muted" href="http://zespia.tw/hexo/" target="_blank">Hexo</a>,
-    <a class="text-muted" href="http://github.com/yieme/hexo-theme-freewill/">Freewill</a>
-    &amp;
-    <a class="text-muted" href="http://bootswatch.com/" target="_blank">Bootswatch <small>v3.2</small></a>
-  </span>
-</p>
- </footer>
-  </div> <!-- container-narrow -->
-  <!-- _partial/after_footer -->
-<a id="gotop" href="#">
-  <span>▲</span>
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 Jinwen
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
 </a>
 
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
-
 
 
 
@@ -353,4 +272,5 @@ sock.<span class="keyword">close</span>() <span class="comment">#关闭连接</s
     });
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body></html>
+</body>
+   </html>

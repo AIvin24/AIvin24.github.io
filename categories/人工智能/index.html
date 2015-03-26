@@ -1,4 +1,4 @@
-<!DOCTYPE HTML><!-- _partial/head -->
+<!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="utf-8">
@@ -19,32 +19,26 @@
   
 
   
-    <link rel="alternative" href="/true" title="风清阳明" type="application/atom+xml">
-  
   
     <link href="/favicon.png" rel="icon">
   
-
   
-  <link rel="stylesheet" href="/css/bootstrap.cerulean.min.css" media="screen" type="text/css">
-  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
   <script src="/js/jquery-2.0.3.min.js"></script>
 
   <!-- analytics -->
-  <!-- _partial/post/google_analytics -->
-
-
+  
 
 </head>
 
- <body>
-  <!-- _partial/navigation -->
-<nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		<span class="sr-only">Toggle navigation</span>
@@ -74,6 +68,12 @@
 			</a>
 		  </li>
 		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
 		</ul>
       </div>
     </div> <!-- container -->
@@ -82,11 +82,9 @@
 
   <div class="container">
   	<div class="content">
-    	 <!-- category -->
-<!-- _partial/archive -->
+    	 
 
-
-<!-- archive.title -->
+<!-- title -->
 <div class="page-header">
   <h1 class="archive-title-category">人工智能</h1>
 </div>
@@ -97,376 +95,77 @@
   <div class="col-md-9">
 	
 
-	  
-	  <!-- display as entry -->
-	  <div class="mypage">
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/10/07/hmm_viterbi/" >隐马尔可夫模型（三）：Viterbi 算法</a>
-			<span class="text-muted pull-right"><small> 10月 7 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>已知HMM参数$\lambda=(\pi_0,A,B)$和观察序列$O = O_1O_2,\ldots,O_T$，求最有可能的状态序列，即解码问题。Viterbi算法可以用来解决这一问题。类似于前向算法，需要设置一个局部概率变量，先来看一下图解（图片来源于<a href="http://www.comp.leeds.ac.uk/roger/HiddenMarkovModels/html_dev/main.html" target="_blank">Hidden Markov Models</a>）。</p>
-<p>目前有三种天气情况：晴、多云以及下雨，这是状态变量，我们可以观察到海藻的状态也是三种：干的、潮湿以及浸水，如下图，天气状况的改变会影响到海藻的潮湿程度，我们需要根据海藻的状态变化序列推测出最有可能的天气变化。</p>
-<p><img src="/image/HMM/trellis.gif" alt=""></p>
-<p>一个trivial方法就是穷举所有的天气变化序列使得以下概率最大化：<br>$$P(观察序列|隐状态序列)$$</p>
-<p>Viterbi算法是一种动态规划算法，采用递归求解降低了求解复杂程度。<br>首先也是设置一个局部概率值$\sigma$，不过与前向算法不同的是，这里的局部变量不是求和（因为是要找一个最优序列，如下图），而是求概率最大值。</p>
-<p><img src="/image/HMM/paths.for.t_3.gif" alt=""></p>
-<p>上图中，对于第三列的每个状态，都有唯一的一条最优路径（概率最大），所以，当前状态点的最大概率是一条以此节点为结尾的路径序列的最大概率。设$\alpha_t(i)$表示$t$时刻状态为$i$的所有前面状态路径的最大概率，则存在以下迭代关系（类似于前向算法，不过这里不再是求和）<br>$$\sigma_t(i)=\max_j(\sigma_{t-1}(j)a_{ji}b_{ik_t})$$<br>其中$a_{ji}$表示从状态$j$转移到状态$i$的概率，$b_{ik_t}$表示状态$i$到观察状态$k_t$的概率。</p>
-<p>时刻$t=1$时的初始状态概率可以用初始分布来进行计算：<br>$$\sigma_1(i)=\pi(i)b_{ik_1}$$</p>
-<p>这是求最大概率的过程，为了找出最优状态，只需要再每一次计算概率的时候，将当前节点保存下来即可，如下：<br>$$\phi_t(i)=argmax_j(\sigma_{t-1}(j)a_{ji})$$<br>其中$\phi_t(i)$表示到达状态$i$时的前一状态，即$t-1$时的状态。这样就得出了最优状态序列的估计。</p>
-<p>参考:</p>
-<p><a href="http://en.wikipedia.org/wiki/Viterbi_algorithm" target="_blank">Viterbi Algorithm</a><br><a href="http://www.comp.leeds.ac.uk/roger/HiddenMarkovModels/html_dev/viterbi_algorithm/s1_pg1.html" target="_blank">HMM Viterbi_algorithm</a></p>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/10/07/hmm_viterbi/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/10/06/hmm_forward_algorithm/" >隐马尔可夫模型（二）：前向算法</a>
-			<span class="text-muted pull-right"><small> 10月 6 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>这次说明HMM模型的三大算法之一：前向算法，即已知模型参数$\lambda=(\pi_0,A,B)$，求某个观测值序列$O = O_1O_2,\ldots,O_T$的概率$P(O|\lambda)$。</p>
-<p>前向算法是一种动态规划算法，按照定义:<br>$$P(O|\lambda)=\sum_XP(O,X|\lambda)P(O|X,\lambda)$$<br>$$P(X|\lambda) = \pi_{X_1}\prod^T_{i=2}a_{X_{i-1}X_i}$$<br>$$P(O|X,\lambda) = \prod^T_{i=1}b_{X_iO_i}$$<br>其中，$X$是隐状态变量。</p>
-<p>定义一个前向变量表示到时间点$t$时刻为止，输出序列为$O_1…O_t$，且状态变量的值为$S_i$的概率，即：<br>$$\alpha_t(i) = P(O_1…O_t,X_t=s_i|\lambda)$$<br>这样$t$到$t+1$时刻的状态概率，可以根据以下公式进行迭代计算：<br>$$\alpha_{t+1(j)} = [\sum_{i=1}^N\alpha_t(i)a_{ij}]b_{jX_{t+1}}$$<br>最终的结果为：<br>$$P(O|\lambda)=\sum^N_{i=1}\alpha_t(i)$$</p>
-<p>参考<a href="http://www.docin.com/p-21714752.html" target="_blank">隐马尔可夫模型简介-刘群</a></p>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/10/06/hmm_forward_algorithm/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/09/05/hidden_morkov_model/" >隐马尔可夫模型（一）：介绍</a>
-			<span class="text-muted pull-right"><small> 9月 5 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>量化大师西蒙斯曾经聘请了大量的语音识别专家到他的基金公司，而语音识别领域中用到的最成功的方法之一就是隐马尔可夫模型（Hidden Markov Model, HMM），所以，现在不少人相信在西蒙斯的模型中，HMM的作用应该不小。</p>
-<p><img src="/image/13992541364.jpg" alt=""></p>
-<p>(你没有看错，我用了巴菲特的图片。)</p>
-<p>最近就花点时间好好研究下HMM的基本原理，看它到底是何方神圣，因为这个模型是这么滴经典，以至于很多非常不错的介绍（文后附录）可以参阅。文章应该分成5篇：</p>
-<ol>
-<li>介绍</li>
-<li>前向算法</li>
-<li>维特比算法</li>
-<li>前向-后向算法</li>
-<li>其他算法及总结</li>
-</ol>
-<h1 id="确定性系统与不确定性系统">确定性系统与不确定性系统</h1>
-<p>平时在马路上看到绿灯，一会后一定会看到黄灯，黄灯之后一定出现红灯，红灯之后出现绿灯，灯的状态转移都是确定的，这就是确定性系统的特征，通过目前的状态，100%可以确定下一个状态是什么。可惜的是，现实中大多数是非确定性系统，比如说天气变化，如果告诉你今天的天气是什么，没有任何人能100%地预测明天的天气会怎样。在不确定性系统中，当前状态只能以一定的可能性（转移概率）变到其他的任何状态，不确定性系统才是我们的目标。总之，我们要对这个“混沌”的世界建模！</p>
-<h1 id="马尔可夫假设">马尔可夫假设</h1>
-<p>以天气预报为例，用$X_i$表示第$i$天的天气情况，那么按照常理$X_i=0$（用0表示晴天）的概率与以前所有天气的情况都相关，即</p>
-<p>$$P(X_i=0)=P(X_i=0|X_0 X_1 \ldots X_{i-1})$$</p>
-<p>而为了简化模型，可以假设第$i$天的天气只与第$i-1$天的天气有关，即</p>
-<p>$$P(X_i=0)=P(X_i=0|X_{i-1})$$</p>
-<p>这就是一阶马尔可夫模型，如果第$i$天的天气与前面$k$天的天气都有关，那么就是$k$阶马尔可夫模型。</p>
-<h1 id="隐马尔可夫模型（HMM）">隐马尔可夫模型（HMM）</h1>
-<p>前面提到的模型中，天气状态是可以观测到的，所以可以通过观察到的状态来进行建模，现在的问题是，如果天气状态不可观测，只能观测一个人的衣服情况，这个时候就有以下情况：</p>
-<ol>
-<li>这个人的衣服是干的，那么很有可能没有下雨，但是也有可能下了雨（他带了伞）；</li>
-<li>衣服是湿的，那么很有可能下了雨，但是也有可能没有下雨（他的衣服是被洒水车淋湿的）。</li>
-</ol>
-<p>现在观察的状态是衣服的淋湿状态，而不是天气的状态，这个时候如果要预测隐含状态，就是HMM大发威力的时候了，这也是HMM的3大问题之一：解码（后面会专门讲这个问题）。</p>
-<p>可以将整个过程图示化，如下图(图片来自wikipedia)：<br><img src="/image/HMM/Hmm_temporal_bayesian_net.png" alt=""><br>$X_i$是隐变量，$Y_i$是观测变量，每个箭头表示它们之间的依赖关系，如$X_i$只依赖于$X_{i-1}$，$Y_i$只依赖于$X_i$，后面这个可以用前面的例子说明一下，就是说现在这个人的衣服状态只与现在的天气有关，与以前的天气状态没有关系。</p>
-<p>如果知道初始隐变量的状态$\pi_0$、隐变量$X$之间的状态转移概率矩阵$A$，隐变量$X$生成观测变量$Y$的状态概率矩阵$B$，那么就可以估计整个隐、观测变量序列了，这个HMM可以用一个三元组来表示$&lt;\pi_0,A,B&gt;$。</p>
-<h1 id="HMM中三个问题">HMM中三个问题</h1>
-<ol>
-<li>知道模型的参数（即这些转移概率），来估计一个特定输出序列的概率，即编码问题，前向算法用来解决这一问题；</li>
-<li>知道模型的参数，估计产生某一输出序列的隐序列的概率，即解码问题，维特比算法用来解决这一问题；</li>
-<li>知道观测序列，估计隐序列和模型参数，即学习问题，前向-后向算法可以解决。</li>
-</ol>
-<p>后面的系列文章着重对这三个问题的求解过程进行分析。</p>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/09/05/hidden_morkov_model/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/06/19/k-means/" >k-means</a>
-			<span class="text-muted pull-right"><small> 6月 19 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>前面提到的都是监督学习，就是说训练样本的类别标签是已知的。然而实际中，大量的数据类别标签是未知的，所以，利用这些数据的学习算法（即非监督学习）显得举足轻重。聚类是一种非监督学习算法，而k-means算法是聚类算法中的代表。</p>
-<h1 id="介绍">介绍</h1>
-<p>k-means算法中的k表示聚成k类，整个聚类过程可以这么设想，在一大群人中间需要选出k个领头人（质心点），然后剩下所有人都开始追随离自己最近（距离）的领头人，同一个领头人带领的人归为一类，所以总共有k类。算法流程如下：    </p>
-<ol>
-<li>随机选出k个质心点；  </li>
-<li>计算每个点与质心点的距离，将每个点和离它最近的质心点归为同一类；</li>
-<li>在每一类中重新计算质心点；  </li>
-<li>如果质心点发生变化，回到第2步；  </li>
-<li>算法终止，得到k个类，每个类的质心点与同一类的点距离最小。</li>
-</ol>
-<p>整个思想都比较简单，但是由于k-means会陷入局部最小值，所以需要采取一些改进措施，后面会加以介绍。此外，对于距离的衡量，可以有多重方式，比如欧几里得距离、编辑距离等等。 </p>
-<h1 id="代码">代码</h1>
-<p>随机选取质心点的代码：</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">randCent</span><span class="params">(dataSet, k)</span>:</span>
-    n = shape(dataSet)[<span class="number">1</span>]
-    centroids = mat(zeros((k,n)))  <span class="comment"># 初始化质心点矩阵</span>
-    <span class="comment">#质心点必须保证在所有数据点范围以内</span>
-    <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-        minJ = min(dataSet[:,j]) 
-        rangeJ = float(max(dataSet[:,j]) - minJ)
-        centroids[:,j] = mat(minJ + rangeJ * random.rand(k,<span class="number">1</span>))
-    <span class="keyword">return</span> centroids
-</code></pre><p>最原始的k-means算法代码：</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">kMeans</span><span class="params">(dataSet, k, distMeas=distEclud, createCent=randCent)</span>:</span>
-    m = shape(dataSet)[<span class="number">0</span>]   
-    clusterAssment = mat(zeros((m,<span class="number">2</span>))) <span class="comment">#第一列存储类别好，第二列存储与质心点的距离  </span>
-    centroids = createCent(dataSet, k)   <span class="comment">#初始化质心点</span>
-    clusterChanged = <span class="keyword">True</span>   
-    <span class="keyword">while</span> clusterChanged:
-        clusterChanged = <span class="keyword">False</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):<span class="comment">#找到距离最近的质心点，并设置为同一类</span>
-            minDist = inf; minIndex = -<span class="number">1</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(k):
-                distJI = distMeas(centroids[j,:],dataSet[i,:])
-                <span class="keyword">if</span> distJI &lt; minDist:
-                    minDist = distJI; minIndex = j
-            <span class="keyword">if</span> clusterAssment[i,<span class="number">0</span>] != minIndex: clusterChanged = <span class="keyword">True</span>
-            clusterAssment[i,:] = minIndex,minDist**<span class="number">2</span>  <span class="comment">#更新当前数据点的类别</span>
-        <span class="keyword">for</span> cent <span class="keyword">in</span> range(k):<span class="comment">#重新计算质心点</span>
-            ptsInClust = dataSet[nonzero(clusterAssment[:,<span class="number">0</span>].A==cent)[<span class="number">0</span>]]
-            centroids[cent,:] = mean(ptsInClust, axis=<span class="number">0</span>) <span class="comment">#将所有同一类点的平均值作为质心点</span>
-    <span class="keyword">return</span> centroids, clusterAssment
-</code></pre><p>前面已经说过，原始的k-means算法很容易陷入局部最小值（这个与k个质心点的初始化有关系）。一个衡量聚类好坏的是利用误差平方和（SUm of Squared Error, SSE），即当前类所有点与质心点的距离之和，在上段代码中clusterAssment的第二列记录了点与质心点之间的距离。</p>
-<p>为了克服局部最小值问题，可以采用二分k-means算法，这个算法是先将所有的点作为一个类，然后选择每一个类进行二分，即k=2，选择划分后SSE之和最小的那个类进行划分，直到划分的数目等于k。</p>
-<p>参考<a href="http://www.manning.com/pharrington/" target="_blank">《机器学习实战》</a>。</p>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/06/19/k-means/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/06/08/adaboost/" >AdaBoost</a>
-			<span class="text-muted pull-right"><small> 6月 8 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>组合分类器模型是一种将弱分类器组合成强分类器的方法。弱分类器仅仅比随机猜测略好，如果存在多个这种弱分类器，就可以将其提升为强分类器，这就是弱分类器和强分类器的等价问题。Adaboost是组合分类器的代表，本文介绍Adaboost的原理。</p>
-<h1 id="介绍">介绍</h1>
-<p>先图示怎样将弱分类器组合成强分类器，初始数据线性不可分：<br><img src="http://d1zjcuqflbd5k.cloudfront.net/files/acc_263367/mQCF?response-content-disposition=inline;%20filename=1.jpg;&amp;Expires=1402194998&amp;Signature=BEME~LEgJ6X5R6W-TBi8T08pSuyXOre~6~bjlcjzzODjFKPMMLlyd~aOE0wfkSlU9lEPhjgki8h1QjVPbCSG1FkxP-dUrdqFe98rpYnvUodShBmDpNdyvgSmfvZi2wykW9GyJ8DG~W4bEczgNw15RFC94GggBS~pYDEFlSRN2hE_&amp;Key-Pair-Id=APKAJTEIOJM3LSMN33SA" alt=""></p>
-<p>上面3个都是弱分类器（比随机猜测略好），通过加权组合它们，生成下面的强分类器。</p>
-<p>Adaboost算法需要多次迭代，每个弱分类器会有一个权重来衡量最终分类所起的作用。 $\alpha_ih_i(x)$就是强分类器$H(x)$中弱分类器$h_i(x)$ 所占部分。同样，在训练弱分类器的过程之中，对于那些被分错的样本，需要着重考虑，下一次的迭代需要偏向将它们正确分类，所以，每一次迭代需要更改每一个样本的分布 $W_i$，即样本权重。</p>
-<h1 id="AdaBoost算法">AdaBoost算法</h1>
-<ol>
-<li>初始化样本权重系数$w^{(1)}_i = 1/N, i = 1,\ldots,N$。（一共有N个样本，所以均匀权重）；</li>
-<li>迭代M次，在第m次迭代中,通过最小化误差函数得到弱分类器$y_m(x)$，误差函数为$J_m = \sum_i^Nw^{(m)}_nI(y_m(X_n) \neq t_n)$,其中$I(x)$为指示函数。</li>
-<li>估计当前弱分类器的质量：<br>$\epsilon_m = \frac{\sum_i^Nw^{(m)}_nI(y_m(X_n) \neq t_n)}{\sum_i^Nw^{(m)}_n}$<br>进一步得到当前分类器的权重：<br>$\alpha_m = \ln\frac{1-\epsilon_m}{\epsilon}$</li>
-<li>更新样本的权重系数（保证分错的样本在下一次迭代权重要大)<br>$w^{(m+1)}_i =w^{(m)}_i e^{\alpha_mI(y_m(x_n) \neq t_n)}, i = 1,\ldots,N$<br>回到第2步，直到生成M个弱分类器；</li>
-<li>加权组合所有的弱分类器得到最终的强分类器：<br>$H(x) = sign(\sum_m^M\alpha_my_m(x))$</li>
-</ol>
-<h1 id="实例代码">实例代码</h1>
-<p>单一特征分类 </p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">stumpClassify</span><span class="params">(dataMatrix,dimen,threshVal,threshIneq)</span>:</span>
-    <span class="comment">#一个弱分类器的结果，所有大于（或小于）阈值的数据标记为同一类</span>
-    retArray = ones((shape(dataMatrix)[<span class="number">0</span>],<span class="number">1</span>))
-    <span class="keyword">if</span> threshIneq == <span class="string">'lt'</span>:
-        retArray[dataMatrix[:,dimen] &lt;= threshVal] = -<span class="number">1.0</span>
-    <span class="keyword">else</span>:
-        retArray[dataMatrix[:,dimen] &gt; threshVal] = -<span class="number">1.0</span>
-    <span class="keyword">return</span> retArray
-</code></pre><p>建立一个弱分类器</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">buildStump</span><span class="params">(dataArr,classLabels,D)</span>:</span>
-    <span class="comment"># 数据矩阵和类标记向量</span>
-    dataMatrix = mat(dataArr); labelMat = mat(classLabels).T
-    m,n = shape(dataMatrix)  <span class="comment"># m,n分别代表训练实例的数量和特征维度</span>
-    numSteps = <span class="number">10.0</span>; bestStump = {}; bestClasEst = mat(zeros((m,<span class="number">1</span>)))
-    minError = inf <span class="comment">#初始化最小的错误率为无穷大</span>
-    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):<span class="comment">#循环遍历所有特征维度，找出错误率最小的特征进行划分</span>
-        rangeMin = dataMatrix[:,i].min(); rangeMax = dataMatrix[:,i].max();  <span class="comment"># 当前特征维度最大值最小值确定划分的范围</span>
-        stepSize = (rangeMax-rangeMin)/numSteps  <span class="comment">#当前特征维度划分步长</span>
-        <span class="keyword">for</span> j <span class="keyword">in</span> range(-<span class="number">1</span>,int(numSteps)+<span class="number">1</span>): <span class="comment">#遍历每个小块，确定划分的最优位置</span>
-            <span class="keyword">for</span> inequal <span class="keyword">in</span> [<span class="string">'lt'</span>, <span class="string">'gt'</span>]: <span class="comment">#确定分界线两边的类别</span>
-                threshVal = (rangeMin + float(j) * stepSize)
-                predictedVals = stumpClassify(dataMatrix,i,threshVal,inequal) <span class="comment"># 当前分类结果</span>
-                errArr = mat(ones((m,<span class="number">1</span>)))
-                errArr[predictedVals == labelMat] = <span class="number">0</span>  <span class="comment"># 当前错误率</span>
-                weightedError = D.T*errArr  <span class="comment"># 加权样本分布权重的错误率</span>
-                <span class="keyword">if</span> weightedError &lt; minError: <span class="comment">#找到错误率最小的划分块</span>
-                    minError = weightedError
-                    bestClasEst = predictedVals.copy()
-                    bestStump[<span class="string">'dim'</span>] = i
-                    bestStump[<span class="string">'thresh'</span>] = threshVal
-                    bestStump[<span class="string">'ineq'</span>] = inequal
-    <span class="keyword">return</span> bestStump,minError,bestClasEst
-</code></pre><p>合成强分类器</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">adaBoostTrainDS</span><span class="params">(dataArr,classLabels,numIt=<span class="number">40</span>)</span>:</span>
-    weakClassArr = []
-    m = shape(dataArr)[<span class="number">0</span>]
-    D = mat(ones((m,<span class="number">1</span>))/m)   <span class="comment">#均匀初始化样本的分布</span>
-    aggClassEst = mat(zeros((m,<span class="number">1</span>)))
-    <span class="keyword">for</span> i <span class="keyword">in</span> range(numIt):
-        bestStump,error,classEst = buildStump(dataArr,classLabels,D)  <span class="comment"># 建立一个弱分类器</span>
-        alpha = float(<span class="number">0.5</span>*log((<span class="number">1.0</span>-error)/max(error,<span class="number">1e-16</span>))) <span class="comment">#计算当前分类器的权重</span>
-        bestStump[<span class="string">'alpha'</span>] = alpha  
-        weakClassArr.append(bestStump)                  
-        expon = multiply(-<span class="number">1</span>*alpha*mat(classLabels).T,classEst) 
-        D = multiply(D,exp(expon))                              
-        D = D/D.sum() <span class="comment">#更新样本分布（注意归一化）</span>
-        aggClassEst += alpha*classEst 
-        aggErrors = multiply(sign(aggClassEst) != mat(classLabels).T,ones((m,<span class="number">1</span>))) 
-        errorRate = aggErrors.sum()/m  <span class="comment"># 计算错误率，直到错误率为0终止</span>
-        <span class="keyword">if</span> errorRate == <span class="number">0.0</span>: <span class="keyword">break</span>
-    <span class="keyword">return</span> weakClassArr,aggClassEst
-</code></pre><p>测试</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">adaClassify</span><span class="params">(datToClass,classifierArr)</span>:</span>
-    dataMatrix = mat(datToClass)
-    m = shape(dataMatrix)[<span class="number">0</span>]
-    aggClassEst = mat(zeros((m,<span class="number">1</span>)))
-    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(classifierArr)):
-        classEst = stumpClassify(dataMatrix,classifierArr[i][<span class="string">'dim'</span>],\
-                                 classifierArr[i][<span class="string">'thresh'</span>],\
-                                 classifierArr[i][<span class="string">'ineq'</span>])
-        aggClassEst += classifierArr[i][<span class="string">'alpha'</span>]*classEst  <span class="comment">#累积所有弱分类器的结果</span>
-    <span class="keyword">return</span> sign(aggClassEst)
-</code></pre><p>实例代码来自<a href="http://www.manning.com/pharrington/" target="_blank">《机器学习实战》</a>。</p>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/06/08/adaboost/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  </div>
-	  <div>
-	  <center>
-	  <!-- _partial/index_pagination -->
-<div class="pagination">
-<ul class="pagination">
-	 
+	  <div class="archive">
+				
 		
-          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
-        
-
-        <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
-
 		
-		   <li class="next"> <a href="/categories/人工智能/page/2/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a> </li>
-        
-	
-</ul>
-</div>
-
-	  </center>
-	  </div>
-
-	  
+			
+			
+			<h4 class="archive-ul" data-toggle="collapse" data-target="#2014">2014<b class="caret"></b></h4>
+			<ul id="2014" class="collapse in">
+			
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-10-07 </span> &raquo;
+		
+		<span class="title"><a href="/2014/10/07/hmm_viterbi/" >隐马尔可夫模型（三）：Viterbi 算法</a></span>
+		
+		</li>			
+				
+		
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-10-06 </span> &raquo;
+		
+		<span class="title"><a href="/2014/10/06/hmm_forward_algorithm/" >隐马尔可夫模型（二）：前向算法</a></span>
+		
+		</li>			
+				
+		
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-09-05 </span> &raquo;
+		
+		<span class="title"><a href="/2014/09/05/hidden_morkov_model/" >隐马尔可夫模型（一）：介绍</a></span>
+		
+		</li>			
+				
+		
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-06-19 </span> &raquo;
+		
+		<span class="title"><a href="/2014/06/19/k-means/" >k-means</a></span>
+		
+		</li>			
+				
+		
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-06-08 </span> &raquo;
+		
+		<span class="title"><a href="/2014/06/08/adaboost/" >AdaBoost</a></span>
+		
+		</li>			
+		
+		</ul>
+		</div>
 
 </div> <!-- col-md-9/col-md-12 -->
 
 
-<!-- _partial/sidebar -->
 <div class="col-md-3">
 	<div id="sidebar">
 	
-			<!-- _widget/search -->
-<div class="form-group has-success has-feedback">
+			<div class="form-group has-success has-feedback">
   <form action="//google.com/search" method="get" accept-charset="utf-8" >
     <input type="search" name="q" results="0" placeholder="搜索" class="form-control">
-    <input type="hidden" name="q" value="site:xiaojinwen.com">
+    <input type="hidden" name="q" value="site:xiaojinwen.com">	
   </form>
 </div>
 
 		
-			<!-- _widget/category -->
-
+			
 	<div class="widget">
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
@@ -486,17 +185,11 @@
 		</ul>
 	</div>
 
-
 		
-			<!-- _widget/tagcloud -->
-
+			
 	<div class="widget">
 		<h4>标签云</h4>
-		<ul class="tag_box inline list-unstyled">
-		
-			<li><a href="/tags/说明/">说明<span>1</span></a></li>
-		
-			<li><a href="/tags/Socket/">Socket<span>1</span></a></li>
+		<ul class="tag_box inline list-unstyled">		
 		
 			<li><a href="/tags/HMM/">HMM<span>3</span></a></li>
 		
@@ -506,16 +199,19 @@
 		
 			<li><a href="/tags/求职/">求职<span>1</span></a></li>
 		
+			<li><a href="/tags/说明/">说明<span>1</span></a></li>
+		
 			<li><a href="/tags/人工智能/">人工智能<span>1</span></a></li>
 		
+			<li><a href="/tags/Socket/">Socket<span>1</span></a></li>
 		
+		 
 		</ul>
 	</div>
 
 
 		
-			<!-- _widget/recent_posts -->
-
+			
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
@@ -543,15 +239,17 @@
   </ul>
 </div>
 
-
 		
-			<!-- _widget/links -->
-
+			
 <div class="widget">
-	<h4>Links</h4>
+	<h4>链接</h4>
 	<ul class="blogroll list-unstyled">
 	
-		<li><i class="fa fa-github"></i><a href="http://blog.csdn.net/aivin24" title="Freewill's Github repository." target="_blank"]);">My CSDN Blog</a></li>
+		<li><i class="fa fa-github"></i><a href="https://github.com/wzpan/freemind/" title="Freemind's Github repository." target="_blank"]);">Freemind</a></li>
+	
+		<li><i class="fa fa-github"></i><a href="http://www.github.com/wzpan" title="My Github account." target="_blank"]);">My Github</a></li>
+	
+		<li><i class="fa fa-linkedin"></i><a href="http://www.linkedin.com/pub/weizhou-pan/5b/8a0/161" title="My Linkin account." target="_blank"]);">My LinkedIn</a></li>
 	
 	</ul>
 </div>
@@ -564,30 +262,24 @@
 
 
 
-	  </div>
-    <footer> <!-- _partial/footer -->
-<p>
-  &copy; 2014 by Jinwen
-  &nbsp;
-  <span class="text-muted">Powered by:
-    <a class="text-muted" href="http://zespia.tw/hexo/" target="_blank">Hexo</a>,
-    <a class="text-muted" href="http://github.com/yieme/hexo-theme-freewill/">Freewill</a>
-    &amp;
-    <a class="text-muted" href="http://bootswatch.com/" target="_blank">Bootswatch <small>v3.2</small></a>
-  </span>
-</p>
- </footer>
-  </div> <!-- container-narrow -->
-  <!-- _partial/after_footer -->
-<a id="gotop" href="#">
-  <span>▲</span>
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 Jinwen
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
 </a>
 
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
-
 
 
 
@@ -615,4 +307,5 @@
     });
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body></html>
+</body>
+   </html>

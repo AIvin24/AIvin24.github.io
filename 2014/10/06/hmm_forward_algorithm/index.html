@@ -1,4 +1,4 @@
-<!DOCTYPE HTML><!-- _partial/head -->
+<!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="utf-8">
@@ -19,32 +19,26 @@
   
 
   
-    <link rel="alternative" href="/true" title="风清阳明" type="application/atom+xml">
-  
   
     <link href="/favicon.png" rel="icon">
   
-
   
-  <link rel="stylesheet" href="/css/bootstrap.cerulean.min.css" media="screen" type="text/css">
-  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
   <script src="/js/jquery-2.0.3.min.js"></script>
 
   <!-- analytics -->
-  <!-- _partial/post/google_analytics -->
-
-
+  
 
 </head>
 
- <body>
-  <!-- _partial/navigation -->
-<nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		<span class="sr-only">Toggle navigation</span>
@@ -74,6 +68,12 @@
 			</a>
 		  </li>
 		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
 		</ul>
       </div>
     </div> <!-- container -->
@@ -82,22 +82,15 @@
 
   <div class="container">
   	<div class="content">
-    	 <!-- post -->
+    	 
 
-
-<!-- _partial/article -->
-
-<!-- _partial/post/title -->
-<div class="panel-heading">
 
 	
-  <!-- display as page -->
-		<div class="page-header">
+		<div class="page-header">		
 			<h1> 隐马尔可夫模型（二）：前向算法</h1>
-		</div>
+		</div>		
 	
 
-</div>
 
 
 <div class="row post">
@@ -106,31 +99,30 @@
 	<div class="col-md-9">
 	
 
-	
+			
 
 	<!-- content -->
-	<div class="mypage">
+	<div class="mypage">		
 	    <p>这次说明HMM模型的三大算法之一：前向算法，即已知模型参数$\lambda=(\pi_0,A,B)$，求某个观测值序列$O = O_1O_2,\ldots,O_T$的概率$P(O|\lambda)$。</p>
 <p>前向算法是一种动态规划算法，按照定义:<br>$$P(O|\lambda)=\sum_XP(O,X|\lambda)P(O|X,\lambda)$$<br>$$P(X|\lambda) = \pi_{X_1}\prod^T_{i=2}a_{X_{i-1}X_i}$$<br>$$P(O|X,\lambda) = \prod^T_{i=1}b_{X_iO_i}$$<br>其中，$X$是隐状态变量。</p>
 <p>定义一个前向变量表示到时间点$t$时刻为止，输出序列为$O_1…O_t$，且状态变量的值为$S_i$的概率，即：<br>$$\alpha_t(i) = P(O_1…O_t,X_t=s_i|\lambda)$$<br>这样$t$到$t+1$时刻的状态概率，可以根据以下公式进行迭代计算：<br>$$\alpha_{t+1(j)} = [\sum_{i=1}^N\alpha_t(i)a_{ij}]b_{jX_{t+1}}$$<br>最终的结果为：<br>$$P(O|\lambda)=\sum^N_{i=1}\alpha_t(i)$$</p>
 <p>参考<a href="http://www.docin.com/p-21714752.html" target="_blank">隐马尔可夫模型简介-刘群</a></p>
-
+	  
 	</div>
 
 	<div>
   	<center>
-	<!-- _partial/post/pagination -->
-<div class="pagination">
+	<div class="pagination">
 <ul class="pagination">
 	 
-		
+				
     	<li class="prev"><a href="/2014/10/07/hmm_viterbi/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
   		
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2014/09/05/hidden_morkov_model/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		   <li class="next"><a href="/2014/09/05/hidden_morkov_model/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -138,39 +130,35 @@
 
     </center>
 	</div>
-
+	
 	<!-- comment -->
-	<!-- _partial/post/comment -->
-
+	
 <section id="comment">
   <h2 class="title">留言</h2>
 
   
 </section>
 
-
-
-	</div> <!-- col-md-9/col-md-12 -->
-
 	
-		<!-- _partial/post/meta -->
-<div class="col-md-3"> 
+	</div> <!-- col-md-9/col-md-12 -->
+	
+	
+		<div class="col-md-3"> 
 
 	<!-- date -->
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	10月 6 2014
+	10月 6 2014 
 	</div>
 	
 
 	<!-- categories -->
     
 	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
     <ul id="categorys" class="tag_box list-unstyled collapse in">
-        <!-- _partial/post/category -->
-  
+          
   <li>
     <li><a href="/categories/人工智能/">人工智能<span>10</span></a></li>
   </li>
@@ -182,54 +170,45 @@
 	<!-- tags -->
 	
 	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
-    <ul id="tags" class="tag_box list-unstyled collapse in">
-	    <!-- _partial/post/tag -->
-  
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
   <li><a href="/tags/HMM/">HMM<span>3</span></a></li>
-
     </ul>
 	</div>
-	
+		
 
 	<!-- toc -->
 	<div class="meta-widget">
 	
 	</div>
-
+	
     <hr>
-
+	
 </div><!-- col-md-3 -->
 
 	
 
 </div><!-- row -->
 
-
-	  </div>
-    <footer> <!-- _partial/footer -->
-<p>
-  &copy; 2014 by Jinwen
-  &nbsp;
-  <span class="text-muted">Powered by:
-    <a class="text-muted" href="http://zespia.tw/hexo/" target="_blank">Hexo</a>,
-    <a class="text-muted" href="http://github.com/yieme/hexo-theme-freewill/">Freewill</a>
-    &amp;
-    <a class="text-muted" href="http://bootswatch.com/" target="_blank">Bootswatch <small>v3.2</small></a>
-  </span>
-</p>
- </footer>
-  </div> <!-- container-narrow -->
-  <!-- _partial/after_footer -->
-<a id="gotop" href="#">
-  <span>▲</span>
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 Jinwen
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
 </a>
 
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
-
 
 
 
@@ -257,4 +236,5 @@
     });
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body></html>
+</body>
+   </html>

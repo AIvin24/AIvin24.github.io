@@ -1,4 +1,4 @@
-<!DOCTYPE HTML><!-- _partial/head -->
+<!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="utf-8">
@@ -19,32 +19,26 @@
   
 
   
-    <link rel="alternative" href="/true" title="风清阳明" type="application/atom+xml">
-  
   
     <link href="/favicon.png" rel="icon">
   
-
   
-  <link rel="stylesheet" href="/css/bootstrap.cerulean.min.css" media="screen" type="text/css">
-  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
   <script src="/js/jquery-2.0.3.min.js"></script>
 
   <!-- analytics -->
-  <!-- _partial/post/google_analytics -->
-
-
+  
 
 </head>
 
- <body>
-  <!-- _partial/navigation -->
-<nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		<span class="sr-only">Toggle navigation</span>
@@ -74,6 +68,12 @@
 			</a>
 		  </li>
 		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
 		</ul>
       </div>
     </div> <!-- container -->
@@ -82,22 +82,15 @@
 
   <div class="container">
   	<div class="content">
-    	 <!-- post -->
+    	 
 
-
-<!-- _partial/article -->
-
-<!-- _partial/post/title -->
-<div class="panel-heading">
 
 	
-  <!-- display as page -->
-		<div class="page-header">
+		<div class="page-header">		
 			<h1> 隐马尔可夫模型（三）：Viterbi 算法</h1>
-		</div>
+		</div>		
 	
 
-</div>
 
 
 <div class="row post">
@@ -106,10 +99,10 @@
 	<div class="col-md-9">
 	
 
-	
+			
 
 	<!-- content -->
-	<div class="mypage">
+	<div class="mypage">		
 	    <p>已知HMM参数$\lambda=(\pi_0,A,B)$和观察序列$O = O_1O_2,\ldots,O_T$，求最有可能的状态序列，即解码问题。Viterbi算法可以用来解决这一问题。类似于前向算法，需要设置一个局部概率变量，先来看一下图解（图片来源于<a href="http://www.comp.leeds.ac.uk/roger/HiddenMarkovModels/html_dev/main.html" target="_blank">Hidden Markov Models</a>）。</p>
 <p>目前有三种天气情况：晴、多云以及下雨，这是状态变量，我们可以观察到海藻的状态也是三种：干的、潮湿以及浸水，如下图，天气状况的改变会影响到海藻的潮湿程度，我们需要根据海藻的状态变化序列推测出最有可能的天气变化。</p>
 <p><img src="/image/HMM/trellis.gif" alt=""></p>
@@ -121,23 +114,22 @@
 <p>这是求最大概率的过程，为了找出最优状态，只需要再每一次计算概率的时候，将当前节点保存下来即可，如下：<br>$$\phi_t(i)=argmax_j(\sigma_{t-1}(j)a_{ji})$$<br>其中$\phi_t(i)$表示到达状态$i$时的前一状态，即$t-1$时的状态。这样就得出了最优状态序列的估计。</p>
 <p>参考:</p>
 <p><a href="http://en.wikipedia.org/wiki/Viterbi_algorithm" target="_blank">Viterbi Algorithm</a><br><a href="http://www.comp.leeds.ac.uk/roger/HiddenMarkovModels/html_dev/viterbi_algorithm/s1_pg1.html" target="_blank">HMM Viterbi_algorithm</a></p>
-
+	  
 	</div>
 
 	<div>
   	<center>
-	<!-- _partial/post/pagination -->
-<div class="pagination">
+	<div class="pagination">
 <ul class="pagination">
 	 
-		
+				
     	<li class="prev"><a href="/2014/11/13/silent_majority/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
   		
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2014/10/06/hmm_forward_algorithm/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		   <li class="next"><a href="/2014/10/06/hmm_forward_algorithm/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -145,39 +137,35 @@
 
     </center>
 	</div>
-
+	
 	<!-- comment -->
-	<!-- _partial/post/comment -->
-
+	
 <section id="comment">
   <h2 class="title">留言</h2>
 
   
 </section>
 
-
-
-	</div> <!-- col-md-9/col-md-12 -->
-
 	
-		<!-- _partial/post/meta -->
-<div class="col-md-3"> 
+	</div> <!-- col-md-9/col-md-12 -->
+	
+	
+		<div class="col-md-3"> 
 
 	<!-- date -->
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	10月 7 2014
+	10月 7 2014 
 	</div>
 	
 
 	<!-- categories -->
     
 	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
     <ul id="categorys" class="tag_box list-unstyled collapse in">
-        <!-- _partial/post/category -->
-  
+          
   <li>
     <li><a href="/categories/人工智能/">人工智能<span>10</span></a></li>
   </li>
@@ -189,54 +177,45 @@
 	<!-- tags -->
 	
 	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
-    <ul id="tags" class="tag_box list-unstyled collapse in">
-	    <!-- _partial/post/tag -->
-  
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
   <li><a href="/tags/HMM/">HMM<span>3</span></a></li>
-
     </ul>
 	</div>
-	
+		
 
 	<!-- toc -->
 	<div class="meta-widget">
 	
 	</div>
-
+	
     <hr>
-
+	
 </div><!-- col-md-3 -->
 
 	
 
 </div><!-- row -->
 
-
-	  </div>
-    <footer> <!-- _partial/footer -->
-<p>
-  &copy; 2014 by Jinwen
-  &nbsp;
-  <span class="text-muted">Powered by:
-    <a class="text-muted" href="http://zespia.tw/hexo/" target="_blank">Hexo</a>,
-    <a class="text-muted" href="http://github.com/yieme/hexo-theme-freewill/">Freewill</a>
-    &amp;
-    <a class="text-muted" href="http://bootswatch.com/" target="_blank">Bootswatch <small>v3.2</small></a>
-  </span>
-</p>
- </footer>
-  </div> <!-- container-narrow -->
-  <!-- _partial/after_footer -->
-<a id="gotop" href="#">
-  <span>▲</span>
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 Jinwen
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
 </a>
 
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
-
 
 
 
@@ -264,4 +243,5 @@
     });
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body></html>
+</body>
+   </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE HTML><!-- _partial/head -->
+<!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="utf-8">
@@ -19,32 +19,26 @@
   
 
   
-    <link rel="alternative" href="/true" title="风清阳明" type="application/atom+xml">
-  
   
     <link href="/favicon.png" rel="icon">
   
-
   
-  <link rel="stylesheet" href="/css/bootstrap.cerulean.min.css" media="screen" type="text/css">
-  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
   <script src="/js/jquery-2.0.3.min.js"></script>
 
   <!-- analytics -->
-  <!-- _partial/post/google_analytics -->
-
-
+  
 
 </head>
 
- <body>
-  <!-- _partial/navigation -->
-<nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		<span class="sr-only">Toggle navigation</span>
@@ -74,6 +68,12 @@
 			</a>
 		  </li>
 		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
 		</ul>
       </div>
     </div> <!-- container -->
@@ -82,22 +82,15 @@
 
   <div class="container">
   	<div class="content">
-    	 <!-- post -->
+    	 
 
-
-<!-- _partial/article -->
-
-<!-- _partial/post/title -->
-<div class="panel-heading">
 
 	
-  <!-- display as page -->
-		<div class="page-header">
+		<div class="page-header">		
 			<h1> 朴素贝叶斯分类方法</h1>
-		</div>
+		</div>		
 	
 
-</div>
 
 
 <div class="row post">
@@ -106,10 +99,10 @@
 	<div class="col-md-9">
 	
 
-	
+			
 
 	<!-- content -->
-	<div class="mypage">
+	<div class="mypage">		
 	    <p>贝叶斯分类的基础是概率论。和kNN、决策树这些分类方法有点不同，基于概率的分类方法是通过最大化概率来实现分类的。这就是说，当前待分类数据可能属于所有类，计算出各自的概率，然后选概率最大的类作为分类结果。贝叶斯分类就是一种基本的概率方法，需要利用到贝叶斯公式。朴素贝叶斯分类的假设前提是条件独立，即在各个种类中，每个特征的出现和其他特征没有关系。独立性很简单，假设现在有两个字:”我”、“们”，在日常用语之中，这两个字并不是完全没有关系的，他们之中的某一个出现了，那一个字的出现几率会增大，所以他们不是完全独立的。条件独立稍微有点变化，只是将范围缩小至一个特定的类别而已，我们只在这个小范围考虑独立性。</p>
 <h1 id="介绍">介绍</h1>
 <p>假设现在需要判断一封邮件是否是垃圾邮件，根据朴素贝叶斯分类方法的原理，我们需要计算当前邮件属于垃圾邮件和不属于垃圾邮件各自的概率，判断的公式如下：  </p>
@@ -189,23 +182,22 @@
         <span class="keyword">if</span> word <span class="keyword">in</span> vocabList:
             returnVec[vocabList.index(word)] += <span class="number">1</span>  <span class="comment">#累计单词的次数</span>
     <span class="keyword">return</span> returnVec
-</code></pre>
+</code></pre>	  
 	</div>
 
 	<div>
   	<center>
-	<!-- _partial/post/pagination -->
-<div class="pagination">
+	<div class="pagination">
 <ul class="pagination">
 	 
-		
+				
     	<li class="prev"><a href="/2014/05/28/logistic-regression/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
   		
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2014/05/25/desicison_tree/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		   <li class="next"><a href="/2014/05/25/desicison_tree/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -213,39 +205,35 @@
 
     </center>
 	</div>
-
+	
 	<!-- comment -->
-	<!-- _partial/post/comment -->
-
+	
 <section id="comment">
   <h2 class="title">留言</h2>
 
   
 </section>
 
-
-
-	</div> <!-- col-md-9/col-md-12 -->
-
 	
-		<!-- _partial/post/meta -->
-<div class="col-md-3"> 
+	</div> <!-- col-md-9/col-md-12 -->
+	
+	
+		<div class="col-md-3"> 
 
 	<!-- date -->
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	5月 27 2014
+	5月 27 2014 
 	</div>
 	
 
 	<!-- categories -->
     
 	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
     <ul id="categorys" class="tag_box list-unstyled collapse in">
-        <!-- _partial/post/category -->
-  
+          
   <li>
     <li><a href="/categories/人工智能/">人工智能<span>10</span></a></li>
   </li>
@@ -257,54 +245,45 @@
 	<!-- tags -->
 	
 	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
-    <ul id="tags" class="tag_box list-unstyled collapse in">
-	    <!-- _partial/post/tag -->
-  
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
   <li><a href="/tags/机器学习实战/">机器学习实战<span>7</span></a></li>
-
     </ul>
 	</div>
-	
+		
 
 	<!-- toc -->
 	<div class="meta-widget">
 	
 	</div>
-
+	
     <hr>
-
+	
 </div><!-- col-md-3 -->
 
 	
 
 </div><!-- row -->
 
-
-	  </div>
-    <footer> <!-- _partial/footer -->
-<p>
-  &copy; 2014 by Jinwen
-  &nbsp;
-  <span class="text-muted">Powered by:
-    <a class="text-muted" href="http://zespia.tw/hexo/" target="_blank">Hexo</a>,
-    <a class="text-muted" href="http://github.com/yieme/hexo-theme-freewill/">Freewill</a>
-    &amp;
-    <a class="text-muted" href="http://bootswatch.com/" target="_blank">Bootswatch <small>v3.2</small></a>
-  </span>
-</p>
- </footer>
-  </div> <!-- container-narrow -->
-  <!-- _partial/after_footer -->
-<a id="gotop" href="#">
-  <span>▲</span>
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 Jinwen
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
 </a>
 
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
-
 
 
 
@@ -332,4 +311,5 @@
     });
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body></html>
+</body>
+   </html>

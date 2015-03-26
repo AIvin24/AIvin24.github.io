@@ -1,4 +1,4 @@
-<!DOCTYPE HTML><!-- _partial/head -->
+<!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="utf-8">
@@ -19,32 +19,26 @@
   
 
   
-    <link rel="alternative" href="/true" title="风清阳明" type="application/atom+xml">
-  
   
     <link href="/favicon.png" rel="icon">
   
-
   
-  <link rel="stylesheet" href="/css/bootstrap.cerulean.min.css" media="screen" type="text/css">
-  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
   <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
   <script src="/js/jquery-2.0.3.min.js"></script>
 
   <!-- analytics -->
-  <!-- _partial/post/google_analytics -->
-
-
+  
 
 </head>
 
- <body>
-  <!-- _partial/navigation -->
-<nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		<span class="sr-only">Toggle navigation</span>
@@ -74,6 +68,12 @@
 			</a>
 		  </li>
 		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
 		</ul>
       </div>
     </div> <!-- container -->
@@ -82,13 +82,11 @@
 
   <div class="container">
   	<div class="content">
-    	 <!-- tag -->
-<!-- _partial/archive -->
+    	 
 
-
-<!-- archive.title -->
+<!-- title -->
 <div class="page-header">
-  <h1 class="archive-title-tag archive-title-机器学习实战">机器学习实战</h1>
+  <h1 class="archive-title-tag">机器学习实战</h1>
 </div>
 
 <div class="row page">
@@ -97,520 +95,77 @@
   <div class="col-md-9">
 	
 
-	  
-	  <!-- display as entry -->
-	  <div class="mypage">
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/06/19/k-means/" >k-means</a>
-			<span class="text-muted pull-right"><small> 6月 19 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>前面提到的都是监督学习，就是说训练样本的类别标签是已知的。然而实际中，大量的数据类别标签是未知的，所以，利用这些数据的学习算法（即非监督学习）显得举足轻重。聚类是一种非监督学习算法，而k-means算法是聚类算法中的代表。</p>
-<h1 id="介绍">介绍</h1>
-<p>k-means算法中的k表示聚成k类，整个聚类过程可以这么设想，在一大群人中间需要选出k个领头人（质心点），然后剩下所有人都开始追随离自己最近（距离）的领头人，同一个领头人带领的人归为一类，所以总共有k类。算法流程如下：    </p>
-<ol>
-<li>随机选出k个质心点；  </li>
-<li>计算每个点与质心点的距离，将每个点和离它最近的质心点归为同一类；</li>
-<li>在每一类中重新计算质心点；  </li>
-<li>如果质心点发生变化，回到第2步；  </li>
-<li>算法终止，得到k个类，每个类的质心点与同一类的点距离最小。</li>
-</ol>
-<p>整个思想都比较简单，但是由于k-means会陷入局部最小值，所以需要采取一些改进措施，后面会加以介绍。此外，对于距离的衡量，可以有多重方式，比如欧几里得距离、编辑距离等等。 </p>
-<h1 id="代码">代码</h1>
-<p>随机选取质心点的代码：</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">randCent</span><span class="params">(dataSet, k)</span>:</span>
-    n = shape(dataSet)[<span class="number">1</span>]
-    centroids = mat(zeros((k,n)))  <span class="comment"># 初始化质心点矩阵</span>
-    <span class="comment">#质心点必须保证在所有数据点范围以内</span>
-    <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-        minJ = min(dataSet[:,j]) 
-        rangeJ = float(max(dataSet[:,j]) - minJ)
-        centroids[:,j] = mat(minJ + rangeJ * random.rand(k,<span class="number">1</span>))
-    <span class="keyword">return</span> centroids
-</code></pre><p>最原始的k-means算法代码：</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">kMeans</span><span class="params">(dataSet, k, distMeas=distEclud, createCent=randCent)</span>:</span>
-    m = shape(dataSet)[<span class="number">0</span>]   
-    clusterAssment = mat(zeros((m,<span class="number">2</span>))) <span class="comment">#第一列存储类别好，第二列存储与质心点的距离  </span>
-    centroids = createCent(dataSet, k)   <span class="comment">#初始化质心点</span>
-    clusterChanged = <span class="keyword">True</span>   
-    <span class="keyword">while</span> clusterChanged:
-        clusterChanged = <span class="keyword">False</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):<span class="comment">#找到距离最近的质心点，并设置为同一类</span>
-            minDist = inf; minIndex = -<span class="number">1</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(k):
-                distJI = distMeas(centroids[j,:],dataSet[i,:])
-                <span class="keyword">if</span> distJI &lt; minDist:
-                    minDist = distJI; minIndex = j
-            <span class="keyword">if</span> clusterAssment[i,<span class="number">0</span>] != minIndex: clusterChanged = <span class="keyword">True</span>
-            clusterAssment[i,:] = minIndex,minDist**<span class="number">2</span>  <span class="comment">#更新当前数据点的类别</span>
-        <span class="keyword">for</span> cent <span class="keyword">in</span> range(k):<span class="comment">#重新计算质心点</span>
-            ptsInClust = dataSet[nonzero(clusterAssment[:,<span class="number">0</span>].A==cent)[<span class="number">0</span>]]
-            centroids[cent,:] = mean(ptsInClust, axis=<span class="number">0</span>) <span class="comment">#将所有同一类点的平均值作为质心点</span>
-    <span class="keyword">return</span> centroids, clusterAssment
-</code></pre><p>前面已经说过，原始的k-means算法很容易陷入局部最小值（这个与k个质心点的初始化有关系）。一个衡量聚类好坏的是利用误差平方和（SUm of Squared Error, SSE），即当前类所有点与质心点的距离之和，在上段代码中clusterAssment的第二列记录了点与质心点之间的距离。</p>
-<p>为了克服局部最小值问题，可以采用二分k-means算法，这个算法是先将所有的点作为一个类，然后选择每一个类进行二分，即k=2，选择划分后SSE之和最小的那个类进行划分，直到划分的数目等于k。</p>
-<p>参考<a href="http://www.manning.com/pharrington/" target="_blank">《机器学习实战》</a>。</p>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/06/19/k-means/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/06/08/adaboost/" >AdaBoost</a>
-			<span class="text-muted pull-right"><small> 6月 8 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>组合分类器模型是一种将弱分类器组合成强分类器的方法。弱分类器仅仅比随机猜测略好，如果存在多个这种弱分类器，就可以将其提升为强分类器，这就是弱分类器和强分类器的等价问题。Adaboost是组合分类器的代表，本文介绍Adaboost的原理。</p>
-<h1 id="介绍">介绍</h1>
-<p>先图示怎样将弱分类器组合成强分类器，初始数据线性不可分：<br><img src="http://d1zjcuqflbd5k.cloudfront.net/files/acc_263367/mQCF?response-content-disposition=inline;%20filename=1.jpg;&amp;Expires=1402194998&amp;Signature=BEME~LEgJ6X5R6W-TBi8T08pSuyXOre~6~bjlcjzzODjFKPMMLlyd~aOE0wfkSlU9lEPhjgki8h1QjVPbCSG1FkxP-dUrdqFe98rpYnvUodShBmDpNdyvgSmfvZi2wykW9GyJ8DG~W4bEczgNw15RFC94GggBS~pYDEFlSRN2hE_&amp;Key-Pair-Id=APKAJTEIOJM3LSMN33SA" alt=""></p>
-<p>上面3个都是弱分类器（比随机猜测略好），通过加权组合它们，生成下面的强分类器。</p>
-<p>Adaboost算法需要多次迭代，每个弱分类器会有一个权重来衡量最终分类所起的作用。 $\alpha_ih_i(x)$就是强分类器$H(x)$中弱分类器$h_i(x)$ 所占部分。同样，在训练弱分类器的过程之中，对于那些被分错的样本，需要着重考虑，下一次的迭代需要偏向将它们正确分类，所以，每一次迭代需要更改每一个样本的分布 $W_i$，即样本权重。</p>
-<h1 id="AdaBoost算法">AdaBoost算法</h1>
-<ol>
-<li>初始化样本权重系数$w^{(1)}_i = 1/N, i = 1,\ldots,N$。（一共有N个样本，所以均匀权重）；</li>
-<li>迭代M次，在第m次迭代中,通过最小化误差函数得到弱分类器$y_m(x)$，误差函数为$J_m = \sum_i^Nw^{(m)}_nI(y_m(X_n) \neq t_n)$,其中$I(x)$为指示函数。</li>
-<li>估计当前弱分类器的质量：<br>$\epsilon_m = \frac{\sum_i^Nw^{(m)}_nI(y_m(X_n) \neq t_n)}{\sum_i^Nw^{(m)}_n}$<br>进一步得到当前分类器的权重：<br>$\alpha_m = \ln\frac{1-\epsilon_m}{\epsilon}$</li>
-<li>更新样本的权重系数（保证分错的样本在下一次迭代权重要大)<br>$w^{(m+1)}_i =w^{(m)}_i e^{\alpha_mI(y_m(x_n) \neq t_n)}, i = 1,\ldots,N$<br>回到第2步，直到生成M个弱分类器；</li>
-<li>加权组合所有的弱分类器得到最终的强分类器：<br>$H(x) = sign(\sum_m^M\alpha_my_m(x))$</li>
-</ol>
-<h1 id="实例代码">实例代码</h1>
-<p>单一特征分类 </p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">stumpClassify</span><span class="params">(dataMatrix,dimen,threshVal,threshIneq)</span>:</span>
-    <span class="comment">#一个弱分类器的结果，所有大于（或小于）阈值的数据标记为同一类</span>
-    retArray = ones((shape(dataMatrix)[<span class="number">0</span>],<span class="number">1</span>))
-    <span class="keyword">if</span> threshIneq == <span class="string">'lt'</span>:
-        retArray[dataMatrix[:,dimen] &lt;= threshVal] = -<span class="number">1.0</span>
-    <span class="keyword">else</span>:
-        retArray[dataMatrix[:,dimen] &gt; threshVal] = -<span class="number">1.0</span>
-    <span class="keyword">return</span> retArray
-</code></pre><p>建立一个弱分类器</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">buildStump</span><span class="params">(dataArr,classLabels,D)</span>:</span>
-    <span class="comment"># 数据矩阵和类标记向量</span>
-    dataMatrix = mat(dataArr); labelMat = mat(classLabels).T
-    m,n = shape(dataMatrix)  <span class="comment"># m,n分别代表训练实例的数量和特征维度</span>
-    numSteps = <span class="number">10.0</span>; bestStump = {}; bestClasEst = mat(zeros((m,<span class="number">1</span>)))
-    minError = inf <span class="comment">#初始化最小的错误率为无穷大</span>
-    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):<span class="comment">#循环遍历所有特征维度，找出错误率最小的特征进行划分</span>
-        rangeMin = dataMatrix[:,i].min(); rangeMax = dataMatrix[:,i].max();  <span class="comment"># 当前特征维度最大值最小值确定划分的范围</span>
-        stepSize = (rangeMax-rangeMin)/numSteps  <span class="comment">#当前特征维度划分步长</span>
-        <span class="keyword">for</span> j <span class="keyword">in</span> range(-<span class="number">1</span>,int(numSteps)+<span class="number">1</span>): <span class="comment">#遍历每个小块，确定划分的最优位置</span>
-            <span class="keyword">for</span> inequal <span class="keyword">in</span> [<span class="string">'lt'</span>, <span class="string">'gt'</span>]: <span class="comment">#确定分界线两边的类别</span>
-                threshVal = (rangeMin + float(j) * stepSize)
-                predictedVals = stumpClassify(dataMatrix,i,threshVal,inequal) <span class="comment"># 当前分类结果</span>
-                errArr = mat(ones((m,<span class="number">1</span>)))
-                errArr[predictedVals == labelMat] = <span class="number">0</span>  <span class="comment"># 当前错误率</span>
-                weightedError = D.T*errArr  <span class="comment"># 加权样本分布权重的错误率</span>
-                <span class="keyword">if</span> weightedError &lt; minError: <span class="comment">#找到错误率最小的划分块</span>
-                    minError = weightedError
-                    bestClasEst = predictedVals.copy()
-                    bestStump[<span class="string">'dim'</span>] = i
-                    bestStump[<span class="string">'thresh'</span>] = threshVal
-                    bestStump[<span class="string">'ineq'</span>] = inequal
-    <span class="keyword">return</span> bestStump,minError,bestClasEst
-</code></pre><p>合成强分类器</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">adaBoostTrainDS</span><span class="params">(dataArr,classLabels,numIt=<span class="number">40</span>)</span>:</span>
-    weakClassArr = []
-    m = shape(dataArr)[<span class="number">0</span>]
-    D = mat(ones((m,<span class="number">1</span>))/m)   <span class="comment">#均匀初始化样本的分布</span>
-    aggClassEst = mat(zeros((m,<span class="number">1</span>)))
-    <span class="keyword">for</span> i <span class="keyword">in</span> range(numIt):
-        bestStump,error,classEst = buildStump(dataArr,classLabels,D)  <span class="comment"># 建立一个弱分类器</span>
-        alpha = float(<span class="number">0.5</span>*log((<span class="number">1.0</span>-error)/max(error,<span class="number">1e-16</span>))) <span class="comment">#计算当前分类器的权重</span>
-        bestStump[<span class="string">'alpha'</span>] = alpha  
-        weakClassArr.append(bestStump)                  
-        expon = multiply(-<span class="number">1</span>*alpha*mat(classLabels).T,classEst) 
-        D = multiply(D,exp(expon))                              
-        D = D/D.sum() <span class="comment">#更新样本分布（注意归一化）</span>
-        aggClassEst += alpha*classEst 
-        aggErrors = multiply(sign(aggClassEst) != mat(classLabels).T,ones((m,<span class="number">1</span>))) 
-        errorRate = aggErrors.sum()/m  <span class="comment"># 计算错误率，直到错误率为0终止</span>
-        <span class="keyword">if</span> errorRate == <span class="number">0.0</span>: <span class="keyword">break</span>
-    <span class="keyword">return</span> weakClassArr,aggClassEst
-</code></pre><p>测试</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">adaClassify</span><span class="params">(datToClass,classifierArr)</span>:</span>
-    dataMatrix = mat(datToClass)
-    m = shape(dataMatrix)[<span class="number">0</span>]
-    aggClassEst = mat(zeros((m,<span class="number">1</span>)))
-    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(classifierArr)):
-        classEst = stumpClassify(dataMatrix,classifierArr[i][<span class="string">'dim'</span>],\
-                                 classifierArr[i][<span class="string">'thresh'</span>],\
-                                 classifierArr[i][<span class="string">'ineq'</span>])
-        aggClassEst += classifierArr[i][<span class="string">'alpha'</span>]*classEst  <span class="comment">#累积所有弱分类器的结果</span>
-    <span class="keyword">return</span> sign(aggClassEst)
-</code></pre><p>实例代码来自<a href="http://www.manning.com/pharrington/" target="_blank">《机器学习实战》</a>。</p>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/06/08/adaboost/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/06/01/svm/" >支持向量机SVM</a>
-			<span class="text-muted pull-right"><small> 6月 1 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>支持向量机(Support Vector Machine，SVM)是最重要的分类器之一（还是加上“之一”两个字，这样保证不会错），下面开始简单推导出SVM。</p>
-<p>SVM的别名是最大间隔分类器，这里的最大间隔指的是训练样本点到分隔超平面的间隔最大。在感知器中，没有考虑最大分隔这一条件，所以对于线性可分的数据集，会存在多个满足条件的分隔超平面，而在SVM中，加上“最大间隔这一条件”，使得分隔超平面唯一存在。</p>
-<p>而在介绍SVM之前，需要了解拉格朗日乘子法的原理。</p>
-<h1 id="拉格朗日乘子法">拉格朗日乘子法</h1>
-<p>拉格朗日乘子法是凸优化中一个基础知识点，在高等数学中也接触过这一原理，但是在那里约束条件一般只是涉及到等式约束，其实在等式约束和不等式约束共存的前提下，整个过程的原理也是一样的。</p>
-<h2 id="原始问题">原始问题</h2>
-<p>$$ \min_{x \in R^n} f(x) \\<br>   s.t. c_i(x) \leq 0,i=1,2,\ldots,k\\<br>   \qquad h_j(x) = 0,j = 1,2,\ldots,l $$</p>
-<p>其中，$f(x),c_i(x),h_j(x)$是定义在$R^n$上的连续可微函数。</p>
-<p>解决这个优化问题可以采用拉格朗日乘子法，先引入拉格朗日函数：<br>$$L(x,\alpha,\beta) = f(x) + \alpha c(x) + \beta h(x)$$<br>其中，$\alpha,\beta$是k,l维的行向量，即拉格朗日乘子，且$\alpha \geq 0$。</p>
-<p>考虑一下关于$x$的函数:<br>$$\theta (x) = \max_{\alpha,\beta;\alpha_i \geq 0} L(x,\alpha,\beta)$$</p>
-<p>可以证明当x满足原始问题的约束条件时，$\theta (x) = f(x) $。（当约束条件的等号都成立时，$\theta (x)取得最大值$，反之，如果约束条件不满足，则\theta (x) 的取值趋向于无穷大）</p>
-<p>此时，原始问题的极小化问题变为:</p>
-<p>$$<br>\min_x \theta(x)<br>$$</p>
-<h2 id="拉格朗日乘子法图解">拉格朗日乘子法图解</h2>
-<p>想象一下目标函数关于变量的等高线，以二维变量为例，如下图所示（来源于维基百科）:<br><img src="https://s3-us-west-2.amazonaws.com/droplr.storage/files/acc_263367/CsFD?AWSAccessKeyId=AKIAJSVQN3Z4K7MT5U2A&amp;Expires=1401629870&amp;Signature=OjYyMqzDKIj%2FylGgFXAUuUegUzs%3D" alt=""></p>
-<p>每条等高线对应着同一个目标函数值。约束条件的函数可以看成一条曲线，与相应等高线相交的点就是满足约束条件的目标值和相应的变量值。为了找到最优的目标值，需要使等高线与约束曲线相切。在相切点目标函数的梯度和约束条件函数的梯度是共线的，即$f(x)$的梯度等于 $\alpha h(x)$的梯度(假设只有等式约束)。</p>
-<h2 id="对偶问题">对偶问题</h2>
-<p>设函数$$D(\alpha,\beta) = min_{x} L(x,\alpha,\beta)$$</p>
-<p>再极大化这一函数，可得原问题的对偶问题：<br>$$ \max_{\alpha,\beta;\alpha_i \geq 0} D(\alpha,\beta)\\<br>   s.t. \alpha_i \geq 0, i = 1,\ldots,k<br>$$</p>
-<p>只要满足KKT条件，对偶问题的最优解和原始问题的最优解是一致的。在这里KKT条件就是</p>
-<ol>
-<li>$L(x,\alpha,\beta)$对x求导为0；</li>
-<li>$h(x) = 0$; </li>
-<li>$\alpha g(x) = 0$</li>
-</ol>
-<p>整个拉格朗日乘子法是解决带有等式和不等式约束条件的优化方法，特别是其将原问题变为对偶问题（最优解一致）能够很方便得对模型进行扩展，比如后面将要提到的核方法。</p>
-<h1 id="SVM">SVM</h1>
-<p>设分离超平面为:<br>$$w^Tx + b = 0$$</p>
-<p>决策函数为:<br>$$f(x) = sign(w^Tx+b)$$</p>
-<p>数据点到分离面的距离为$|w^T+b|$，当$w^T+b$的符号与标记$y$一致时表示分类正确，这样用$y(w^Tx+b)$来表示分类的正确性和确信度，符号为正表示分类正确，值的大小表示到分隔面的距离。</p>
-<h2 id="函数间隔和几何间隔">函数间隔和几何间隔</h2>
-<p>样本点的函数间隔为:<br>$$\hat \gamma_i = y_i(w^T x_i + b)$$</p>
-<p>训练集的函数间隔就是:<br>$$\hat \gamma = \min_{i=1,\ldots,N} \hat \gamma_i$$</p>
-<p>由于w,b成比例变化时，超平面不变，但是函数间隔变了，这样通过函数间隔无法刻画超平面的变化，需要一个其他的间隔来进行衡量，由此引出几何间隔。</p>
-<p>样本点的几何间隔为：<br>$$Y_i = y_i(\frac{w^T}{||w^T||} x_i + \frac{b}{||w^T||})$$</p>
-<p>训练集的间隔为：<br>$$Y = \min_{i=1,\ldots,N} Y_i$$</p>
-<p>w,b成比例变化时，几何间隔不变，对应着超平面不变，所以可以通过w,b结合几何间隔来刻画超平面的位置。</p>
-<p>函数间隔和几何间隔的关系很明显为$Y_i = \frac{\hat \gamma_i}{||W||},Y = \frac{\hat \gamma}{||W||}$。</p>
-<h2 id="间隔最大化">间隔最大化</h2>
-<p>现在的目的就是最大化训练集的几何间隔，所以优化函数如下：<br>$$\max_{w,b} Y \\<br>  s.t.\qquad y_i((\frac{w^T}{||w^T||} x_i + \frac{b}{||w^T||}) \geq Y,i=1,\dots,N$$</p>
-<p>其中约束条件表示任何数据点的几何间隔至少是$Y$，注意那些离分隔面最近的点的距离就是$Y$，这些点被称作为支持向量，这也是支持向量机名称的来源。分隔面只由这些支持向量决定，训练集中其他数据点的变化对平面没有什么影响。</p>
-<p>利用几何间隔和函数间隔的关系，用函数间隔来表示这一优化函数，如下：<br>$$\max_{w,b} \frac{\hat \gamma}{||w||} \\<br>  s.t.\qquad y_i((w^Tx_i + b) \geq \hat \gamma,i=1,\dots,N$$</p>
-<p>前面说过函数间隔对于分隔面的位置没有影响，所以为了方便，令$\hat \gamma = 1$，同时为了规范化优化函数（一般是考虑最小化问题），可以将最大化$\frac{1}{||w||}$转化成最小化$\frac{1}{2}||w||^2$。于是SVM的线性可分优化问题最终确定为如下：<br>$$\min_{w,b}\frac{1}{2}||w||^2\\<br>s.t.\qquad y_i(w^Tx_i+b) - 1 \geq 0, i = 1,2,\ldots,N$$</p>
-<p>求解这一优化问题的最优解，即是最优分离超平面，支持向量就是满足$y_i(w^Tx_i+b) - 1 = 0$的点。</p>
-<h2 id="对偶求解">对偶求解</h2>
-<p>求解前面的优化问题要利用到前面提到的朗格朗日乘子法，且需要转化成对偶问题。转化成对偶问题有两个好处：</p>
-<ol>
-<li>求解方便；</li>
-<li>引入核函数，将SVM推广到非线性分类上去。</li>
-</ol>
-<p>根据前面介绍的对偶关系，对偶问题是一个极大极小值问题：<br>$$\max<em>{\alpha} \min</em>{w,b} L(w,b,\alpha)$$</p>
-<p>所以需要先求$L(w,b,\alpha)$的极小值，再求对$\alpha$的极大。 </p>
-<p>第一步：求解$\min_{w,b} L(w,b,\alpha)$ </p>
-<p>分别对$w,b$求导并令其等于0, 然后代入拉格朗日函数得到</p>
-<p>$$\min_{w,b} L(w,b,\alpha) = $$</p>
-<p>$$-\frac{1}{2}\sum_{i=1}^N \sum_j^N \alpha_i\alpha_jy_iy_j(x_ix_j) +\sum_i^N\alpha_i$$</p>
-<p>第二步：求$\min_{w,b} L(w,b,\alpha)$的极大，即对偶问题:</p>
-<p>$$\max -\frac{1}{2}\sum_{i=1}^N \sum_j^N \alpha_i\alpha_jy_iy_j(x_ix_j) +\sum_i^N\alpha_i$$</p>
-<p>$$s.t. \qquad \sum_{i=1}^N \alpha_iy_i = 0$$</p>
-<p>$$\qquad \alpha_i \geq 0,i = 1,2,\ldots,N$$</p>
-<h2 id="线性不可分问题">线性不可分问题</h2>
-<p>前面是在线性可分的假设基础之上，如果数据不是线性可分的，这个时候需要引入松弛变量$\xi$，因为不管怎么分，都会有些数据是分错的，唯一能够做的就是使分错的数目最小（或者代价最小）。所以，优化函数变成了以下形式：<br>$$\min_{w,b,\xi} \frac{1}{2} ||w||^2+C\sum_i^N\xi_i$$</p>
-<p>$$s.t. y_i(wx_i+b) \geq 1 - \xi_i,i=1,2,\ldots,N$$</p>
-<p>$$\xi_i \geq 0,i=1,2,\ldots,N$$</p>
-<h2 id="非线性支持向量机">非线性支持向量机</h2>
-<p>有时候，数据在当前维度下不是线性可分的，但是将其映射到高维空间之后，数据变得线性可分。这个观念也可以从另一方面理解，如果数据线性不可分，但是可以画一条曲线将它们不同的类分离，而这条曲线可以理解成高维空间的一条直线，说明这些数据在高维空间是线性可分的。比方说$x^2+y^2 = 1$在平面空间内是一个圆，而在空间$(z_1=x^2,z_2 = y^2)$空间内就是一条$z_1+z_2 = 1$的直线。</p>
-<p>解决这种问题就需要利用到核函数的概念。</p>
-<h3 id="核函数">核函数</h3>
-<p>低维到高维的变换需要一个映射函数：<br>$$\phi: X \rightarrow H$$</p>
-<p>而核函数表示映射过到高维空间中数据点的内积，即函数$K(x,y)$满足：<br>$$K(x,y) = \phi(x)\cdot \phi(y), x,y \in X$$</p>
-<p>其中$\phi(x)\cdot \phi(y)$表示内积。</p>
-<p>如何利用核函数解决高维线性可分问题？</p>
-<p>还记得前面提到的对偶问题的优势2吗？在对偶问题的目标函数中，存在$x_ix_j$这一因子，如果将其替换为$\phi(x_i)\cdot \phi(x_j)$，就可以直接应用核函数来将数据映射到高维空间进行线性划分。</p>
-<p>核函数最直接的优势就是我们不需要去寻找映射函数$\phi$，而关心数据本身在高维空间的分布。</p>
-<p>哪些函数能够成为核函数呢？需要满足正定核函数的条件。其实，平时利用的最多多的也就是那几个：高斯核、径向基核等等，如果需要实际体验，可以尝试libsvm这个软件，非常好用，有matlab接口(^_^)。</p>
-<p>至此，整个SVM的初步流程理清了一遍，大致过程应该可以明了。</p>
-<p>参考文献：  </p>
-<ol>
-<li>《统计机器学习》，李航  </li>
-<li>《机器学习实战》，Peter Harrington</li>
-</ol>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/06/01/svm/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/05/28/logistic-regression/" >Logistic 回归</a>
-			<span class="text-muted pull-right"><small> 5月 28 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>（把公式转化成图片然后再插入页面的做法实在是麻烦，主要是每次都要加一个<img>这种标签，完全丢掉了直接写latex的方便。现在终于可以直接在.md文件中直接插入公式了，^_^）</p>
-<h1 id="介绍">介绍</h1>
-<p>考虑超平面分类方法，假设目前确定好一个超平面$W^TX = 0$，对于待测数据x，如果$W^Tx &gt; 0$，则$x$属于正例，否则属于负例。这种分类函数就是一个阶跃函数，其边界不好确定。现在采用sigmod函数代替这一分类函数：<br>$$g(z) = \frac{1}{1+e^{-z}}$$<br>其中$z = W^Tx$。</p>
-<p>现在的分类方法就是：如果g(z) &gt; 0.5,则x属于正例，否则属于负例。这里完全是用概率来进行分类，如下：<br>$$P(y=1|x,\theta) = g(W^Tx)$$<br>$$P(y=0|x,\theta) = 1 - g(W^Tx)$$</p>
-<p>sigmod函数是连续函数，而且其导数具有一个非常重要的特性，如下：<br>$$g’(z) = g(z)(1-g(z))$$</p>
-<p>后面会利用到这个特征。</p>
-<h1 id="损失函数">损失函数</h1>
-<p>logistic 回归的损失函数是通过最大似然估计出来的。现在假设分类函数为$h(x) = g(W^Tx)$，那么对x进行分类的公式就是:<br>$$P(y|x;\theta) = h(x)^y(1 - h(x))^{1-y}$$<br>得到似然函数(为了和似然函数常规写法一致，将用$\theta$代替$W$表示需要学习的参数)<br>$$L(\theta) = \prod_{i=1}^n P(y^i|x^i;\theta)$$  </p>
-<p>对数似然函数就是:<br>$$l(\theta) = \log L(\theta) = \sum_{i=1}^n (y^i\log h(x^i) + (1-y^i)\log(1 - h(x^i)))$$</p>
-<p>这里是需要最大化似然函数，为了后面最小化损失函数（其实原理一样，只是表述不同罢了），令损失函数为:<br>$$J(\theta) = -\frac{1}{m}l(\theta)$$</p>
-<p>到目前为止，损失函数已经得出，实际训练的目的就是通过训练数据$X$找到最优的参数$\theta^{\star}$，使损失函数$J(\theta)$最小。</p>
-<h1 id="训练：梯度下降">训练：梯度下降</h1>
-<p>如果把损失函数的图像看作是一个碗型的峡谷，不同的参数对应着这块凹地上不同的点。现在，我们的目的是要走到谷底去找小龙女，注意这里只考虑一个谷底。如何又快又准确的去找呢？只要采取两种措施就一定能够走到谷底：1. 永远要往下走；2. 一定要往最陡的方向走。第一种方法保证我们不会南辕北辙，第二种方法保证我们走到目的地的速度最快。</p>
-<p>在这里损失函数$J(\theta)$的值通过$\theta$来确定。因为在任何一点，只要朝着梯度方向的相反方向走，那一定满足前面提到的两个条件，即最快得往下走，如下：</p>
-<p>$$\theta_j = \theta_j - \alpha \frac{\partial}{\partial\theta_j}J(\theta)$$</p>
-<p>其中$\partial即是学习速率$，在这里体现为每一步跨越多大。实际中，需要逐渐减少这一值，因为如果在接近谷底的时候，要“小心谨慎”得走下去，如果跨越太大，有可能会避开谷底，跑到另一个斜面上去了。如果是梯度上升，则将减号换成加号。</p>
-<p>梯度的结果是（根据sigmod函数来进行求导计算)：</p>
-<p>$$\frac{\partial}{\partial\theta_j}J(\theta)=$$  </p>
-<p>$$\frac{1}{m} \sum_{i=1}^m (h(x^i) - y^i)x^i_j$$</p>
-<h1 id="实例">实例</h1>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">gradAscent</span><span class="params">(dataMatIn, classLabels)</span>:</span>
-    dataMatrix = mat(dataMatIn)             
-    labelMat = mat(classLabels).transpose() 
-    m,n = shape(dataMatrix)  <span class="comment"># m,n分别是训练数据的数目和特征数目</span>
-    alpha = <span class="number">0.001</span>            <span class="comment"># 学习速率</span>
-    maxCycles = <span class="number">500</span>          <span class="comment"># 梯度下降次数</span>
-    weights = ones((n,<span class="number">1</span>))     <span class="comment"># 初始化权重，即在坡面任取一点</span>
-    <span class="keyword">for</span> k <span class="keyword">in</span> range(maxCycles):              
-        h = sigmoid(dataMatrix*weights)     <span class="comment">#模型的预测</span>
-        error = (h - labelMat)              <span class="comment">#梯度中的差项，见上面公式</span>
-        weights = weights - alpha * dataMatrix.transpose()* error <span class="comment"># 参数变化，见上面公式  </span>
-    <span class="keyword">return</span> weights
-</code></pre><p>在这里学习速率没有发生变化，且一次参数更改中，所有数据都参与了。实际中，训练数据有可能不能一次性装入内存，这时需要依次读入数据，依次更改参数$\theta$，这种方法称之为“在线梯度学习”，且每次选的数据随机选取，这样称为随机梯度下降。而且学习速率需要在每次迭代后减少，体现为最终接近谷底的速度越来越慢，更能准确得到达谷底。</p>
-<p>参考<a href="http://www.manning.com/pharrington/" target="_blank">《机器学习实战》</a>。</p>
-
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/05/28/logistic-regression/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  <!-- _partial/post/title -->
-<div class="panel-heading">
-
-	
-	<!-- display as entry -->
-		<h3 class="xtitle">
-			<a href="/2014/05/27/bayes/" >朴素贝叶斯分类方法</a>
-			<span class="text-muted pull-right"><small> 5月 27 2014 </small></span>
-		</h3>
-	
-
-</div>
-
-	  <!-- _partial/post/entry -->
-<div class="panel-body">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>贝叶斯分类的基础是概率论。和kNN、决策树这些分类方法有点不同，基于概率的分类方法是通过最大化概率来实现分类的。这就是说，当前待分类数据可能属于所有类，计算出各自的概率，然后选概率最大的类作为分类结果。贝叶斯分类就是一种基本的概率方法，需要利用到贝叶斯公式。朴素贝叶斯分类的假设前提是条件独立，即在各个种类中，每个特征的出现和其他特征没有关系。独立性很简单，假设现在有两个字:”我”、“们”，在日常用语之中，这两个字并不是完全没有关系的，他们之中的某一个出现了，那一个字的出现几率会增大，所以他们不是完全独立的。条件独立稍微有点变化，只是将范围缩小至一个特定的类别而已，我们只在这个小范围考虑独立性。</p>
-<h1 id="介绍">介绍</h1>
-<p>假设现在需要判断一封邮件是否是垃圾邮件，根据朴素贝叶斯分类方法的原理，我们需要计算当前邮件属于垃圾邮件和不属于垃圾邮件各自的概率，判断的公式如下：  </p>
-<ul>
-<li>如果p1（邮件）&gt; p2(邮件)， 则邮件是垃圾邮件；</li>
-<li>如果p1（邮件）&lt; p2(邮件)， 则邮件是正常邮件；</li>
-</ul>
-<p>其中p1和p2分别是垃圾邮件和正常邮件的概率。</p>
-<p>为了计算每个类别的概率，即$<br>p(c_i|x) $，需要利用贝叶斯公式：<br>$$<br>p(c_i|x) = \frac{p(x|c_i)p(c_i)}{p(x)}<br>$$<br>通过计算等式右边的三项得到分类概率。</p>
-<p>为什么要这样去计算右边三项？右边三项是很容易求出来的，比方说计算p(ci)，只要统计每个类别出现的频率就可以了，其他两项也是一样，不好计算左边项。</p>
-<h1 id="实现">实现</h1>
-<p>为了便于程序实现朴素贝叶斯分类器，需要经过以下几步：   </p>
-<ol>
-<li>通过训练数据集构造一个词集，即搜集一些单词作为整个数据集的单词来源；</li>
-<li>数据向量化，通过扫描当前数据，如果单词出现在词典中，则相应位置置为1，否则是0。这样向量的长度为词典的大小；</li>
-<li>所有训练数据的向量组成一个训练矩阵，相应的类别组成一个类别向量。根据训练矩阵和类别向量计算出贝叶斯公式的右边项的分子项。</li>
-<li>将待测数据的向量代入公式的右边，计算出属于每一类的概率。</li>
-</ol>
-<h2 id="构建词向量">构建词向量</h2>
-<p>初始化词典单词的来源</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">loadDataSet</span><span class="params">()</span>:</span>
-    <span class="comment">#初始化6个单词列表</span>
-    postingList=[[<span class="string">'my'</span>, <span class="string">'dog'</span>, <span class="string">'has'</span>, <span class="string">'flea'</span>, <span class="string">'problems'</span>, <span class="string">'help'</span>, <span class="string">'please'</span>],
-                 [<span class="string">'maybe'</span>, <span class="string">'not'</span>, <span class="string">'take'</span>, <span class="string">'him'</span>, <span class="string">'to'</span>, <span class="string">'dog'</span>, <span class="string">'park'</span>, <span class="string">'stupid'</span>],
-                 [<span class="string">'my'</span>, <span class="string">'dalmation'</span>, <span class="string">'is'</span>, <span class="string">'so'</span>, <span class="string">'cute'</span>, <span class="string">'I'</span>, <span class="string">'love'</span>, <span class="string">'him'</span>],
-                 [<span class="string">'stop'</span>, <span class="string">'posting'</span>, <span class="string">'stupid'</span>, <span class="string">'worthless'</span>, <span class="string">'garbage'</span>],
-                 [<span class="string">'mr'</span>, <span class="string">'licks'</span>, <span class="string">'ate'</span>, <span class="string">'my'</span>, <span class="string">'steak'</span>, <span class="string">'how'</span>, <span class="string">'to'</span>, <span class="string">'stop'</span>, <span class="string">'him'</span>],
-                 [<span class="string">'quit'</span>, <span class="string">'buying'</span>, <span class="string">'worthless'</span>, <span class="string">'dog'</span>, <span class="string">'food'</span>, <span class="string">'stupid'</span>]]
-    classVec = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>]    <span class="comment"># 1表示是垃圾邮件，0则相反</span>
-    <span class="keyword">return</span> postingList,classVec 
-</code></pre><p>创建词典          </p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">createVocabList</span><span class="params">(dataSet)</span>:</span>
-    vocabSet = set([])  <span class="comment">#集合中元素不能重复</span>
-    <span class="keyword">for</span> document <span class="keyword">in</span> dataSet:
-        vocabSet = vocabSet | set(document) <span class="comment">#求集合的并</span>
-    <span class="keyword">return</span> list(vocabSet)
-</code></pre><p>单词向量化</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">setOfWords2Vec</span><span class="params">(vocabList, inputSet)</span>:</span>
-    returnVec = [<span class="number">0</span>]*len(vocabList)  <span class="comment">#向量的长度就是词典的大小</span>
-    <span class="keyword">for</span> word <span class="keyword">in</span> inputSet:
-        <span class="keyword">if</span> word <span class="keyword">in</span> vocabList:
-            returnVec[vocabList.index(word)] = <span class="number">1</span>  <span class="comment"># 如果单词在该词典中出现，则置相应位置为1</span>
-        <span class="keyword">else</span>: <span class="keyword">print</span> <span class="string">"the word: %s is not in my Vocabulary!"</span> % word
-    <span class="keyword">return</span> returnVec    <span class="comment">#注意这里返回一个0-1向量矩阵，和词袋模型（后面会提到）有区别</span>
-</code></pre><h2 id="训练模型：计算概率">训练模型：计算概率</h2>
-<p>根据训练矩阵和类别向量可以计算p(x|c)和p(c)，但是由于条件独立性的假设，即:<br>$$<br>p(x|c_i) = p(x_1|c_i)p(x_2|c_i)\ldots p(x_n|c_i)<br>$$<br>如果某一项特征为0，那么最后的值都为0，所以需要将每一项初始化为1，分母设置为2。此外，因为每一项的概率值非常小，如果多项相乘则会产生下溢出，所以需要将其对数化，转成求和。</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">trainNB0</span><span class="params">(trainMatrix,trainCategory)</span>:</span>
-    numTrainDocs = len(trainMatrix)   
-    numWords = len(trainMatrix[<span class="number">0</span>])
-    pAbusive = sum(trainCategory)/float(numTrainDocs)   <span class="comment">#即模型中的p(ci)</span>
-    p0Num = ones(numWords); p1Num = ones(numWords)   <span class="comment">#分子分母分别初始化为1、2   </span>
-    p0Denom = <span class="number">2.0</span>; p1Denom = <span class="number">2.0</span>                        
-    <span class="keyword">for</span> i <span class="keyword">in</span> range(numTrainDocs):
-        <span class="keyword">if</span> trainCategory[i] == <span class="number">1</span>:
-            p1Num += trainMatrix[i]  <span class="comment">#将每一项的特征累加</span>
-            p1Denom += sum(trainMatrix[i]) <span class="comment">#所有特征累加</span>
-        <span class="keyword">else</span>:
-            p0Num += trainMatrix[i]
-            p0Denom += sum(trainMatrix[i])
-    p1Vect = log(p1Num/p1Denom)          <span class="comment"># 每一项特征出现的概率，对应于p(x_1|c),...,p(x_n|c)</span>
-    p0Vect = log(p0Num/p0Denom)          
-    <span class="keyword">return</span> p0Vect,p1Vect,pAbusive
-</code></pre><h1 id="测试算法">测试算法</h1>
-<p>结合训练过程得到的几个参数p(c)和p(x|c)，将测试数据的特征向量（0-1向量）转化成p(x|c)，最后得到每一类的条件概率p（c|x）。</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">classifyNB</span><span class="params">(vec2Classify, p0Vec, p1Vec, pClass1)</span>:</span>
-    p1 = sum(vec2Classify * p1Vec) + log(pClass1)     <span class="comment">#转化为对数求和</span>
-    p0 = sum(vec2Classify * p0Vec) + log(<span class="number">1.0</span> - pClass1)
-    <span class="keyword">if</span> p1 &gt; p0:
-        <span class="keyword">return</span> <span class="number">1</span>
-    <span class="keyword">else</span>: 
-        <span class="keyword">return</span> <span class="number">0</span>
-</code></pre><h1 id="词袋模型">词袋模型</h1>
-<p>前面的“词集”只考虑了每个特征单词是否出现，没有记录次数，词袋模型则是考虑了每一个训练特征出现的次数，所以，向量的生成过程变成如下形式：</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">bagOfWords2VecMN</span><span class="params">(vocabList, inputSet)</span>:</span>
-    returnVec = [<span class="number">0</span>]*len(vocabList)
-    <span class="keyword">for</span> word <span class="keyword">in</span> inputSet:
-        <span class="keyword">if</span> word <span class="keyword">in</span> vocabList:
-            returnVec[vocabList.index(word)] += <span class="number">1</span>  <span class="comment">#累计单词的次数</span>
-    <span class="keyword">return</span> returnVec
-</code></pre>
-	
-	</div>
-	
-
-</div>
-	<a type="button" href="/2014/05/27/bayes/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-	  
-	  </div>
-	  <div>
-	  <center>
-	  <!-- _partial/index_pagination -->
-<div class="pagination">
-<ul class="pagination">
-	 
+	  <div class="archive">
+				
 		
-          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
-        
-
-        <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
-
 		
-		   <li class="next"> <a href="/tags/机器学习实战/page/2/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a> </li>
-        
-	
-</ul>
-</div>
-
-	  </center>
-	  </div>
-
-	  
+			
+			
+			<h4 class="archive-ul" data-toggle="collapse" data-target="#2014">2014<b class="caret"></b></h4>
+			<ul id="2014" class="collapse in">
+			
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-06-19 </span> &raquo;
+		
+		<span class="title"><a href="/2014/06/19/k-means/" >k-means</a></span>
+		
+		</li>			
+				
+		
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-06-08 </span> &raquo;
+		
+		<span class="title"><a href="/2014/06/08/adaboost/" >AdaBoost</a></span>
+		
+		</li>			
+				
+		
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-06-01 </span> &raquo;
+		
+		<span class="title"><a href="/2014/06/01/svm/" >支持向量机SVM</a></span>
+		
+		</li>			
+				
+		
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-05-28 </span> &raquo;
+		
+		<span class="title"><a href="/2014/05/28/logistic-regression/" >Logistic 回归</a></span>
+		
+		</li>			
+				
+		
+		
+		<li class="listing-item">
+		<span class="date_class"> 2014-05-27 </span> &raquo;
+		
+		<span class="title"><a href="/2014/05/27/bayes/" >朴素贝叶斯分类方法</a></span>
+		
+		</li>			
+		
+		</ul>
+		</div>
 
 </div> <!-- col-md-9/col-md-12 -->
 
 
-<!-- _partial/sidebar -->
 <div class="col-md-3">
 	<div id="sidebar">
 	
-			<!-- _widget/search -->
-<div class="form-group has-success has-feedback">
+			<div class="form-group has-success has-feedback">
   <form action="//google.com/search" method="get" accept-charset="utf-8" >
     <input type="search" name="q" results="0" placeholder="搜索" class="form-control">
-    <input type="hidden" name="q" value="site:xiaojinwen.com">
+    <input type="hidden" name="q" value="site:xiaojinwen.com">	
   </form>
 </div>
 
 		
-			<!-- _widget/category -->
-
+			
 	<div class="widget">
 		<h4>分类</h4>
 		<ul class="tag_box inline list-unstyled">
@@ -630,13 +185,15 @@
 		</ul>
 	</div>
 
-
 		
-			<!-- _widget/tagcloud -->
-
+			
 	<div class="widget">
 		<h4>标签云</h4>
-		<ul class="tag_box inline list-unstyled">
+		<ul class="tag_box inline list-unstyled">		
+		
+			<li><a href="/tags/机器学习实战/">机器学习实战<span>7</span></a></li>
+		
+			<li><a href="/tags/Socket/">Socket<span>1</span></a></li>
 		
 			<li><a href="/tags/人工智能/">人工智能<span>1</span></a></li>
 		
@@ -648,18 +205,13 @@
 		
 			<li><a href="/tags/求职/">求职<span>1</span></a></li>
 		
-			<li><a href="/tags/机器学习实战/">机器学习实战<span>7</span></a></li>
-		
-			<li><a href="/tags/Socket/">Socket<span>1</span></a></li>
-		
-		
+		 
 		</ul>
 	</div>
 
 
 		
-			<!-- _widget/recent_posts -->
-
+			
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
@@ -687,15 +239,17 @@
   </ul>
 </div>
 
-
 		
-			<!-- _widget/links -->
-
+			
 <div class="widget">
-	<h4>Links</h4>
+	<h4>链接</h4>
 	<ul class="blogroll list-unstyled">
 	
-		<li><i class="fa fa-github"></i><a href="http://blog.csdn.net/aivin24" title="Freewill's Github repository." target="_blank"]);">My CSDN Blog</a></li>
+		<li><i class="fa fa-github"></i><a href="https://github.com/wzpan/freemind/" title="Freemind's Github repository." target="_blank"]);">Freemind</a></li>
+	
+		<li><i class="fa fa-github"></i><a href="http://www.github.com/wzpan" title="My Github account." target="_blank"]);">My Github</a></li>
+	
+		<li><i class="fa fa-linkedin"></i><a href="http://www.linkedin.com/pub/weizhou-pan/5b/8a0/161" title="My Linkin account." target="_blank"]);">My LinkedIn</a></li>
 	
 	</ul>
 </div>
@@ -708,30 +262,25 @@
 
 
 
-	  </div>
-    <footer> <!-- _partial/footer -->
-<p>
-  &copy; 2014 by Jinwen
-  &nbsp;
-  <span class="text-muted">Powered by:
-    <a class="text-muted" href="http://zespia.tw/hexo/" target="_blank">Hexo</a>,
-    <a class="text-muted" href="http://github.com/yieme/hexo-theme-freewill/">Freewill</a>
-    &amp;
-    <a class="text-muted" href="http://bootswatch.com/" target="_blank">Bootswatch <small>v3.2</small></a>
-  </span>
-</p>
- </footer>
-  </div> <!-- container-narrow -->
-  <!-- _partial/after_footer -->
-<a id="gotop" href="#">
-  <span>▲</span>
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 Jinwen
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
 </a>
 
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
-
 
 
 
@@ -759,4 +308,5 @@
     });
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body></html>
+</body>
+   </html>
